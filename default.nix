@@ -11,6 +11,7 @@
 let
   lib = pkgs.lib;
   releases = import ./nix/releases.nix { inherit lib inputs system; };
+  eelco = (import inputs.main.eelco).packages.${system}.default;
 
   nix-dev =
     pkgs.stdenv.mkDerivation {
@@ -26,6 +27,7 @@ let
         sphinx-notfound-page
         sphinx-sitemap
         pkgs.perl
+        eelco
       ];
       buildPhase =
         let
@@ -35,6 +37,7 @@ let
           };
         in
         ''
+          eelco "source/tutorials/nix-language.md"
           ${lib.optionalString withManuals "cp -f ${substitutedNixManualReference} source/reference/nix-manual.md"}
           make html
         '';
@@ -119,6 +122,7 @@ in
   build = nix-dev;
 
   shell = pkgs.mkShell {
+    NIX_CONFIG = "extra-sandbox-paths = /nix/var/nix/daemon-socket/socket";
     inputsFrom = [ nix-dev ];
     packages = [
       devmode

@@ -1,5 +1,19 @@
 {
   "pins": {
+    "eelco": {
+      "type": "GitRelease",
+      "repository": {
+        "type": "GitHub",
+        "owner": "mobusoperandi",
+        "repo": "eelco"
+      },
+      "pre_releases": false,
+      "version_upper_bound": null,
+      "version": "v2.2.0",
+      "revision": "cce954bd4d5ee241437acef90e25b577c155b1c5",
+      "url": "https://api.github.com/repos/mobusoperandi/eelco/tarball/v2.2.0",
+      "hash": "1kw6j3hgpqx7l3wq3zgmry4sryz1g0zbg9f8dhih0ysdvaqnwrlq"
+    },
     "nixpkgs-rolling": {
       "type": "Git",
       "repository": {
@@ -27,4 +41,3 @@
   },
   "version": 3
 }
-

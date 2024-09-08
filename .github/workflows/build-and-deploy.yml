@@ -20,7 +20,9 @@ jobs:
 
     - name: Build
       run: |
-        nix-build --arg withManuals true
+        nix-build \
+          --arg withManuals true \
+          --extra-sandbox-paths /nix/var/nix/daemon-socket/socket
 
         # The netlify action doesn't follow symlinks properly.
         mkdir ./dist

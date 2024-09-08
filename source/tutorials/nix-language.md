@@ -97,14 +97,8 @@ Each one is followed by the expected evaluation result.
 
 The following example is a Nix expression adding two numbers:
 
-```{code-block} nix
-:class: expression
-1 + 2
-```
-
-```{code-block}
-:class: value
-3
+```nix
+let n = 1 + 2; in assert n == 3; n
 ```
 
 #### Interactive evaluation
@@ -127,12 +121,18 @@ If your output does not match the example, try prepending `:p` to the input expr
 
 Example:
 
-```shell-session
+```nix-repl
 nix-repl> { a.b.c = 1; }
-{ a = { ... }; }
+{
+  a = { ... };
+}
 
 nix-repl> :p { a.b.c = 1; }
-{ a = { b = { c = 1; }; }; }
+{
+  a = {
+    b = { c = 1; };
+  };
+}
 ```
 
 Type `:q` to exit [`nix repl`].
@@ -214,28 +214,18 @@ Line breaks, indentation, and additional spaces are for readers' convenience.
 
 The following are equivalent:
 
-```{code-block} nix
-:class: expression
+```nix
 let
- x = 1;
- y = 2;
+  x = 1;
+  y = 2;
 in x + y
 ```
 
-```{code-block}
-:class: value
-3
+```nix
+let x = 1; y = 2; in x + y
 ```
 
-```{code-block} nix
-:class: expression
-let x=1;y=2;in x+y
-```
 
-```{code-block}
-:class: value
-3
-```
 
 (names-values)=
 ## Names and values
@@ -325,13 +315,16 @@ This allows access to attributes from within the set.
 
 Example:
 
-```{code-block} nix
-:class: expression
-rec {
-  one = 1;
-  two = one + 1;
-  three = two + 1;
-}
+```nix
+let
+  set = rec {
+    one = 1;
+    two = one + 1;
+    three = two + 1;
+  };
+in
+  assert set == { one = 1; three = 3; two = 2; };
+  set
 ```
 
 ```{code-block}
