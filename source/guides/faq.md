@@ -53,7 +53,7 @@ There are a few ways to resolve this mismatch in environment expectations:
 - Create a library path that only applies to unpackaged programs by using [`nix-ld`](https://github.com/Mic92/nix-ld).
   Add this to your `configuration.nix`:
 
-  ```nix skip
+  ```nix
     programs.nix-ld.enable = true;
     programs.nix-ld.libraries = with pkgs; [
       # Add any missing dynamic libraries for unpackaged programs

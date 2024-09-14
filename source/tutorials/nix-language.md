@@ -97,8 +97,14 @@ Each one is followed by the expected evaluation result.
 
 The following example is a Nix expression adding two numbers:
 
-```nix
+```{code-block} nix
+:class: expression
 1 + 2
+```
+
+```{code-block}
+:class: value
+3
 ```
 
 #### Interactive evaluation
@@ -214,15 +220,27 @@ Line breaks, indentation, and additional spaces are for readers' convenience.
 
 The following are equivalent:
 
-```nix
+```{code-block} nix
+:class: expression
 let
-  x = 1;
-  y = 2;
+ x = 1;
+ y = 2;
 in x + y
 ```
 
-```nix
-let x = 1; y = 2; in x + y
+```{code-block}
+:class: value
+3
+```
+
+```{code-block} nix
+:class: expression
+let x=1;y=2;in x+y
+```
+
+```{code-block}
+:class: value
+3
 ```
 
 (assertions)=
@@ -327,16 +345,13 @@ This allows access to attributes from within the set.
 
 Example:
 
-```nix
-let
-  set = rec {
-    one = 1;
-    two = one + 1;
-    three = two + 1;
-  };
-in
-  assert set == { one = 1; three = 3; two = 2; };
-  set
+```{code-block} nix
+:class: expression
+rec {
+  one = 1;
+  two = one + 1;
+  three = two + 1;
+}
 ```
 
 ```{code-block}
