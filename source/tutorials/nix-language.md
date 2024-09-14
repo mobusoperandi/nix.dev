@@ -227,6 +227,20 @@ let x = 1; y = 2; in x + y
 
 
 
+(assertions)=
+## Assertions
+
+Here's the syntax for an assertion expression: `assert <condition>; <value>`.
+If `condition` evaluates to `true` then the assertion expression evaluates into `value`.
+Otherwise, evaluation is aborted and a backtrace is printed. Example:
+
+```nix
+assert 1 + 2 == 3; 3
+```
+
+Notice that the expression `3` is repeated.
+That's because we didn't learn about bindings, yet.
+
 (names-values)=
 ## Names and values
 
