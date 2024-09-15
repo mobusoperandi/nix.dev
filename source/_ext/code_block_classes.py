@@ -19,4 +19,4 @@ class CodeBlockWithClasses(CodeBlock):
         return super().run()
 
 def setup(app):
-    app.add_directive('code-block-with-classes', CodeBlockWithClasses)
+    app.add_directive('code-block', CodeBlockWithClasses, override=True)

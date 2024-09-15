@@ -72,7 +72,7 @@ class ExtractableCodeBlock(CodeBlock):
 
 
 def setup(app):
-    app.add_directive("code-block", ExtractableCodeBlock, override=True)
+    #app.add_directive("code-block", ExtractableCodeBlock, override=True)
 
     return {
         "version": "0.1",
