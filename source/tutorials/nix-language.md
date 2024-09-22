@@ -97,7 +97,8 @@ Each one is followed by the expected evaluation result.
 
 The following example is a Nix expression adding two numbers:
 
-```nix class:expression
+```{code-block} nix
+:class: expression
 1 + 2
 ```
 
