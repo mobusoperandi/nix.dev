@@ -358,9 +358,7 @@ assert {
     c = 2.718;
     d = false;
   }; # comments are supported
-}
-==
-(builtins.fromJSON ''
+} == (builtins.fromJSON ''
 {
   "string": "hello",
   "integer": 1,
@@ -368,9 +366,9 @@ assert {
   "bool": true,
   "null": null,
   "list": [1, "two", false],
-  "object": {
+  "attribute-set": {
     "a": "hello",
-    "b": 1,
+    "b": 2,
     "c": 2.718,
     "d": false
   }
