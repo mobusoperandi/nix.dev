@@ -360,7 +360,7 @@ assert {
   }; # comments are supported
 }
 ==
-builtins.fromJSON ''
+(builtins.fromJSON ''
 {
   "string": "hello",
   "integer": 1,
@@ -375,7 +375,7 @@ builtins.fromJSON ''
     "d": false
   }
 }
-''; null
+''); null
 ```
 
 :::{note}
