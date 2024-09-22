@@ -247,6 +247,17 @@ let x=1;y=2;in x+y
 3
 ```
 
+```nix
+let
+ x = 1;
+ y = 2;
+in assert x + y == 3; null
+```
+
+```nix
+let x=1;y=2;in assert x+y==3; null
+```
+
 (assertions)=
 ## Assertions
 
@@ -332,6 +343,40 @@ Nix language data types *without functions* work just like their counterparts in
 :::
 
 ::::
+
+```nix
+assert {
+  string = "hello";
+  integer = 1;
+  float = 3.141;
+  bool = true;
+  null = null;
+  list = [ 1 "two" false ];
+  attribute-set = {
+    a = "hello";
+    b = 2;
+    c = 2.718;
+    d = false;
+  }; # comments are supported
+}
+==
+builtins.fromJSON ''
+{
+  "string": "hello",
+  "integer": 1,
+  "float": 3.141,
+  "bool": true,
+  "null": null,
+  "list": [1, "two", false],
+  "object": {
+    "a": "hello",
+    "b": 1,
+    "c": 2.718,
+    "d": false
+  }
+}
+''; null
+```
 
 :::{note}
 - Attribute names usually do not need quotes.[^attrnames]
