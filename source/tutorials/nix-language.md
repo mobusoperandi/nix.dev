@@ -358,7 +358,7 @@ assert {
     c = 2.718;
     d = false;
   }; # comments are supported
-} == (builtins.fromJSON ''
+} == builtins.fromJSON ''
 {
   "string": "hello",
   "integer": 1,
@@ -373,7 +373,7 @@ assert {
     "d": false
   }
 }
-''); null
+''; null
 ```
 
 :::{note}
@@ -398,7 +398,8 @@ rec {
   one = 1;
   two = one + 1;
   three = two + 1;
-}
+} == assert { one = 1; three = 3; two = 2; }; null
+
 ```
 
 ```{code-block}
