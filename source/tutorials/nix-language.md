@@ -106,6 +106,10 @@ The following example is a Nix expression adding two numbers:
 3
 ```
 
+```nix
+assert 1 + 2 == 3; null
+```
+
 #### Interactive evaluation
 
 Use [`nix repl`] to evaluate Nix expressions interactively (by typing them on the command line):
