@@ -398,13 +398,28 @@ rec {
   one = 1;
   two = one + 1;
   three = two + 1;
-} == assert { one = 1; three = 3; two = 2; }; null
-
+}
 ```
 
 ```{code-block}
 :class: value
 { one = 1; three = 3; two = 2; }
+```
+
+```nix
+assert
+
+rec {
+  one = 1;
+  two = one + 1;
+  three = two + 1;
+}
+
+==
+
+{ one = 1; three = 3; two = 2; }
+
+; null
 ```
 
 :::{note}
@@ -413,8 +428,7 @@ Elements in an attribute set can be declared in any order, and are ordered on ev
 
 Counter-example:
 
-```{code-block} nix
-:class: expression
+``` nix skip
 {
   one = 1;
   two = one + 1;
@@ -454,6 +468,13 @@ a + a
 ```{code-block}
 :class: value
 2
+```
+
+``` nix
+let
+  a = 1;
+in
+assert a + a == 2; null
 ```
 
 :::{dropdown} Detailed explanation
