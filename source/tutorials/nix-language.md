@@ -507,6 +507,14 @@ a + b
 3
 ```
 
+```nix
+let
+  b = a + 1;
+  a = 1;
+in
+assert a + b == 3; null
+```
+
 :::::{dropdown} Detailed explanation
 
 Assignments are placed between the keywords `let` and `in`.
