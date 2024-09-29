@@ -906,6 +906,13 @@ in [ x y ]
 [ 1 2 ]
 ```
 
+```nix
+let
+  inherit ({ x = 1; y = 2; }) x y;
+in
+assert [ x y ] == [ 1 2 ]; null
+```
+
 :::{dropdown} Detailed explanation
 
 While this example is contrived, in more complex code you will regularly see nested `let` expressions that re-use names from their outer scope.
