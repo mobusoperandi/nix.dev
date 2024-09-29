@@ -1364,6 +1364,13 @@ in f 1
 2
 ```
 
+
+```nix
+let
+  f = x: x + 1;
+in assert f 1 == 2; null
+```
+
 Example:
 
 ```{code-block} nix
@@ -1377,6 +1384,13 @@ f { a = 1; }
 ```{code-block}
 :class: value
 1
+```
+
+```nix
+let
+  f = x: x.a;
+in
+assert f { a = 1; } == 1; null 
 ```
 
 The above example calls `f` on a literal attribute set.
@@ -1398,6 +1412,14 @@ f v
 1
 ```
 
+```nix
+let
+  f = x: x.a;
+  v = { a = 1; };
+in
+assert f v == 1; null
+```
+
 Since function and argument are separated by white space, sometimes parentheses (`( )`) are required to achieve the desired result.
 
 Example:
@@ -1410,6 +1432,10 @@ Example:
 ```{code-block}
 :class: value
 2
+```
+
+```nix
+assert (x: x + 1) 1 == 2; null
 ```
 
 :::{dropdown} Detailed explanation
