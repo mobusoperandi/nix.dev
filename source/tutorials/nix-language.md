@@ -815,6 +815,23 @@ in
 { x = 1; y = 2; }
 ```
 
+```nix
+let
+  x = 1;
+  y = 2;
+in
+
+assert 
+
+{ inherit x y; }
+
+==
+
+{ x = 1; y = 2; }
+
+; null
+```
+
 The fragment
 
 ```{code-block} nix
