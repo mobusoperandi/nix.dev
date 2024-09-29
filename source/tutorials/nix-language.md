@@ -1196,6 +1196,22 @@ string
 "multi\nline\nstring\n"
 ```
 
+```nix
+assert
+
+''
+multi
+line
+string
+''
+
+==
+
+"multi\nline\nstring\n"
+
+; null
+```
+
 Equal amounts of prepended white space are trimmed from the result.
 
 Example:
@@ -1212,6 +1228,22 @@ Example:
 ```{code-block}
 :class: value
 "one\n two\n  three\n"
+```
+
+```nix
+assert
+
+''
+  one
+   two
+    three
+''
+
+==
+
+"one\n two\n  three\n"
+
+; null
 ```
 
 <!-- TODO: See [escaping rules](). -->
