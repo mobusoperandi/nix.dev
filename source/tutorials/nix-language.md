@@ -829,6 +829,10 @@ assert
 
 { x = 1; y = 2; }
 
+==
+
+{ x = x; y = y; }
+
 ; null
 ```
 
@@ -860,6 +864,22 @@ in
 ```{code-block}
 :class: value
 { x = 1; y = 2; }
+```
+
+```nix
+let
+  a = { x = 1; y = 2; };
+in
+
+assert
+
+{ inherit (a) x y; }
+
+==
+
+{ x = 1; y = 2; }
+
+; null
 ```
 
 The fragment
