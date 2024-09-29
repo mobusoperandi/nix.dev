@@ -656,6 +656,13 @@ attrset.x
 1
 ```
 
+```nix
+let
+  attrset = { x = 1; };
+in
+assert attrset.x == 1; null
+```
+
 Accessing nested attributes works the same way.
 
 Example:
@@ -673,6 +680,13 @@ attrset.a.b.c
 1
 ```
 
+```nix
+let
+  attrset = { a = { b = { c = 1; }; }; };
+in
+assert attrset.a.b.c == 1; null
+```
+
 The dot (`.`) notation can also be used for assigning attributes.
 
 Example:
@@ -685,6 +699,18 @@ Example:
 ```{code-block}
 :class: value
 { a = { b = { c = 1; }; }; }
+```
+
+```nix
+assert
+
+{ a.b.c = 1; }
+
+==
+
+{ a = { b = { c = 1; }; }; }
+
+; null
 ```
 
 (with)=
