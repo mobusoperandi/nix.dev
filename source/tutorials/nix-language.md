@@ -737,6 +737,17 @@ with a; [ x y z ]
 [ 1 2 3 ]
 ```
 
+```nix
+let
+  a = {
+    x = 1;
+    y = 2;
+    z = 3;
+  };
+in
+assert with a; [ x y z ] == [ 1 2 3]; null
+```
+
 The expression
 
 ```{code-block} nix
