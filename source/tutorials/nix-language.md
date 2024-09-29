@@ -953,6 +953,13 @@ in
 "hello Nix"
 ```
 
+```nix
+let
+  name = "Nix";
+in
+assert "hello ${name}" == "hello Nix"; null
+```
+
 Only character strings or values that can be represented as a character string are allowed.
 
 Counter-example:
@@ -996,6 +1003,12 @@ in
 "no no no"
 ```
 
+```nix
+let
+  a = "no";
+in
+assert "${a + " ${a + " ${a}"}"}" == "no no no"; null
+```
 
 :::{warning}
 You may encounter strings that use the dollar sign (`$`) before an assigned name, but no braces (`{ }`):
@@ -1018,6 +1031,15 @@ in
 :class: value
 "echo Nix > $out"
 ```
+
+
+```nix
+let
+  out = "Nix";
+in
+assert "echo ${out} > $out" == "echo Nix > $out"; null
+```
+
 :::
 
 <!-- TODO: link to escaping rules -->
