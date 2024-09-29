@@ -1462,6 +1462,13 @@ in [ (f a) ]
 [ 2 ]
 ```
 
+```nix
+let
+ f = x: x + 1;
+ a = 1;
+in assert [ (f a) ] == [ 2 ]; null
+```
+
 ```{code-block} nix
 :class: expression
 let
