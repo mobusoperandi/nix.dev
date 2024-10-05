@@ -1555,6 +1555,12 @@ f 1 2
 3
 ```
 
+```nix
+let
+  f = x: y: x + y;
+in assert f 1 2 == 3; null
+```
+
 <!-- TODO: exercise - assign the lambda a name and do something with it -->
 
 ### Attribute set argument
@@ -1593,6 +1599,12 @@ f { a = 1; b = 2; }
 ```{code-block} nix
 :class: value
 3
+```
+
+```nix
+let
+  f = {a, b}: a + b;
+in f { a = 1; b = 2; }
 ```
 
 Counter-example:
