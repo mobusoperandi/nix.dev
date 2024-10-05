@@ -58,7 +58,7 @@ myst_enable_extensions = [
 # GitHub-style automatic anchors for headings
 myst_heading_anchors = 3
 
-myst_number_code_blocks = [ "nix", "python" ]
+myst_number_code_blocks = [ "nix", "nix-repl", "python" ]
 
 copybutton_prompt_text = r"\$ |nix-repl> "
 copybutton_prompt_is_regexp = True

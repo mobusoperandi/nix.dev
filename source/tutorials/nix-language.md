@@ -1834,6 +1834,10 @@ import ./file.nix
 3
 ```
 
+```nix
+assert (import ./file.nix) == 3; null
+```
+
 :::{dropdown} Detailed explanation
 
 The preceding shell command writes the contents `1 + 2` to the file `file.nix` in the current directory.
