@@ -1834,8 +1834,8 @@ import ./file.nix
 3
 ```
 
-```nix
-assert (import ./file.nix) == 3; null
+```nix-repl
+nix-repl> assert (import source/tutorials/file.nix) == 3; null
 ```
 
 :::{dropdown} Detailed explanation
