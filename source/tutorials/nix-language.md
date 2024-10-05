@@ -1604,7 +1604,7 @@ f { a = 1; b = 2; }
 ```nix
 let
   f = {a, b}: a + b;
-in f { a = 1; b = 2; }
+in assert f { a = 1; b = 2; } == 3; null
 ```
 
 Counter-example:
@@ -1656,6 +1656,12 @@ f { a = 1; }
 1
 ```
 
+```nix
+let
+  f = {a, b ? 0}: a + b;
+in assert f { a = 1; } == 1; null
+```
+
 Example:
 
 ```{code-block} nix
@@ -1669,6 +1675,14 @@ f { } # empty attribute set
 ```{code-block}
 :class: value
 0
+```
+
+
+```{code-block} nix
+:class: expression
+let
+  f = {a ? 0, b ? 0}: a + b;
+in assert f { } == 0; null  # empty attribute set
 ```
 
 #### Additional attributes
