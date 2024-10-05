@@ -1943,11 +1943,10 @@ LOOKUP PATHS CONSIDERED HARMFUL
 ```
 
 ```nix-repl
-nix-repl>
-let
-  pkgs = import <nixpkgs> {};
-in
-assert pkgs.lib.strings.toUpper "lookup paths considered harmful" == "LOOKUP PATHS CONSIDERED HARMFUL"; null
+nix-repl> pkgs = import <nixpkgs> {}
+
+nix-repl> pkgs.lib.strings.toUpper "lookup paths considered harmful" 
+"LOOKUP PATHS CONSIDERED HARMFUL"
 ```
 :::{dropdown} Detailed explanation
 
