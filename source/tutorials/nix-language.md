@@ -1859,6 +1859,10 @@ After reading `file.nix` the Nix expression is equivalent to the file contents:
 :class: value
 3
 ```
+
+```nix
+assert 1 + 2 == 3; null
+```
 :::
 
 Since a Nix file can contain any Nix expression, `import`ed functions can be applied to arguments immediately.
