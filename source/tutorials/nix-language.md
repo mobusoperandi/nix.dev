@@ -1678,8 +1678,7 @@ f { } # empty attribute set
 ```
 
 
-```{code-block} nix
-:class: expression
+```nix
 let
   f = {a ? 0, b ? 0}: a + b;
 in assert f { } == 0; null  # empty attribute set
@@ -1708,6 +1707,12 @@ f { a = 1; b = 2; c = 3; }
 ```{code-block}
 :class: value
 3
+```
+
+```nix
+let
+  f = {a, b, ...}: a + b;
+in assert f { a = 1; b = 2; c = 3; } == 3; null
 ```
 
 ### Named attribute set argument
@@ -1755,6 +1760,12 @@ f { a = 1; b = 2; c = 3; }
 ```{code-block} nix
 :class: value
 6
+```
+
+```nix
+let
+  f = {a, b, ...}@args: a + b + args.c;
+in assert f { a = 1; b = 2; c = 3; } == 6; null
 ```
 
 (libraries)=
