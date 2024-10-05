@@ -1833,12 +1833,6 @@ import ./file.nix
 :class: value
 3
 ```
-
-```nix-repl
-nix-repl> import source/tutorials/file.nix
-3
-```
-
 :::{dropdown} Detailed explanation
 
 The preceding shell command writes the contents `1 + 2` to the file `file.nix` in the current directory.
@@ -1906,6 +1900,10 @@ After reading the file, the Nix expression `import ./file.nix` is equivalent to 
 2
 ```
 
+```nix
+assert (x: x + 1) 1 == 2; null
+```
+
 This applies the function `x: x + 1` to the argument `1`, and therefore evaluates to `2`.
 
 :::{note}
@@ -1944,6 +1942,13 @@ pkgs.lib.strings.toUpper "lookup paths considered harmful"
 LOOKUP PATHS CONSIDERED HARMFUL
 ```
 
+```nix-repl
+nix-repl>
+let
+  pkgs = import <nixpkgs> {};
+in
+assert pkgs.lib.strings.toUpper "lookup paths considered harmful" == "LOOKUP PATHS CONSIDERED HARMFUL"; null
+```
 :::{dropdown} Detailed explanation
 
 This is a more complex example, but by now you should be familiar with all its components.
