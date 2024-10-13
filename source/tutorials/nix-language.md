@@ -1941,12 +1941,12 @@ pkgs.lib.strings.toUpper "lookup paths considered harmful"
 LOOKUP PATHS CONSIDERED HARMFUL
 ```
 
-```nix-repl
+<!-- ```nix-repl
 nix-repl> :l nixpkgs
 
 nix-repl> pkgs.lib.strings.toUpper "lookup paths considered harmful" 
 "LOOKUP PATHS CONSIDERED HARMFUL"
-```
+``` -->
 :::{dropdown} Detailed explanation
 
 This is a more complex example, but by now you should be familiar with all its components.
