@@ -37,7 +37,7 @@ let
           };
         in
         ''
-          NIX_PATH=${pkgs.nix} eelco "source/tutorials/nix-language.md"
+          NIX_PATH="nixpkgs=${pkgs}" eelco "source/tutorials/nix-language.md"
           ${lib.optionalString withManuals "cp -f ${substitutedNixManualReference} source/reference/nix-manual.md"}
           make html
         '';
