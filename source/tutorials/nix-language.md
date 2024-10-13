@@ -1929,8 +1929,7 @@ These functions are usually accessed through `pkgs.lib`, as the Nixpkgs attribut
 
 Example:
 
-```{code-block} nix
-:class: expression
+```nix
 let
   pkgs = import <nixpkgs> {};
 in
@@ -1943,7 +1942,7 @@ LOOKUP PATHS CONSIDERED HARMFUL
 ```
 
 ```nix-repl
-nix-repl> pkgs = import <nixpkgs> {}
+nix-repl> :l nixpkgs
 
 nix-repl> pkgs.lib.strings.toUpper "lookup paths considered harmful" 
 "LOOKUP PATHS CONSIDERED HARMFUL"

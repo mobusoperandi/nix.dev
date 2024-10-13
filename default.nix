@@ -1,12 +1,12 @@
-{
-  inputs ? import ./nix/inputs.nix,
-  system ? builtins.currentSystem,
-  pkgs ? import inputs.nixpkgs."23.05" {
+{ inputs ? import ./nix/inputs.nix
+, system ? builtins.currentSystem
+, pkgs ? import inputs.nixpkgs."23.05" {
     config = { };
     overlays = [ (import ./nix/overlay.nix) ];
     inherit system;
-  },
-  withManuals ? false, # building the manuals is expensive
+  }
+, withManuals ? false
+, # building the manuals is expensive
 }:
 let
   lib = pkgs.lib;
@@ -37,7 +37,7 @@ let
           };
         in
         ''
-          eelco "source/tutorials/nix-language.md"
+          NIX_PATH=${pkgs.nix} eelco "source/tutorials/nix-language.md"
           ${lib.optionalString withManuals "cp -f ${substitutedNixManualReference} source/reference/nix-manual.md"}
           make html
         '';
