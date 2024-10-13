@@ -123,6 +123,7 @@ in
 
   shell = pkgs.mkShell {
     NIX_CONFIG = "extra-sandbox-paths = /nix/var/nix/daemon-socket/socket";
+    NIX_PATH = "nixpkgs=${inputs.nixpkgs."23.05"}";
     inputsFrom = [ nix-dev ];
     packages = [
       devmode
