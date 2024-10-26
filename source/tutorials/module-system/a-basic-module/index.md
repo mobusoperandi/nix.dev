@@ -16,6 +16,14 @@ The simplest possible module is a function that takes any attributes and returns
 }
 ```
 
+```nix
+drv = {
+  options = {
+    name = lib.mkOption { type = lib.types.str; };
+  };
+}
+```
+
 To define any values, the module system first has to know which ones are allowed.
 This is done by declaring *options* that specify which attributes can be set and used elsewhere.
 
