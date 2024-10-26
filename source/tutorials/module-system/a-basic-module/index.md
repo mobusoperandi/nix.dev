@@ -16,12 +16,12 @@ The simplest possible module is a function that takes any attributes and returns
 }
 ```
 
-```nix
-drv = {
+```nix-repl 
+assert {lib}:{
   options = {
     name = lib.mkOption { type = lib.types.str; };
   };
-}
+}  == 2; null
 ```
 
 To define any values, the module system first has to know which ones are allowed.
