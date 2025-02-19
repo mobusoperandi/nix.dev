@@ -8,7 +8,9 @@ Instead of manually activating the environment for each project, you can reload 
 
 For example, write a `shell.nix` with the following contents:
 
-```nix
+`shell.nix`:
+
+```nix not-tested="yet"
 let
   nixpkgs = fetchTarball "https://github.com/NixOS/nixpkgs/tarball/nixos-23.11";
   pkgs = import nixpkgs { config = {}; overlays = []; };
@@ -23,13 +25,13 @@ pkgs.mkShellNoCC {
 
 From the top-level directory of your project run:
 
-```shell-session
+```shell-session not-tested="yet"
 $ echo "use nix" > .envrc && direnv allow
 ```
 
 The next time you launch your terminal and enter the top-level directory of your project, `direnv` will automatically launch the shell defined in `shell.nix`
 
-```shell-session
+```shell-session not-tested="yet"
 $ cd myproject
 $ which hello
 /nix/store/1gxz5nfzfnhyxjdyzi04r86sh61y4i00-hello-2.12.1/bin/hello
@@ -39,7 +41,7 @@ $ which hello
 
 Make the following addition:
 
-```diff
+```diff not-tested="yet"
  let
    nixpkgs = fetchTarball "https://github.com/NixOS/nixpkgs/tarball/nixos-23.11";
    pkgs = import nixpkgs { config = {}; overlays = []; };
@@ -58,6 +60,6 @@ Make the following addition:
 
 The running environment should reload itself after the first interaction (run any command or press `Enter`).
 
-```shell-session
+```shell-session not-tested="yet"
 Hello, world!
 ```

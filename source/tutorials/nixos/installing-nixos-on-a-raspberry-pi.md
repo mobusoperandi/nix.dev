@@ -31,7 +31,7 @@ Booting from USB may require an EEPROM firmware upgrade. This tutorial boots fro
 
 To prepare the AArch64 image on another device with Nix, run the following commands:
 
-```shell-session
+```shell-session not-tested="not-worth-it"
 $ nix-shell -p wget zstd
 
 [nix-shell:~]$ wget https://hydra.nixos.org/build/226381178/download/1/nixos-sd-image-23.11pre500597.0fbe93c5a7c-aarch64-linux.img.zst
@@ -56,7 +56,7 @@ Press <kbd>Ctrl</kbd>+<kbd>C</kbd> to stop `dmesg --follow`.
 
 Copy NixOS to your SD card by replacing `sdX` with the name of your device in the following command:
 
-```console
+```console not-tested="not-worth-it"
 [nix-shell:~]$ sudo dd if=nixos-sd-image-23.11pre500597.0fbe93c5a7c-aarch64-linux.img of=/dev/sdX bs=4096 conv=fsync status=progress
 ```
 
@@ -74,7 +74,7 @@ At this point you'll need an internet connection. If you can use an ethernet cab
 
 If you're connecting to wifi, run `iwconfig` to find the name of your wireless network interface. If it's `wlan0`, replace `SSID` and `passphrase` with your data and run:
 
-```shell-session
+```shell-session not-tested="hardware"
 # wpa_supplicant -B -i wlan0 -c <(wpa_passphrase 'SSID' 'passphrase') &
 ```
 
@@ -86,7 +86,7 @@ In case you've made a typo, run `pkill wpa_supplicant` and start over.
 
 To benefit from updates and bug fixes from the vendor, we'll start by updating Raspberry Pi firmware:
 
-```shell-session
+```shell-session not-tested="hardware"
 # nix-shell -p raspberrypi-eeprom
 # mount /dev/disk/by-label/FIRMWARE /mnt
 # BOOTFS=/mnt FIRMWARE_RELEASE_STATUS=stable rpi-eeprom-update -d -a
@@ -98,7 +98,7 @@ Now we'll install NixOS with our own configuration, here creating a `guest` user
 
 In the `let` binding below, change the value of the `SSID` and `SSIDpassword` variables to the `SSID` and `passphrase` values you used previously:
 
-```nix
+```nix not-tested="not-worth-it"
 { config, pkgs, lib, ... }:
 
 let
@@ -156,7 +156,7 @@ in {
 
 To save time on typing the whole configuration, download it:
 
-```shell-session
+```shell-session not-tested="impure"
 # curl -L https://tinyurl.com/tutorial-nixos-install-rpi4 > /etc/nixos/configuration.nix
 ```
 
@@ -168,7 +168,7 @@ If you **don't** want this to happen, you can enter your credentials at a consol
 
 Due to the way the `nixos-sd-image` is designed, NixOS is actually *already installed* at this point, so we only need to `nixos-rebuild` with our new configuration:
 
-```shell-session
+```shell-session not-tested="vm-test"
 # nixos-rebuild boot
 # reboot
 ```
@@ -182,7 +182,7 @@ It booted, congratulations!
 To make further changes to the configuration, [search through NixOS options](https://search.nixos.org/options),
 edit `/etc/nixos/configuration.nix`, and update your system:
 
-```shell-session
+```shell-session not-tested="vm-test"
 $ sudo -i
 # nixos-rebuild switch
 ```

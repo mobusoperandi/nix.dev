@@ -3,7 +3,7 @@
 
 These sections contains collections of detailed technical descriptions.
 
-```{toctree}
+```{toctree} not-tested="not-an-example"
 :glob:
 :maxdepth: 2
 

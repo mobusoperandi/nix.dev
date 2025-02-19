@@ -44,8 +44,9 @@ This tutorial shows how to use it and why it's beneficial.
 Create a new file `hello.nix`, which could be a typical package recipe as found in Nixpkgs:
 A function that takes an attribute set, with attributes corresponding to derivations in the top-level package set, and returns a derivation.
 
-```{code-block} nix
-:caption: hello.nix
+`hello.nix`:
+
+```nix example="callpackage"
 { writeShellScriptBin }:
 writeShellScriptBin "hello" ''
   echo "Hello, world!"
@@ -58,10 +59,11 @@ writeShellScriptBin "hello" ''
 The derivation output in this case contains an executable shell script in `$out/bin/hello` that prints "Hello world" when run.
 :::
 
-Now create a file `default.nix` with the following contents:
+Now create a file the following contents.
 
-```{code-block} nix
-:caption: default.nix
+`default.nix`:
+
+```nix example="callpackage"
 let
   pkgs = import <nixpkgs> { };
 in
@@ -70,8 +72,9 @@ pkgs.callPackage ./hello.nix { }
 
 Realise the derivation in `default.nix` and run the executable that is produced:
 
-```shell-session
+```shell-session example="callpackage"
 $ nix-build
+/nix/store/...-hello
 $ ./result/bin/hello
 Hello, world!
 ```
@@ -88,7 +91,7 @@ This function takes as arguments the package's dependencies.
 
 Change the `default.nix` to produce an attribute set of derivations, with the attribute `hello` containing the original derivation:
 
-```{code-block} nix
+```{code-block} nix not-tested="unsupported:diff"
 :caption: default.nix
 let
   pkgs = import <nixpkgs> { };
@@ -100,7 +103,7 @@ in
 
 When building the attribute `hello`, by accessing it with the [`-A` / `--attr` option](https://nix.dev/manual/nix/2.19/command-ref/nix-build#opt-attr), the result will be the same as before:
 
-```shell-session
+```shell-session not-tested="unsupported:diff"
 $ nix-build -A hello
 $ ./result/bin/hello
 Hello, world!
@@ -108,7 +111,7 @@ Hello, world!
 
 Also change `hello.nix` to add an additional parameter `audience` with default value `"world"`:
 
-```{code-block} nix
+```{code-block} nix not-tested="unsupported:diff"
 :caption: hello.nix
 {
   writeShellScriptBin,
@@ -124,7 +127,7 @@ This also does not change the result.
 Things get more interesting when changing `default.nix` to make use of this new argument.
 Pass the parameter `audience` in the second argument to `callPackage`:
 
-```{code-block} diff
+```{code-block} diff not-tested="unsupported:diff"
 :caption: default.nix
  let
    pkgs = import <nixpkgs> { };
@@ -140,7 +143,7 @@ The same syntax can also be used to explicitly set the automatically discovered 
 
 Try it out:
 
-```shell-session
+```shell-session not-tested="unsupported:diff"
 $ nix-build -A hello
 $ ./result/bin/hello
 Hello, people!
@@ -157,7 +160,7 @@ Nixpkgs is therefore not simply a huge library of pre-configured packages, but a
 
 Add a third attribute `hello-folks` to `default.nix` and set it to `hello.override` called with a new value for `audience`:
 
-```{code-block} diff
+```{code-block} diff not-tested="unsupported:diff"
 :caption: default.nix
  let
    pkgs = import <nixpkgs> { };
@@ -180,7 +183,7 @@ This is especially useful and can be often found on packages that provide many o
 
 Building `hello-folks` attribute and running the resulting executable will again produce a new version of the script:
 
-```shell-session
+```shell-session not-tested="unsupported:diff"
 $ nix-build -A hello-folks
 $ ./result/bin/hello
 Hello, folks!
@@ -200,7 +203,7 @@ The following examples do not show the "called" files, as they are not necessary
 
 Consider the following recursive attribute set of derivations:
 
-```{code-block} nix
+```{code-block} nix not-tested="incomplete"
 :caption: default.nix
 let
   pkgs = import <nixpkgs> { };
@@ -226,7 +229,7 @@ This can become quite tedious quickly, especially for larger package sets.
 
 Use `lib.callPackageWith` to create your own `callPackage` based on an attribute set.
 
-```{code-block} nix
+```{code-block} nix not-tested="incomplete"
 :caption: default.nix
 let
   pkgs = import <nixpkgs> { };

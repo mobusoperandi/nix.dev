@@ -26,7 +26,7 @@ File sets can be created, composed, and manipulated with the various functions o
 
 You can explore and learn about the library with [`nix repl`](https://nix.dev/manual/nix/stable/command-ref/new-cli/nix3-repl):
 
-```shell-session
+```shell-session not-tested="yet"
 $ nix repl -f channel:nixos-23.11
 ...
 nix-repl> fs = lib.fileset
@@ -34,7 +34,7 @@ nix-repl> fs = lib.fileset
 
 The [`trace`](https://nixos.org/manual/nixpkgs/stable/#function-library-lib.fileset.trace) function pretty-prints the files included in a given file set:
 
-```shell-session
+```shell-session not-tested="yet"
 nix-repl> fs.trace ./. null
 trace: /home/user (all files in directory)
 null
@@ -48,7 +48,7 @@ In the previous trace this is indicated by `(all files in directory)`.
 The `trace` function pretty-prints its first argument and returns its second argument.
 But since you often just need the pretty-printing in `nix repl`, you can omit the second argument:
 
-```shell-session
+```shell-session not-tested="yet"
 nix-repl> fs.trace ./.
 trace: /home/user (all files in directory)
 «lambda @ /nix/store/1czr278x24s3bl6qdnifpvm5z03wfi2p-nixpkgs-src/lib/fileset/default.nix:555:8»
@@ -69,11 +69,11 @@ a local directory within a Flake is always copied into the Nix store *completely
 
 This implicit coercion also works for files:
 
-```shell-session
+```shell-session not-tested="yet"
 $ touch some-file
 ```
 
-```shell-session
+```shell-session not-tested="yet"
 nix-repl> fs.trace ./some-file
 trace: /home/user
 trace: - some-file (regular)
@@ -87,7 +87,7 @@ In addition to the included file, this also prints its [file type](https://nix.d
 To further experiment with the library, make a sample project.
 Create a new directory, enter it, and set up `npins` to pin the Nixpkgs dependency:
 
-```shell-session
+```shell-session not-tested="impure"
 $ mkdir fileset
 $ cd fileset
 $ nix-shell -p npins --run "npins init --bare; npins add github nixos nixpkgs --branch nixos-23.11"
@@ -95,7 +95,7 @@ $ nix-shell -p npins --run "npins init --bare; npins add github nixos nixpkgs --
 
 Then create a `default.nix` file with the following contents:
 
-```{code-block} nix
+```{code-block} nix not-tested="yet"
 :caption: default.nix
 {
   system ? builtins.currentSystem,
@@ -113,7 +113,7 @@ pkgs.callPackage ./build.nix { }
 
 Add two source files to work with:
 
-```shell-session
+```shell-session not-tested="yet"
 $ echo hello > hello.txt
 $ echo world > world.txt
 ```
@@ -126,7 +126,7 @@ Only the files in the `fileset` attribute are included in the result.
 
 Define `build.nix` as follows:
 
-```{code-block} nix
+```{code-block} nix not-tested="yet"
 :caption: build.nix
 { stdenv, lib }:
 let
@@ -157,7 +157,7 @@ Try building it:
 It will take a while to fetch Nixpkgs the first time around.
 :::
 
-```
+```shell-session not-tested="yet"
 $ nix-build
 trace: /home/user/fileset
 trace: - hello.txt (regular)
@@ -175,7 +175,7 @@ But the real benefit of the file set library comes from its facilities for compo
 
 To be able to copy both files `hello.txt` and `world.txt` to the output, add the whole project directory as a source again:
 
-```{code-block} diff
+```{code-block} diff not-tested="not-supported:diff"
 :caption: build.nix
  { stdenv, lib }:
  let
@@ -202,7 +202,7 @@ To be able to copy both files `hello.txt` and `world.txt` to the output, add the
 
 This will work as expected:
 
-```shell-session
+```shell-session not-tested="not-supported:diff"
 $ nix-build
 trace: /home/user/fileset (all files in directory)
 this derivation will be built:
@@ -216,7 +216,7 @@ this derivation will be built:
 
 However, if you run `nix-build` again, the output path will be different!
 
-```shell-session
+```shell-session not-tested="not-supported:diff"
 $ nix-build
 trace: /home/user/fileset (all files in directory)
 this derivation will be built:
@@ -230,7 +230,7 @@ this derivation will be built:
 
 The problem here is that `nix-build` by default creates a `result` symlink in the working directory, which points to the store path just produced:
 
-```
+```shell-session not-tested="not-supported:diff"
 $ ls -l result
 result -> /nix/store/xknflcvjaa8dj6a6vkg629zmcrgz10rh-fileset
 ```
@@ -246,7 +246,7 @@ The result is a new file set that contains all files from the first argument tha
 
 Use it to filter out `./result` by changing the `sourceFiles` definition:
 
-```{code-block} diff
+```{code-block} diff not-tested="not-supported:diff"
 :caption: build.nix
  { stdenv, lib }:
  let
@@ -258,7 +258,7 @@ Use it to filter out `./result` by changing the `sourceFiles` definition:
 
 Building this, the file set library will specify which files are taken from the directory:
 
-```shell-session
+```shell-session not-tested="not-supported:diff"
 $ nix-build
 trace: /home/user/fileset
 trace: - build.nix (regular)
@@ -277,7 +277,7 @@ this derivation will be built:
 
 An attempt to repeat the build will re-use the existing store path:
 
-```
+```shell-session not-tested="not-supported:diff"
 $ nix-build
 trace: /home/user/fileset
 trace: - build.nix (regular)
@@ -292,7 +292,7 @@ trace: - world.txt (regular)
 
 Removing the `./result` symlink creates a new problem, though:
 
-```shell-session
+```shell-session not-tested="not-supported:diff"
 $ rm result
 $ nix-build
 error: lib.fileset.difference: Second argument (negative set)
@@ -302,7 +302,7 @@ error: lib.fileset.difference: Second argument (negative set)
 
 Follow the instructions in the error message, and use [`maybeMissing`](https://nixos.org/manual/nixpkgs/stable/#function-library-lib.fileset.maybeMissing) to create a file set from a path that may not exist (in which case the file set will be empty):
 
-```{code-block} diff
+```{code-block} diff not-tested="not-supported:diff"
 :caption: build.nix
  { stdenv, lib }:
  let
@@ -314,7 +314,7 @@ Follow the instructions in the error message, and use [`maybeMissing`](https://n
 
 This now works, using the whole directory since `./result` is not present:
 
-```
+```shell-session not-tested="not-supported:diff"
 $ nix-build
 trace: /home/user/fileset (all files in directory)
 this derivation will be built:
@@ -325,7 +325,7 @@ this derivation will be built:
 
 Another build attempt will produce a different trace, but the same output path:
 
-```
+```shell-session not-tested="not-supported:diff"
 $ nix-build
 trace: /home/user/fileset
 trace: - build.nix (regular)
@@ -343,13 +343,13 @@ Changing _any_ of the included files causes the derivation to be built again, ev
 
 Append an empty line to `build.nix`:
 
-```shell-session
+```shell-session not-tested="not-supported:diff"
 $ echo >> build.nix
 ```
 
 Again, Nix will start from scratch:
 
-```shell-session
+```shell-session not-tested="not-supported:diff"
 $ nix-build
 trace: /home/user/fileset
 trace: - default.nix (regular)
@@ -366,7 +366,7 @@ One way to fix this is to use [`unions`](https://nixos.org/manual/nixpkgs/stable
 
 Create a file set containing a union of the files to exclude (`fs.unions [ ... ]`), and subtract it (`difference`) from the complete directory (`./.`):
 
-```{code-block} nix
+```{code-block} nix not-tested="not-supported:diff"
 :caption: build.nix
   sourceFiles =
     fs.difference
@@ -381,7 +381,7 @@ Create a file set containing a union of the files to exclude (`fs.unions [ ... ]
 
 This will work as expected:
 
-```
+```shell-session not-tested="not-supported:diff"
 $ nix-build
 trace: /home/user/fileset
 trace: - hello.txt (regular)
@@ -394,11 +394,11 @@ this derivation will be built:
 
 Changing any of the excluded files now doesn't necessarily cause a new build anymore:
 
-```
+```shell-session not-tested="not-supported:diff"
 $ echo >> build.nix
 ```
 
-```
+```shell-session not-tested="not-supported:diff"
 $ nix-build
 trace: /home/user/fileset
 trace: - hello.txt (regular)
@@ -412,7 +412,7 @@ The [`fileFilter`](https://nixos.org/manual/nixpkgs/stable/#function-library-lib
 
 Use it to select all files with a name ending in `.nix`:
 
-```{code-block} diff
+```{code-block} diff not-tested="not-supported:diff"
 :caption: build.nix
    sourceFiles =
      fs.difference
@@ -428,7 +428,7 @@ Use it to select all files with a name ending in `.nix`:
 
 This does not change the result, even if we add a new `.nix` file.
 
-```shell-session
+```shell-session not-tested="not-supported:diff"
 $ nix-build
 trace: /home/user/fileset
 trace: - hello.txt (regular)
@@ -446,14 +446,14 @@ This means that new files added to the current directory would be ignored by def
 
 Create some additional files:
 
-```shell-session
+```shell-session not-tested="not-supported:diff"
 $ mkdir src
 $ touch build.sh src/select.{c,h}
 ```
 
 Then create a file set from only the files to be included explicitly:
 
-```{code-block} nix
+```{code-block} nix not-tested="not-supported:diff"
 :caption: build.nix
 { stdenv, lib }:
 let
@@ -485,7 +485,7 @@ stdenv.mkDerivation {
 
 The `postInstall` script is simplified to rely on the sources to be pre-filtered appropriately:
 
-```shell-session
+```shell-session not-tested="not-supported:diff"
 $ nix-build
 trace: /home/user/fileset
 trace: - build.sh (regular)
@@ -508,7 +508,7 @@ this derivation will be built:
 
 Only the specified files are used, even when a new one is added:
 
-```shell-session
+```shell-session not-tested="not-supported:diff"
 $ touch src/select.o README.md
 
 $ nix-build
@@ -527,7 +527,7 @@ If a directory is part of a Git repository, passing it to [`gitTracked`](https:/
 
 Create a local Git repository and add all files except `src/select.o` and `./result` to it:
 
-```shell-session
+```shell-session not-tested="not-supported:diff"
 $ git init
 Initialized empty Git repository in /home/user/fileset/.git/
 $ git add -A
@@ -536,14 +536,14 @@ $ git reset src/select.o result
 
 Re-use this selection of files with `gitTracked`:
 
-```{code-block} nix
+```{code-block} nix not-tested="not-supported:diff"
 :caption: build.nix
   sourceFiles = fs.gitTracked ./.;
 ```
 
 Build it again:
 
-```shell-session
+```shell-session not-tested="not-supported:diff"
 $ nix-build
 warning: Git tree '/home/user/fileset' is dirty
 trace: /home/vg/src/nix.dev/fileset
@@ -578,7 +578,7 @@ It allows creating a file set that consists only of files that are in _both_ of 
 
 Select all files that are both tracked by Git *and* relevant for the build:
 
-```{code-block} nix
+```{code-block} nix not-tested="not-supported:diff"
 :caption: build.nix
   sourceFiles =
     fs.intersection
@@ -593,7 +593,7 @@ Select all files that are both tracked by Git *and* relevant for the build:
 
 This will produce the same output as in the other approach and therefore re-use a previous build result:
 
-```shell-session
+```shell-session not-tested="not-supported:diff"
 $ nix-build
 warning: Git tree '/home/user/fileset' is dirty
 trace: - build.sh (regular)

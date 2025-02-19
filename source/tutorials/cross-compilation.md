@@ -48,14 +48,14 @@ The build platform is determined automatically by Nix during the configure phase
 
 The host platform is best determined by running this command on the host platform:
 
-```shell-session
+```shell-session not-tested="yet"
 $ $(nix-build '<nixpkgs>' -I nixpkgs=channel:nixos-23.11 -A gnu-config)/config.guess
 aarch64-unknown-linux-gnu
 ```
 
 In case this is not possible (for example, when the host platform is not easily accessible for development), the platform config has to be constructed manually via the following template:
 
-```
+```text not-tested="not-an-example"
 <cpu>-<vendor>-<os>-<abi>
 ```
 
@@ -87,12 +87,12 @@ It is possible to explore them in `nix repl`:
 
 :::{note}
 [Starting with Nix 2.19](https://nix.dev/manual/nix/latest/release-notes/rl-2.19), `nix repl` requires the `-f` / `--file` flag:
-```shell-session
+```shell-session not-tested="not-supported:subprocess"
 $ nix repl -f '<nixpkgs>' -I nixpkgs=channel:nixos-23.11
 ```
 :::
 
-```shell-session
+```shell-session not-tested="not-supported:subprocess"
 $ nix repl '<nixpkgs>' -I nixpkgs=channel:nixos-23.11
 Welcome to Nix 2.18.1. Type :? for help.
 
@@ -134,7 +134,7 @@ They usually do not match the corresponding platform config string.
 
 You can retrieve the platform string from `pkgsCross.<platform>.stdenv.hostPlatform.config`:
 
-```shell-session
+```shell-session not-tested="yet"
 nix-repl> pkgsCross.aarch64-multiplatform.stdenv.hostPlatform.config
 "aarch64-unknown-linux-gnu"
 ```
@@ -158,7 +158,7 @@ There are multiple equivalent ways to access packages targeted to the host platf
 
 1. Explicitly pick the host platform package from within the build platform environment:
 
-   ```nix
+   ```nix not-tested="not-supported:indented-fenced-code-block"
    let
      nixpkgs = fetchTarball "https://github.com/NixOS/nixpkgs/tarball/release-23.11";
      pkgs = import nixpkgs {};
@@ -169,7 +169,7 @@ There are multiple equivalent ways to access packages targeted to the host platf
 2. Pass the host platform to `crossSystem` when importing `nixpkgs`.
    This configures `nixpkgs` such that all its packages are build for the host platform:
 
-   ```nix
+   ```nix not-tested="not-supported:indented-fenced-code-block"
    let
      nixpkgs = fetchTarball "https://github.com/NixOS/nixpkgs/tarball/release-23.11";
      pkgs = import nixpkgs { crossSystem = { config = "aarch64-unknown-linux-gnu"; }; };
@@ -179,7 +179,7 @@ There are multiple equivalent ways to access packages targeted to the host platf
 
    Equivalently, you can pass the host platform as an argument to `nix-build`:
 
-   ```sh
+   ```sh not-tested="not-supported:indented-fenced-code-block"
    $ nix-build '<nixpkgs>' -I nixpkgs=channel:nixos-23.11 \
      --arg crossSystem '{ config = "aarch64-unknown-linux-gnu"; }' \
      -A hello
@@ -189,7 +189,7 @@ There are multiple equivalent ways to access packages targeted to the host platf
 
 To cross compile a package like [hello](https://www.gnu.org/software/hello/), pick the platform attribute — `aarch64-multiplatform` in our case — and run:
 
-```shell-session
+```shell-session not-tested="yet"
 $ nix-build '<nixpkgs>' -I nixpkgs=channel:nixos-23.11 \
   -A pkgsCross.aarch64-multiplatform.hello
 ...
@@ -208,7 +208,7 @@ To show off the power of cross compilation in Nix, let's build our own Hello Wor
 
 Given we have a `cross-compile.nix`:
 
-```nix
+```nix not-tested="yet"
 let
   nixpkgs = fetchTarball "https://github.com/NixOS/nixpkgs/tarball/release-23.11";
   pkgs = import nixpkgs {};
@@ -250,7 +250,7 @@ in {
 
 If we build this example and print both resulting derivations, we should see "Hello, world!" for each:
 
-```shell-session
+```shell-session not-tested="yet"
 $ cat $(nix-build cross-compile.nix)
 Hello, world!
 Hello, world!
@@ -264,7 +264,7 @@ It's also possible to provide an environment with a compiler configured for **cr
 
 Given we have a `shell.nix`:
 
-```nix
+```nix not-tested="yet"
 let
   nixpkgs = fetchTarball "https://github.com/NixOS/nixpkgs/tarball/release-23.11";
   pkgs = (import nixpkgs {}).pkgsCross.aarch64-multiplatform;
@@ -281,7 +281,7 @@ pkgs.pkgsStatic.callPackage ({ mkShell, zlib, pkg-config, file }: mkShell {
 
 And `hello.c`:
 
-```{code-block} c hello.c
+```{code-block} c hello.c not-tested="yet"
 #include <stdio.h>
 
 int main (void)
@@ -293,13 +293,13 @@ int main (void)
 
 We can cross compile it:
 
-```shell-session
+```shell-session not-tested="yet"
 $ nix-shell --run '$CC hello.c -o hello' shell.nix
 ```
 
 And confirm it's aarch64:
 
-```shell-session
+```shell-session not-tested="yet"
 $ nix-shell --run 'file hello' shell.nix
 hello: ELF 64-bit LSB executable, ARM aarch64, version 1 (SYSV), statically linked, with debug_info, not stripped
 ```

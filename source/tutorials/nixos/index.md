@@ -20,7 +20,7 @@ Learn how to configure, test, and install or deploy NixOS.
 - [](binary-cache-setup)
 - [](distributed-build-setup-tutorial)
 
-```{toctree}
+```{toctree} not-tested="not-an-example"
 :maxdepth: 1
 :hidden: true
 nixos-configuration-on-vm.md

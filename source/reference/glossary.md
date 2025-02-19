@@ -1,6 +1,6 @@
 # Glossary
 
-```{glossary}
+```{glossary} not-tested="not-an-example"
 Nix
     Build system and package manager.
 

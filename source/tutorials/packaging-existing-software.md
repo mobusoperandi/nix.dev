@@ -49,7 +49,7 @@ It will enable you or others to produce an artifact for practical use, as a cons
 
 To start, consider this skeleton derivation:
 
-```nix
+```nix not-tested="not-supported:diff"
 { stdenv }:
 
 stdenv.mkDerivation {	}
@@ -64,7 +64,7 @@ GNU Hello is an implementation of the "hello world" program, with source code ac
 To begin, add a `pname` attribute to the set passed to `mkDerivation`.
 Every package needs a name and a version, and Nix will throw `error: derivation name missing` without.
 
-```diff
+```diff not-tested="not-supported:diff"
 
 stdenv.mkDerivation {
 + pname = "hello";
@@ -82,7 +82,7 @@ The hash cannot be known until after the archive has been downloaded and unpacke
 Nix will complain if the hash supplied to `fetchzip` is incorrect.
 Set the `hash` attribute to an empty string and then use the resulting error message to determine the correct hash:
 
-```nix
+```nix not-tested="not-supported:assert-build-failed"
 # hello.nix
 {
   stdenv,
@@ -102,7 +102,7 @@ stdenv.mkDerivation {
 
 Save this file to `hello.nix` and run `nix-build` to observe your first build failure:
 
-```console
+```console not-tested="not-supported:assert-build-failed"
 $ nix-build hello.nix
 error: cannot evaluate a function that has an argument without a value ('stdenv')
        Nix attempted to evaluate a function as a top level expression; in
@@ -126,7 +126,7 @@ Problem: the expression in `hello.nix` is a *function*, which only produces its 
 
 The recommended way to do this is to create a `default.nix` file in the same directory as `hello.nix`, with the following contents:
 
-```nix
+```nix not-tested="not-supported:assert-build-failed"
 # default.nix
 let
   nixpkgs = fetchTarball "https://github.com/NixOS/nixpkgs/tarball/nixos-24.05";
@@ -148,7 +148,7 @@ The tutorial [](./callpackage.md) goes into detail on how this works.
 
 Now run the `nix-build` command with the new argument:
 
-```console
+```console not-tested="not-supported:assert-build-failed"
 $ nix-build -A hello
 error:
 ...
@@ -171,7 +171,7 @@ error:
 As expected, the incorrect file hash caused an error, and Nix helpfully provided the correct one.
 In `hello.nix`, replace the empty string with the correct hash:
 
-```nix
+```nix not-tested="yet"
 # hello.nix
 {
   stdenv,
@@ -191,7 +191,7 @@ stdenv.mkDerivation {
 
 Now run the previous command again:
 
-```console
+```console not-tested="yet"
 $ nix-build -A hello
 this derivation will be built:
   /nix/store/rbq37s3r76rr77c7d8x8px7z04kw2mk7-hello.drv
@@ -213,14 +213,14 @@ It wasn't necessary to write any build instructions in this case because the `st
 ### Build result
 Check your working directory for the result:
 
-```console
+```console not-tested="yet"
 $ ls
 default.nix hello.nix  result
 ```
 
 This `result` is a [symbolic link](https://en.wikipedia.org/wiki/Symbolic_link) to a Nix store location containing the built binary; you can call `./result/bin/hello` to execute this program:
 
-```console
+```console not-tested="yet"
 $ ./result/bin/hello
 Hello, world!
 ```
@@ -235,7 +235,7 @@ Now you will package a somewhat more complicated program, [`icat`](https://githu
 
 Change the `default.nix` from the previous section by adding a new attribute for `icat`:
 
-```nix
+```nix not-tested="not-supported:assert-build-failed"
 # default.nix
 let
   nixpkgs = fetchTarball "https://github.com/NixOS/nixpkgs/tarball/nixos-24.05";
@@ -249,7 +249,7 @@ in
 
 Copy `hello.nix` to a new file `icat.nix`, and update the `pname` and `version` attributes in that file:
 
-```nix
+```nix not-tested="not-supported:assert-build-failed"
 # icat.nix
 {
   stdenv,
@@ -270,7 +270,7 @@ Now to download the source code.
 `icat`'s upstream repository is hosted on [GitHub](https://github.com/atextor/icat), so you should replace the previous [source fetcher](https://nixos.org/manual/nixpkgs/stable/#chap-pkgs-fetchers).
 This time you will use [`fetchFromGitHub`](https://nixos.org/manual/nixpkgs/stable/#fetchfromgithub) instead of `fetchzip`, by updating the argument attribute set to the function accordingly:
 
-```nix
+```nix not-tested="not-supported:assert-build-failed"
 # icat.nix
 {
   stdenv,
@@ -312,7 +312,7 @@ This time, instead of using the empty string and letting `nix-build` report the 
 You need the SHA256 hash of the *contents* of the tarball (as opposed to the hash of the tarball file itself).
 Therefore pass the `--unpack` and `--type sha256` arguments:
 
-```console
+```nix not-tested="not-supported:assert-build-failed"
 $ nix-prefetch-url --unpack https://github.com/atextor/icat/archive/refs/tags/v0.5.tar.gz --type sha256
 path is '/nix/store/p8jl1jlqxcsc7ryiazbpm7c1mqb6848b-v0.5.tar.gz'
 0wyy2ksxp95vnh71ybj1bbmqd5ggp13x3mk37pzr99ljs9awy8ka
@@ -320,7 +320,7 @@ path is '/nix/store/p8jl1jlqxcsc7ryiazbpm7c1mqb6848b-v0.5.tar.gz'
 
 Set the correct hash for `fetchFromGitHub`:
 
-```nix
+```nix not-tested="not-supported:assert-build-failed"
 # icat.nix
 {
   stdenv,
@@ -344,7 +344,7 @@ stdenv.mkDerivation {
 
 Running `nix-build` with the new `icat` attribute, an entirely new issue is reported:
 
-```console
+```console not-tested="not-supported:assert-build-failed"
 $ nix-build -A icat
 these 2 derivations will be built:
   /nix/store/86q9x927hsyyzfr4lcqirmsbimysi6mb-source.drv
@@ -373,7 +373,7 @@ If you [search for `imlib2` on search.nixos.org](https://search.nixos.org/packag
 Add this package to your build environment by adding `imlib2` to the arguments of the function in `icat.nix`.
 Then add the argument's value `imlib2` to the list of `buildInputs` in `stdenv.mkDerivation`:
 
-```nix
+```nix not-tested="not-supported:assert-build-failed"
 # icat.nix
 {
   stdenv,
@@ -398,7 +398,7 @@ stdenv.mkDerivation {
 
 Run `nix-build -A icat` again and you'll encounter another error, but compilation proceeds further this time:
 
-```console
+```console not-tested="not-supported:assert-build-failed"
 $ nix-build -A icat
 this derivation will be built:
   /nix/store/bw2d4rp2k1l5rg49hds199ma2mz36x47-icat.drv
@@ -447,7 +447,7 @@ For example, these are the search results for [`"x11 = "`](https://github.com/se
 Or fetch a clone of the [Nixpkgs repository](https://github.com/nixos/nixpkgs) and search the code locally.
 
 Start a shell that makes the required tools available – `git` for version control, and `rg` for code search (provided by the [`ripgrep` package](https://search.nixos.org/packages?show=ripgrep)):
-```console
+```console not-tested="yet"
 $ nix-shell -p git ripgrep
 [nix-shell:~]$
 ```
@@ -455,7 +455,7 @@ $ nix-shell -p git ripgrep
 The Nixpkgs repository is huge.
 Only clone the latest revision to avoid waiting a long time for a full clone:
 
-```console
+```console not-tested="impure"
 [nix-shell:~]$ git clone https://github.com/NixOS/nixpkgs --depth 1
 ...
 [nix-shell:~]$ cd nixpkgs/
@@ -463,7 +463,7 @@ Only clone the latest revision to avoid waiting a long time for a full clone:
 
 To narrow down results, only search the `pkgs` subdirectory, which holds all the package recipes:
 
-```console
+```console not-tested="impure"
 [nix-shell:~]$ rg "x11 =" pkgs
 pkgs/tools/X11/primus/default.nix
 21:  primus = if useNvidia then primusLib_ else primusLib_.override { nvidia_x11 = null; };
@@ -483,7 +483,7 @@ pkgs/top-level/linux-kernels.nix
 Since `rg` is case sensitive by default,
 Add `-i` to make sure you don't miss anything:
 
-```
+```console not-tested="impure"
 [nix-shell:~]$ rg -i "libx11 =" pkgs
 pkgs/applications/version-management/monotone-viz/graphviz-2.0.nix
 55:    ++ lib.optional (libX11 == null) "--without-x";
@@ -506,7 +506,7 @@ To search derivations on the command line, use `nix-locate` from the [`nix-index
 
 Add this to your derivation's input attribute set and to `buildInputs`:
 
-```nix
+```nix not-tested="not-supported:assert-build-failed"
 # icat.nix
 {
   stdenv,
@@ -540,7 +540,7 @@ Because Nix is lazily-evaluated, using `xorg.libX11` means that we only include 
 
 Run the last command again:
 
-```console
+```console not-tested="not-supported:assert-build-failed"
 $ nix-build -A icat
 this derivation will be built:
   /nix/store/x1d79ld8jxqdla5zw2b47d2sl87mf56k-icat.drv
@@ -580,7 +580,7 @@ In Nix, the output directory is stored in the `$out` variable.
 That variable is accessible in the derivation's [`builder` execution environment](https://nix.dev/manual/nix/2.19/language/derivations#builder-execution).
 Create a `bin` directory within the `$out` directory and copy the `icat` binary there:
 
-```nix
+```nix not-tested="yet"
 # icat.nix
 {
   stdenv,
@@ -630,7 +630,7 @@ And it keeps the code tidy and makes it easier to read.
 
 Adjust your `installPhase` to call the appropriate hooks:
 
-```nix
+```nix not-tested="not-supported:diff"
 # icat.nix
 
 # ...
@@ -651,7 +651,7 @@ Adjust your `installPhase` to call the appropriate hooks:
 Running the `nix-build` command once more will finally do what you want, repeatably.
 Call `ls` in the local directory to find a `result` symlink to a location in the Nix store:
 
-```console
+```console not-tested="yet"
 $ ls
 default.nix hello.nix icat.nix result
 ```

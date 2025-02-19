@@ -16,13 +16,13 @@ We'll look at how to boot a NixOS machine and how to deploy the incremental chan
 
 1. Start by providing the Terraform executable:
 
-```shell-session
+```shell-session not-tested="not-worth-it"
 $ nix-shell -p terraform
 ```
 
 2. We are using [Terraform Cloud](https://app.terraform.io) as a [state/locking backend](https://www.terraform.io/docs/state/purpose.html):
 
-```shell-session
+```shell-session not-tested="impure"
 $ terraform login
 ```
 
@@ -31,7 +31,7 @@ $ terraform login
 5. Inside your workspace, under `Settings / General`, change Execution Mode to `Local`.
 6. Inside a new directory, create a `main.tf` file with the following contents. This will start an AWS instance with the NixOS image using one SSH keypair and an SSH security group:
 
-```terraform
+```terraform not-tested="impure"
 terraform {
     backend "remote" {
         organization = "myorganization"
@@ -100,7 +100,7 @@ output "public_dns" {
 
 The only NixOS specific snippet is:
 
-```terraform
+```terraform not-tested="impure"
 module "nixos_image" {
   source = "git::https://github.com/tweag/terraform-nixos.git/aws_image_nixos?ref=5f5a0408b299874d6a29d1271e9bffeee4c9ca71"
   release = "20.09"
@@ -115,7 +115,7 @@ so that the `aws_instance` resource can reference the AMI in [instance_type](htt
 5. Make sure to [configure AWS credentials](https://registry.terraform.io/providers/hashicorp/aws/latest/docs#authentication).
 6. Applying the Terraform configuration should get you a running NixOS:
 
-```shell-session
+```shell-session not-tested="impure"
 $ terraform init
 $ terraform apply
 ```
@@ -126,7 +126,7 @@ Once the AWS instance is running a NixOS image via Terraform, we can teach Terra
 
 1. Create `configuration.nix` with the following contents:
 
-```nix
+```nix not-tested="impure"
 { config, lib, pkgs, ... }: {
   imports = [ <nixpkgs/nixos/modules/virtualisation/amazon-image.nix> ];
 
@@ -136,7 +136,7 @@ Once the AWS instance is running a NixOS image via Terraform, we can teach Terra
 
 2. Append the following snippet to your `main.tf`:
 
-```terraform
+```terraform not-tested="impure"
 module "deploy_nixos" {
     source = "git::https://github.com/tweag/terraform-nixos.git//deploy_nixos?ref=5f5a0408b299874d6a29d1271e9bffeee4c9ca71"
     nixos_config = "${path.module}/configuration.nix"
@@ -148,7 +148,7 @@ module "deploy_nixos" {
 
 3. Deploy:
 
-```shell-session
+```shell-session not-tested="impure"
 $ terraform init
 $ terraform apply
 ```

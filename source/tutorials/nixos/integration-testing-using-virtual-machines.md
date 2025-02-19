@@ -29,7 +29,7 @@ Integration tests are reproducible due to the design properties of Nix, making t
 NixOS VM tests are defined using the `testers.runNixOSTest` function.
 The pattern for NixOS VM tests looks like this:
 
-```nix
+```nix not-tested="incomplete"
 let
   nixpkgs = fetchTarball "https://github.com/NixOS/nixpkgs/tarball/nixos-23.11";
   pkgs = import nixpkgs { config = {}; overlays = []; };
@@ -130,7 +130,7 @@ We will build the example up from scratch.
 
 The complete `minimal-test.nix` file content looks like the following:
 
-```nix
+```nix not-tested="yet"
 let
   nixpkgs = fetchTarball "https://github.com/NixOS/nixpkgs/tarball/nixos-23.11";
   pkgs = import nixpkgs { config = {}; overlays = []; };
@@ -165,7 +165,7 @@ pkgs.testers.runNixOSTest {
 
 To set up all machines and run the test script:
 
-```shell-session
+```shell-session not-tested="yet"
 $ nix-build minimal-test.nix
 ```
 
@@ -182,7 +182,7 @@ When developing tests or when something breaks, it’s useful to interactively t
 
 To start an interactive Python session with the testing framework:
 
-```shell-session
+```shell-session not-tested="yet"
 $ $(nix-build -A driverInteractive minimal-test.nix)/bin/nixos-test-driver
 ```
 
@@ -193,27 +193,27 @@ If a virtual machine is not yet started, the test environment takes care of it o
 
 But you can also manually trigger the start of the virtual machine with:
 
-```shell-session
+```shell-session not-tested="yet"
 >>> machine.start()
 ```
 for a specific node,
 
 or
 
-```shell-session
+```shell-session not-tested="yet"
 >>> start_all()
 ```
 for all nodes.
 
 You can enter a interactive shell on the virtual machine using:
 
-```shell-session
+```shell-session not-tested="yet"
 >>> machine.shell_interact()
 ```
 
 and run shell commands like:
 
-```shell-session
+```shell-session not-tested="yet"
 uname -a
 ```
 
@@ -230,7 +230,7 @@ Therefore, to run a test again, one needs to remove the result.
 
 If you would try to delete the result using the symbolic link, you will get the following error:
 
-```shell-session
+```shell-session not-tested="yet"
 nix-store --delete ./result
 ```
 
@@ -240,14 +240,14 @@ nix-store --delete ./result
 
 Instead, remove the symbolic link and only then remove the cached result:
 
-```shell-session
+```shell-session not-tested="yet"
 rm ./result
 nix-store --delete /nix/store/4klj06bsilkqkn6h2sia8dcsi72wbcfl-vm-test-run-unnamed
 ```
 
 This can be also done with one command:
 
-```shell-session
+```shell-session not-tested="yet"
 result=$(readlink -f ./result) rm ./result && nix-store --delete $result
 ```
 ::::
@@ -263,7 +263,7 @@ The following example setup includes:
 
 The complete `client-server-test.nix` file content looks like the following:
 
-```{code-block}
+```{code-block} not-tested="yet"
 let
   nixpkgs = fetchTarball "https://github.com/NixOS/nixpkgs/tarball/nixos-23.11";
   pkgs = import nixpkgs { config = {}; overlays = []; };
@@ -306,7 +306,7 @@ The test script performs the following steps:
 
 Run the test:
 
-```shell-session
+```shell-session not-tested="yet"
 $ nix-build client-server-test.nix
 ```
 

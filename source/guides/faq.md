@@ -8,7 +8,7 @@ See the [Nix reference manual](nix-manual) on [string interpolation](https://nix
 
 ### How to build reverse dependencies of a package?
 
-```shell-session
+```shell-session not-tested="outdated"
 $ nix-shell -p nixpkgs-review --run "nixpkgs-review wip"
 ```
 
@@ -82,7 +82,7 @@ See <http://nixos.org/nixos/manual/index.html#sec-building-image>
 
 Apply following patch:
 
-```diff
+```diff not-tested="outdated"
 diff --git a/nixos/lib/test-driver/test-driver.pl b/nixos/lib/test-driver/test-driver.pl
 index 8ad0d67..838fbdd 100644
 --- a/nixos/lib/test-driver/test-driver.pl

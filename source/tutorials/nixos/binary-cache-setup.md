@@ -51,7 +51,7 @@ For a publicly accessible cache, we assume:
 
 For the NixOS machine hosting the cache, create a new configuration module in `binary-cache.nix`:
 
-```{code-block} nix
+```{code-block} nix not-tested="not-supported:vm-test"
 { config, ... }:
 
 {
@@ -88,7 +88,7 @@ There is an [optional HTTPS section](https-binary-cache) at the end of this tuto
 
 Add the new NixOS module to the existing machine configuration:
 
-```{code-block} nix
+```{code-block} nix not-tested="not-supported:vm-test"
 { config, ... }:
 
 {
@@ -102,7 +102,7 @@ Add the new NixOS module to the existing machine configuration:
 
 From your local machine, deploy the new configuration:
 
-```shell-session
+```shell-session not-tested="not-supported:vm-test"
 nixos-rebuild switch --no-flake --target-host root@cache
 ```
 
@@ -118,21 +118,21 @@ A pair of private and public keys is required to ensure that the store objects i
 
 To generate a key pair for the binary cache, replace the example hostname `cache.example.com` with your hostname:
 
-```shell-session
+```shell-session not-tested="not-supported:vm-test"
 nix-store --generate-binary-cache-key cache.example.com cache-private-key.pem cache-public-key.pem
 ```
 
 `cache-private-key.pem` will be used by the binary cache daemon to sign the binaries as they are served.
 Copy it to the location configured in `services.nix-serve.secretKeyFile` on the machine hosting the cache:
 
-```shell-session
+```shell-session not-tested="not-supported:vm-test"
 scp cache-private-key.pem root@cache:/var/secrets/cache-private-key.pem
 ```
 
 Up until now, the binary cache daemon was in a restart loop due to the missing secret key file.
 Check that it now works correctly:
 
-```shell-session
+```shell-session not-tested="not-supported:vm-test"
 ssh root@cache systemctl status nix-serve.service
 ```
 
@@ -148,7 +148,7 @@ The following steps check if everything is set up correctly and may help with id
 
 Test if the binary cache, reverse proxy, and firewall rules work as intended by querying the cache:
 
-```shell-session
+```shell-session not-tested="not-supported:vm-test"
 $ curl http://cache/nix-cache-info
 StoreDir: /nix/store
 WantMassQuery: 1
@@ -160,7 +160,7 @@ Priority: 30
 To test if store objects are signed correctly, inspect the metadata of a sample derivation.
 On the binary cache host, build the `hello` package and get the `.narinfo` file from the cache:
 
-```shell-session
+```shell-session not-tested="not-supported:vm-test"
 $ hash=$(nix-build '<nixpkgs>' -A pkgs.hello | awk -F '/' '{print $4}' | awk -F '-' '{print $1}')
 $ curl "http://cache/$hash.narinfo" | grep "Sig: "
 ...
@@ -175,7 +175,7 @@ Make sure that the output contains this line prefixed with `Sig:` and shows the 
 If the binary cache is publicly accessible, it is possible to enforce HTTPS with [Let's Encrypt](https://letsencrypt.org/) SSL certificates.
 Edit your `binary-cache.nix` like this and make sure to replace the example URL and mail address with yours:
 
-```{code-block} diff
+```{code-block} diff not-tested="not-supported:diff,vm-test"
    services.nginx = {
      enable = true;
      recommendedProxySettings = true;
@@ -202,7 +202,7 @@ Edit your `binary-cache.nix` like this and make sure to replace the example URL 
 
 Rebuild the system to deploy these changes:
 
-```shell-session
+```shell-session not-tested="not-supported:vm-test"
 nixos-rebuild switch --no-flake --target-host root@cache.example.com
 ```
 

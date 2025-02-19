@@ -9,7 +9,7 @@ What is a module?
 
 The simplest possible module is a function that takes any attributes and returns an empty attribute set:
 
-```{code-block} nix
+```{code-block} nix not-tested="yet"
 :caption: options.nix
 { ... }:
 {
@@ -23,7 +23,7 @@ This is done by declaring *options* that specify which attributes can be set and
 
 Options are declared under the top-level `options` attribute with [`lib.mkOption`](https://nixos.org/manual/nixpkgs/stable/#function-library-lib.options.mkOption).
 
-```{literalinclude} options.nix
+```{literalinclude} options.nix not-tested="yet"
 :language: nix
 :caption: options.nix
 ```
@@ -48,7 +48,7 @@ Now that we have declared an option, we would naturally want to give it a value.
 
 Options are set or *defined* under the top-level `config` attribute:
 
-```{literalinclude} config.nix
+```{literalinclude} config.nix not-tested="yet"
 :language: nix
 :caption: config.nix
 ```
@@ -66,14 +66,14 @@ It takes an attribute set as an argument, where the `modules` attribute is a lis
 
 The output of `evalModules` contains information about all evaluated modules, and the final values appear in the attribute `config`.
 
-```{literalinclude} default.nix
+```{literalinclude} default.nix not-tested="yet"
 :language: nix
 :caption: default.nix
 ```
 
 Here's a helper script to parse and evaluate our `default.nix` file with [`nix-instantiate --eval`](https://nix.dev/manual/nix/stable/command-ref/nix-instantiate) and print the output as JSON:
 
-```{literalinclude} eval.bash
+```{literalinclude} eval.bash not-tested="yet"
 :language: bash
 :caption: eval.bash
 ```
@@ -83,7 +83,7 @@ If there is an option definition that has not been declared, or the defined valu
 
 Running the script (`./eval.bash`) should show an output that matches what we have configured:
 
-```{code-block}
+```{code-block} not-tested="yet"
 {
   "name": "Boaty McBoatface"
 }

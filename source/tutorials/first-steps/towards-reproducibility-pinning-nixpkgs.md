@@ -4,7 +4,7 @@
 
 In various Nix examples, you'll often see the following:
 
-```nix
+```nix not-tested="not-an-example"
 { pkgs ? import <nixpkgs> {} }:
 
 ...
@@ -25,7 +25,7 @@ To create **fully reproducible** Nix expressions, we can pin an exact version of
 
 The simplest way to do this is to fetch the required Nixpkgs version as a tarball specified via the relevant Git commit hash:
 
-```nix
+```nix not-tested="not-supported:fetcher-cache"
 { pkgs ? import (fetchTarball "https://github.com/NixOS/nixpkgs/archive/06278c77b5d162e62df170fec307e83f1812d94b.tar.gz") {}
 }:
 

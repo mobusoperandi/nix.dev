@@ -38,7 +38,7 @@ This file can be shared with anyone to recreate the same environment on a differ
 Suppose we want an environment where `cowsay` and `lolcat` are available.
 The simplest possible way to accomplish this is via the `nix-shell -p` command:
 
-```
+```console not-tested="yet"
 $ nix-shell -p cowsay lolcat
 ```
 
@@ -53,7 +53,7 @@ A better solution is to create our shell environment from a `shell.nix` file.
 Create a file called `shell.nix` with these contents:
 
 {lineno-start=1}
-```nix
+```nix not-tested="yet"
 let
   nixpkgs = fetchTarball "https://github.com/NixOS/nixpkgs/tarball/nixos-24.05";
   pkgs = import nixpkgs { config = {}; overlays = []; };
@@ -72,7 +72,7 @@ We use a version of [Nixpkgs pinned to a release branch](<ref-pinning-nixpkgs>).
 If you followed the [](ad-hoc-envs) tutorial and don't want to download all dependencies again, specify the exact same revision as in the section [](towards-reproducibility):
 
 {lineno-start=1 emphasize-lines="2"}
-```nix
+```nix not-tested="not-supported:forking-example"
 let
   nixpkgs = fetchTarball "https://github.com/NixOS/nixpkgs/tarball/2a601aafdc5605a5133a2ca506a34a3a73377247";
   pkgs = import nixpkgs { config = {}; overlays = []; };
@@ -102,7 +102,7 @@ Enter the environment by running `nix-shell` in the same directory as `shell.nix
 The first invocation of `nix-shell` on this file may take a while to download all dependencies.
 :::
 
-```console
+```console not-tested="yet"
 $ nix-shell
 [nix-shell]$ cowsay hello | lolcat
 ```
@@ -116,7 +116,7 @@ You may want to automatically export certain environment variables when you ente
 
 Set `GREETING` so it can be used in the shell environment:
 
-```diff
+```diff not-tested="not-supported:diff"
  let
    nixpkgs = fetchTarball "https://github.com/NixOS/nixpkgs/tarball/nixos-24.05";
    pkgs = import nixpkgs { config = {}; overlays = []; };
@@ -137,7 +137,7 @@ Any attribute name passed to `mkShellNoCC` that is not reserved otherwise and ha
 Try it out!
 Exit the shell by typing `exit` or pressing `Ctrl`+`D`, then start it again with `nix-shell`.
 
-```console
+```console not-tested="yet"
 [nix-shell]$ echo $GREETING
 ```
 
@@ -156,7 +156,7 @@ These commands can be placed in the `shellHook` attribute provided to `mkShellNo
 
 Set `shellHook` to output a colorful greeting:
 
-```diff
+```diff not-tested="not-supported:diff"
  let
    nixpkgs = fetchTarball "https://github.com/NixOS/nixpkgs/tarball/nixos-24.05";
    pkgs = import nixpkgs { config = {}; overlays = []; };

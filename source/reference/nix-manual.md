@@ -14,7 +14,7 @@ This page is pre-processed before rendering with Sphinx. For details:
     grep -n nix-manual.md default.nix
 -->
 
-```{toctree}
+```{toctree} not-tested="not-an-example"
 :hidden:
 
 Nix pre-release (development) <https://nix.dev/manual/nix/development/>

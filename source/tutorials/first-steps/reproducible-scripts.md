@@ -13,7 +13,7 @@ In this tutorial, you will learn how to use Nix to create and run reproducible i
 
 Take the following script, which fetches the content XML of a URL, converts it to JSON, and formats it for better readability:
 
-```bash
+```bash not-tested="not-supported:diff"
 #! /bin/bash
 
 curl https://github.com/NixOS/nixpkgs/releases.atom | xml2json | jq .
@@ -54,7 +54,7 @@ More details on the options can be found in the [`nix-shell` reference documenta
 
 Create a file named `nixpkgs-releases.sh` with the following content:
 
-```shell
+```shell not-tested="not-supported:fetcher-cache"
 #!/usr/bin/env nix-shell
 #! nix-shell -i bash --pure
 #! nix-shell -p bash cacert curl jq python3Packages.xmljson
@@ -85,13 +85,13 @@ The additional shebang lines are a Nix-specific construct:
 
 Make the script executable:
 
- ```console
- chmod +x nixpkgs-releases.sh
- ```
+```console not-tested="not-supported:fetcher-cache"
+chmod +x nixpkgs-releases.sh
+```
 
 Run the script:
 
-```console
+```console not-tested="not-supported:fetcher-cache"
 ./nixpkgs-releases.sh
 ```
 

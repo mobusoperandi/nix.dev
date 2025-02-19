@@ -18,14 +18,14 @@ Pass the [`--narinfo-cache-negative-ttl`](https://nix.dev/manual/nix/stable/comm
 This is a [known issue](https://github.com/NixOS/nix/issues/1353).
 Try:
 
-```shell-session
+```shell-session not-tested="yet"
 $ sqlite3 /nix/var/nix/db/db.sqlite "pragma integrity_check"
 ```
 
 Which will print the errors in the [database](https://nix.dev/manual/nix/stable/glossary#gloss-nix-database).
 If the errors are due to missing references, the following may work:
 
-```shell-session
+```shell-session not-tested="yet"
 $ mv /nix/var/nix/db/db.sqlite /nix/var/nix/db/db.sqlite-bkp
 $ sqlite3 /nix/var/nix/db/db.sqlite-bkp ".dump" | sqlite3 /nix/var/nix/db/db.sqlite
 ```
@@ -38,7 +38,7 @@ It means that using a new version of Nix upgraded the SQLite schema of the [data
 
 The solution is to dump the database, and use the old Nix version to re-import the data:
 
-```shell-session
+```shell-session not-tested="yet"
 $ /path/to/nix/unstable/bin/nix-store --dump-db > /tmp/db.dump
 $ mv /nix/var/nix/db /nix/var/nix/db.toonew
 $ mkdir /nix/var/nix/db
@@ -59,7 +59,7 @@ When macOS is updated, it will typically overwrite `/etc/zshrc` again.
 
 As a workaround, add the following code snippet to the end of `/etc/zshrc` and restart the shell:
 
-```bash
+```bash not-tested="not-supported:macos-vm"
 if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then
   . '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
 fi

@@ -61,7 +61,7 @@ If you have written a tutorial or guide related to Nix, please consider licensin
 This will allow us to feature your work as official documentation if it complements or improves upon existing materials.
 :::
 
-```{toctree}
+```{toctree} not-tested="not-an-example"
 :hidden:
 
 resources.md
