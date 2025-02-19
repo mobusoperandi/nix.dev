@@ -32,7 +32,7 @@ You can also skip this section and copy the [sample configuration](sample-nixos-
 Use the `nixos-generate-config` command to create a configuration file that contains some useful defaults and configuration suggestions.
 The configuration produced from the following setup also is used for the [NixOS minimal ISO image](https://nixos.org/download#nixos-iso):
 
-```shell-session
+```shell-session not-tested="yet"
 nix-shell -I nixpkgs=channel:nixos-24.05 -p "$(cat <<EOF
   let
     pkgs = import <nixpkgs> { config = {}; overlays = []; };
@@ -56,7 +56,7 @@ That Nix expression:
 
 Create a NixOS configuration in your working directory:
 
-```shell-session
+```shell-session not-tested="yet"
 [nix-shell:~]$ nixos-generate-config --dir ./
 ```
 
@@ -74,7 +74,7 @@ In the working directory you will then find two files:
 
 The default NixOS configuration without comments is:
 
-```nix
+```nix not-tested="yet"
 { config, pkgs, ... }:
 {
   imports =  [ ./hardware-configuration.nix ];
@@ -88,7 +88,7 @@ The default NixOS configuration without comments is:
 
 To be able to log in, add the following lines to the returned attribute set:
 
-```nix
+```nix not-tested="not-supported:diff"
   users.users.alice = {
     isNormalUser = true;
     extraGroups = [ "wheel" ];
@@ -102,13 +102,13 @@ A configuration generated with `nixos-generate-config` contains this user config
 Additionally, you need to specify a password for this user.
 For the purpose of demonstration only, you specify an insecure, plain text password by adding the `initialPassword` option to the user configuration:
 
-```nix
+```nix not-tested="not-supported:diff"
    initialPassword = "test";
 ```
 
 We add two lightweight programs as an example:
 
-```nix
+```nix not-tested="not-supported:diff"
   environment.systemPackages = with pkgs; [
     cowsay
     lolcat
@@ -122,7 +122,7 @@ Do not use plain text passwords outside of this example unless you know what you
 This tutorial focuses on testing NixOS configurations on a virtual machine.
 Therefore you will remove the reference to `hardware-configuration.nix`:
 
-```diff
+```diff not-tested="not-supported:diff"
 -  imports =  [ ./hardware-configuration.nix ];
 ```
 
@@ -131,7 +131,7 @@ Therefore you will remove the reference to `hardware-configuration.nix`:
 
 The complete `configuration.nix` file looks like this:
 
-```nix
+```nix not-tested="yet"
 { config, pkgs, ... }:
 {
   boot.loader.systemd-boot.enable = true;
@@ -156,7 +156,7 @@ The complete `configuration.nix` file looks like this:
 
 A NixOS virtual machine is created with the `nix-build` command:
 
-```shell-session
+```shell-session not-tested="yet"
 $ nix-build '<nixpkgs/nixos>' -A vm -I nixpkgs=channel:nixos-24.05 -I nixos-config=./configuration.nix
 ```
 
@@ -184,7 +184,7 @@ This command builds the attribute `vm` from the `nixos-24.05` release of NixOS, 
 The previous command created a link with the name `result` in the working directory.
 It links to the directory that contains the virtual machine.
 
-```shell-session
+```shell-session not-tested="yet"
 $ ls -R ./result
 result:
 bin  system
@@ -195,7 +195,7 @@ run-nixos-vm
 
 Run the virtual machine:
 
-```shell-session
+```shell-session not-tested="yet"
 $ QEMU_KERNEL_PARAMS=console=ttyS0 ./result/bin/run-nixos-vm -nographic; reset
 ```
 
@@ -205,20 +205,20 @@ This command will run QEMU in the current terminal due to `-nographic`.
 Log in as `alice` with the password `test`.
 Check that the programs are indeed available as specified:
 
-```shell-session
+```shell-session not-tested="yet"
 $ cowsay hello | lolcat
 ```
 
 Exit the virtual machine by shutting it down:
 
-```shell-session
+```shell-session not-tested="yet"
 $ sudo poweroff
 ```
 
 :::{note}
 If you forgot to add the user to `wheel` or didn't set a password, stop the virtual machine from a different terminal:
 
-```shell-session
+```shell-session not-tested="not-worth-it"
 $ sudo pkill qemu
 ```
 :::
@@ -229,7 +229,7 @@ It can interfere with debugging as it keeps the state of previous runs, for exam
 
 Delete this file when you change the configuration:
 
-```shell-session
+```shell-session not-tested="yet"
 $ rm nixos.qcow2
 ```
 
@@ -237,7 +237,7 @@ $ rm nixos.qcow2
 
 To create a virtual machine with a graphical user interface, add the following lines to the configuration:
 
-```nix
+```nix not-tested="not-supported:diff"
   # Enable the X11 windowing system.
   services.xserver.enable = true;
 
@@ -252,7 +252,7 @@ These three lines activate X11, the GDM display manager (to be able to login) an
 
 You can also use the `installation-cd-graphical-gnome.nix` module to generate the configuration file from scratch:
 
-```shell-session
+```shell-session not-tested="not-worth-it"
 nix-shell -I nixpkgs=channel:nixos-24.05 -p "$(cat <<EOF
   let
     pkgs = import <nixpkgs> { config = {}; overlays = []; };
@@ -263,7 +263,7 @@ EOF
 )"
 ```
 
-```shell-session
+```shell-session not-tested="not-worth-it"
 $ nixos-generate-config --dir ./
 ```
 
@@ -271,7 +271,7 @@ $ nixos-generate-config --dir ./
 
 The complete `configuration.nix` file looks like this:
 
-```nix
+```nix not-tested="yet"
 { config, pkgs, ... }:
 {
   boot.loader.systemd-boot.enable = true;
@@ -294,7 +294,7 @@ The complete `configuration.nix` file looks like this:
 
 To get graphical output, run the virtual machine without special options:
 
-```shell-session
+```shell-session not-tested="yet"
 $ nix-build '<nixpkgs/nixos>' -A vm -I nixpkgs=channel:nixos-24.05 -I nixos-config=./configuration.nix
 $ ./result/bin/run-nixos-vm
 ```
@@ -303,7 +303,7 @@ $ ./result/bin/run-nixos-vm
 
 To change to a Wayland compositor, disable `services.xserver.desktopManager.gnome` and enable `programs.sway`:
 
-```{code-block} diff
+```{code-block} diff not-tested="not-supported:diff"
 :caption: configuration.nix
 -  services.xserver.desktopManager.gnome.enable = true;
 +  programs.sway.enable = true;
@@ -315,13 +315,13 @@ You need to choose from the available drivers one that is compatible with Sway.
 See [QEMU User Documentation](https://www.qemu.org/docs/master/system/qemu-manpage.html) for options.
 One possibility is the `virtio-vga` driver:
 
-```shell-session
+```shell-session not-tested="yet"
 $ ./result/bin/run-nixos-vm -device virtio-vga
 ```
 
 Arguments to QEMU can also be added to the configuration file:
 
-```nix
+```nix not-tested="yet"
 { config, pkgs, ... }:
 {
   boot.loader.systemd-boot.enable = true;

@@ -47,7 +47,7 @@ The *remote machine* will need the *public* key to recognize the *local machine*
 
 On the *local machine*, run the following command as `root` to create an SSH key pair:
 
-```shell-session
+```shell-session not-tested="vm-test"
 # ssh-keygen -f /root/.ssh/remotebuild
 ```
 
@@ -60,7 +60,7 @@ The name and location of the key pair files can be freely chosen.
 
 In the NixOS configuration directory of the *remote machine*, create the file `remote-builder.nix`:
 
-```{code-block} nix
+```{code-block} nix not-tested="vm-test"
 {
   users.users.remotebuild = {
     isNormalUser = true;
@@ -83,7 +83,7 @@ The `root` user on the *local machine* will be able to log into the remote build
 
 Add the new NixOS module to the existing configuration of the *remote machine*:
 
-```{code-block} nix
+```{code-block} nix not-tested="vm-test"
 {
   imports = [
     ./remote-builder.nix
@@ -95,7 +95,7 @@ Add the new NixOS module to the existing configuration of the *remote machine*:
 
 Activate the new configuration as root:
 
-```shell-session
+```shell-session not-tested="vm-test"
 nixos-rebuild switch --no-flake --target-host root@remotemachine
 ```
 
@@ -104,7 +104,7 @@ nixos-rebuild switch --no-flake --target-host root@remotemachine
 Make sure that the SSH connection and authentication work.
 On the *local machine*, run as `root`:
 
-```shell-session
+```shell-session not-tested="vm-test"
 # ssh remotebuild@remotemachine -i /root/.ssh/remotebuild "echo hello"
 Could not chdir to home directory /home/remotebuild: No such file or directory
 hello
@@ -125,7 +125,7 @@ If your *local machine* runs NixOS, skip this section and [configure Nix through
 
 Configure Nix to use the remote builder by adding to the [Nix configuration file](https://nix.dev/manual/nix/2.23/command-ref/conf-file) as `root`:
 
-```
+```console not-tested="vm-test"
 # cat << EOF >> /etc/nix/nix.conf
 builders = ssh-ng://remotebuild@remotebuilder $(nix-instantiate --eval -E builtins.currentSystem) /root/.ssh/remotemachine - - nixos-test,big-parallel,kvm
 builders-use-substitutes = true
@@ -155,7 +155,7 @@ To activate this configuration, restart the Nix daemon:
 ::::{tab-item} Linux
 On Linux with `systemd`, run as `root`:
 
-```shell-session
+```shell-session not-tested="vm-test"
 # systemctl cat nix-daemon.service
 ```
 ::::
@@ -163,7 +163,7 @@ On Linux with `systemd`, run as `root`:
 ::::{tab-item} macOS
 On macOS, run as `root`:
 
-```shell-session
+```shell-session not-tested="macos"
 # sudo launchctl stop org.nixos.nix-daemon
 # sudo launchctl start org.nixos.nix-daemon
 ```
@@ -176,7 +176,7 @@ On macOS, run as `root`:
 
 If your *local machine* runs NixOS, in its configuration directory create the file `distributed-builds.nix`:
 
-```{code-block} nix
+```{code-block} nix not-tested="vm-test"
 { pkgs, ... }:
 {
   nix.distributedBuilds = true;
@@ -214,7 +214,7 @@ This assumes that the remote builders' internet connection is at least as fast a
 
 Add the new NixOS module to the existing machine configuration:
 
-```{code-block} nix
+```{code-block} nix not-tested="vm-test"
 {
   imports = [
     ./distributed-builds.nix
@@ -226,7 +226,7 @@ Add the new NixOS module to the existing machine configuration:
 
 Activate the new configuration as `root`:
 
-```shell-session
+```shell-session not-tested="vm-test"
 # nixos-rebuild switch
 ```
 :::::
@@ -235,7 +235,7 @@ Activate the new configuration as `root`:
 
 Try building an new derivation on the *local machine*:
 
-```shell-session
+```shell-session not-tested="vm-test"
 $ nix-build --max-jobs 0 -E << EOF
 (import <nixpkgs> {}).writeText "test" "$(date)"
 EOF
@@ -258,7 +258,8 @@ The last output line contains the output path and indicates that build distribut
 
 To maximise parallelism, enable automatic garbage collection, and prevent Nix builds from consuming all memory, add the following lines to your `remote-builder.nix` configuration module:
 
-```{code-block} diff
+```{code-block} diff not-tested="vm-test"
+
  {
    users.users.remotebuild = {
      isNormalUser = true;

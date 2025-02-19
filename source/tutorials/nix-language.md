@@ -98,13 +98,10 @@ Each one is followed by the expected evaluation result.
 
 The following example is a Nix expression adding two numbers:
 
-```{code-block} nix
-:class: expression
-1 + 2
-```
-
-```{code-block}
-:class: value
+```shell-session example="add-two-numbers"
+$ nix repl
+...
+nix-repl> 1 + 2
 3
 ```
 
@@ -112,10 +109,11 @@ The following example is a Nix expression adding two numbers:
 
 Use [`nix repl`] to evaluate Nix expressions interactively (by typing them on the command line):
 
-```shell-session
+```shell-session example="repl-basics"
 $ nix repl
-Welcome to Nix 2.13.3. Type :? for help.
-
+...
+Nix 2.25.2
+Type :? for help.
 nix-repl> 1 + 2
 3
 ```
@@ -128,12 +126,20 @@ If your output does not match the example, try prepending `:p` to the input expr
 
 Example:
 
-```shell-session
+```shell-session example="lazy-evaluation"
+$ nix repl
+...
 nix-repl> { a.b.c = 1; }
-{ a = { ... }; }
+{
+  a = { ... };
+}
 
 nix-repl> :p { a.b.c = 1; }
-{ a = { b = { c = 1; }; }; }
+{
+  a = {
+    b = { c = 1; };
+  };
+}
 ```
 
 Type `:q` to exit [`nix repl`].
@@ -146,7 +152,7 @@ Type `:q` to exit [`nix repl`].
 
 Use [`nix-instantiate --eval`][nix-instantiate] to evaluate the expression in a Nix file.
 
-```shell-session
+```shell-session not-tested="yet"
 $ echo 1 + 2 > file.nix
 $ nix-instantiate --eval file.nix
 3
@@ -157,7 +163,7 @@ $ nix-instantiate --eval file.nix
 The first command writes `1 + 2` to a file `file.nix` in the current directory.
 The contents of `file.nix` are now `1 + 2`, which you can check with
 
-```shell-session
+```shell-session not-tested="yet"
 $ cat file.nix
 1 + 2
 ```
@@ -173,7 +179,7 @@ If `--eval` is omitted, `nix-instantiate` expects the expression in the given fi
 :::{note}
 `nix-instantiate --eval` will try to read from `default.nix` if no file name is specified.
 
-```shell-session
+```shell-session not-tested="yet"
 $ echo 1 + 2 > default.nix
 $ nix-instantiate --eval
 3
@@ -188,13 +194,13 @@ If your output does not match the example, try adding the `--strict` option to `
 
 Example:
 
-```shell-session
+```shell-session not-tested="yet"
 $ echo "{ a.b.c = 1; }" > file.nix
 $ nix-instantiate --eval file.nix
 { a = <CODE>; }
 ```
 
-```shell-session
+```shell-session not-tested="yet"
 $ echo "{ a.b.c = 1; }" > file.nix
 $ nix-instantiate --eval --strict file.nix
 { a = { b = { c = 1; }; }; }
@@ -215,7 +221,7 @@ Line breaks, indentation, and additional spaces are for readers' convenience.
 
 The following are equivalent:
 
-```{code-block} nix
+```{code-block} nix not-tested="not-supported:multiline-command"
 :class: expression
 let
  x = 1;
@@ -223,18 +229,15 @@ let
 in x + y
 ```
 
-```{code-block}
+```{code-block} not-tested="not-supported:multiline-command"
 :class: value
 3
 ```
 
-```{code-block} nix
-:class: expression
-let x=1;y=2;in x+y
-```
-
-```{code-block}
-:class: value
+```shell-session example="whitespace"
+$ nix repl
+...
+nix-repl> let x=1;y=2;in x+y
 3
 ```
 
@@ -271,7 +274,7 @@ Nix language data types *without functions* work just like their counterparts in
 ::::{grid} 2
 
 :::{grid-item} **Nix**
-```nix
+```nix not-tested="not-supported:multiline-command"
 {
   string = "hello";
   integer = 1;
@@ -290,7 +293,7 @@ Nix language data types *without functions* work just like their counterparts in
 :::
 
 :::{grid-item} **JSON**
-```json
+```json not-tested="not-supported:multiline-command"
 {
   "string": "hello",
   "integer": 1,
@@ -326,7 +329,7 @@ This allows access to attributes from within the set.
 
 Example:
 
-```{code-block} nix
+```{code-block} nix not-tested="not-supported:multiline-command"
 :class: expression
 rec {
   one = 1;
@@ -335,7 +338,7 @@ rec {
 }
 ```
 
-```{code-block}
+```{code-block} not-tested="not-supported:multiline-command"
 :class: value
 { one = 1; three = 3; two = 2; }
 ```
@@ -346,7 +349,7 @@ Elements in an attribute set can be declared in any order, and are ordered on ev
 
 Counter-example:
 
-```{code-block} nix
+```{code-block} nix not-tested="not-supported:multiline-command"
 :class: expression
 {
   one = 1;
@@ -355,7 +358,7 @@ Counter-example:
 }
 ```
 
-```{code-block}
+```{code-block} not-tested="not-supported:multiline-command"
 :class: value
 error: undefined variable 'one'
 
@@ -376,7 +379,7 @@ Also known as “`let` expression” or “`let` binding”
 
 Example:
 
-```{code-block} nix
+```{code-block} nix not-tested="not-supported:multiline-command"
 :class: expression
 let
   a = 1;
@@ -384,7 +387,7 @@ in
 a + a
 ```
 
-```{code-block}
+```{code-block} not-tested="not-supported:multiline-command"
 :class: value
 2
 ```
@@ -405,7 +408,7 @@ Names can be assigned in any order, and expressions on the right of the assignme
 
 Example:
 
-```{code-block} nix
+```{code-block} nix not-tested="not-supported:multiline-command"
 :class: expression
 let
   b = a + 1;
@@ -414,7 +417,7 @@ in
 a + b
 ```
 
-```{code-block}
+```{code-block} not-tested="not-supported:multiline-command"
 :class: value
 3
 ```
@@ -428,7 +431,7 @@ The order of assignments does not matter.
 Therefore the following example, where the assignments are in reverse order, is equivalent:
 
 
-```{code-block} nix
+```{code-block} nix not-tested="not-supported:multiline-command"
 :class: expression
 let
   a = 1;
@@ -437,7 +440,7 @@ in
 a + b
 ```
 
-```{code-block}
+```{code-block} not-tested="not-supported:multiline-command"
 :class: value
 3
 ```
@@ -458,7 +461,7 @@ Example:
 
 :::{grid-item} `let ... in ...`
 
-```{code-block} nix
+```{code-block} nix not-tested="not-supported:multiline-command"
 :class: expression
 let
   b = a + 1;
@@ -467,7 +470,7 @@ let
 in {  c = c; a = a; b = b; }
 ```
 
-```{code-block}
+```{code-block} not-tested="not-supported:multiline-command"
 :class: value
 { a = 1; b = 2; c = 3; }
 ```
@@ -476,7 +479,7 @@ in {  c = c; a = a; b = b; }
 
 :::{grid-item} `rec { ... }`
 
-```{code-block} nix
+```{code-block} nix not-tested="not-supported:multiline-command"
 :class: expression
 rec {
   b = a + 1;
@@ -485,7 +488,7 @@ rec {
 }
 ```
 
-```{code-block}
+```{code-block} not-tested="not-supported:multiline-command"
 :class: value
 { a = 1; b = 2; c = 3; }
 ```
@@ -498,7 +501,7 @@ The difference is that while a recursive attribute set evaluates to an [attribut
 
 In the following example we use the `let` expression to form a list:
 
-```{code-block} nix
+```{code-block} nix not-tested="not-supported:multiline-command"
 :class: expression
 let
   b = a + 1;
@@ -507,7 +510,7 @@ let
 in [ a b c ]
 ```
 
-```{code-block}
+```{code-block} not-tested="not-supported:multiline-command"
 :class: value
 [ 1 2 3 ]
 ```
@@ -519,7 +522,7 @@ We say: the bindings have local scope.
 
 Counter-example:
 
-```{code-block} nix
+```{code-block} nix not-tested="not-supported:multiline-command"
 :class: expression
 {
   a = let x = 1; in x;
@@ -527,7 +530,7 @@ Counter-example:
 }
 ```
 
-```{code-block}
+```{code-block} not-tested="not-supported:multiline-command"
 :class: value
 error: undefined variable 'x'
 
@@ -547,7 +550,7 @@ Attributes in a set are accessed with a dot (`.`) and the attribute name.
 
 Example:
 
-```{code-block} nix
+```{code-block} nix not-tested="not-supported:multiline-command"
 :class: expression
 let
   attrset = { x = 1; };
@@ -555,7 +558,7 @@ in
 attrset.x
 ```
 
-```{code-block}
+```{code-block} not-tested="not-supported:multiline-command"
 :class: value
 1
 ```
@@ -564,7 +567,7 @@ Accessing nested attributes works the same way.
 
 Example:
 
-```{code-block} nix
+```{code-block} nix not-tested="not-supported:multiline-command"
 :class: expression
 let
   attrset = { a = { b = { c = 1; }; }; };
@@ -572,7 +575,7 @@ in
 attrset.a.b.c
 ```
 
-```{code-block}
+```{code-block} not-tested="not-supported:multiline-command"
 :class: value
 1
 ```
@@ -581,12 +584,12 @@ The dot (`.`) notation can also be used for assigning attributes.
 
 Example:
 
-```{code-block} nix
+```{code-block} nix not-tested="yet"
 :class: expression
 { a.b.c = 1; }
 ```
 
-```{code-block}
+```{code-block} not-tested="yet"
 :class: value
 { a = { b = { c = 1; }; }; }
 ```
@@ -598,7 +601,7 @@ The `with` expression allows access to attributes without repeatedly referencing
 
 Example:
 
-```{code-block} nix
+```{code-block} nix not-tested="not-supported:multiline-command"
 :class: expression
 let
   a = {
@@ -610,20 +613,20 @@ in
 with a; [ x y z ]
 ```
 
-```{code-block}
+```{code-block} not-tested="not-supported:multiline-command"
 :class: value
 [ 1 2 3 ]
 ```
 
 The expression
 
-```{code-block} nix
+```{code-block} nix not-tested="not-supported:multiline-command"
 with a; [ x y z ]
 ```
 
 is equivalent to
 
-```{code-block} nix
+```{code-block} nix not-tested="not-supported:multiline-command"
 [ a.x a.y a.z ]
 ```
 
@@ -631,7 +634,7 @@ Attributes made available through `with` are only in scope of the expression fol
 
 Counter-example:
 
-```{code-block} nix
+```{code-block} nix not-tested="not-supported:multiline-command"
 :class: expression
 let
   a = {
@@ -646,7 +649,7 @@ in
 }
 ```
 
-```{code-block}
+```{code-block} not-tested="not-supported:multiline-command"
 :class: value
 error: undefined variable 'x'
 
@@ -666,7 +669,7 @@ It is for convenience to avoid repeating the same name multiple times.
 
 Example:
 
-```{code-block} nix
+```{code-block} nix not-tested="not-supported:multiline-command"
 :class: expression
 let
   x = 1;
@@ -677,19 +680,19 @@ in
 }
 ```
 
-```{code-block}
+```{code-block} not-tested="yet"
 :class: value
 { x = 1; y = 2; }
 ```
 
 The fragment
 
-```{code-block} nix
+```{code-block} nix not-tested="yet"
 inherit x y;
 ```
 is equivalent to
 
-```{code-block} nix
+```{code-block} nix not-tested="yet"
 x = x; y = y;
 ```
 
@@ -697,7 +700,7 @@ It is also possible to `inherit` names from a specific attribute set with parent
 
 Example:
 
-```{code-block} nix
+```{code-block} nix not-tested="not-supported:multiline-command"
 :class: expression
 let
   a = { x = 1; y = 2; };
@@ -707,20 +710,20 @@ in
 }
 ```
 
-```{code-block}
+```{code-block} not-tested="not-supported:multiline-command"
 :class: value
 { x = 1; y = 2; }
 ```
 
 The fragment
 
-```{code-block} nix
+```{code-block} nix not-tested="yet"
 inherit (a) x y;
 ```
 
 is equivalent to
 
-```{code-block} nix
+```{code-block} nix not-tested="yet"
 x = a.x; y = a.y;
 ```
 
@@ -728,14 +731,14 @@ x = a.x; y = a.y;
 
 Example:
 
-```{code-block} nix
+```{code-block} nix not-tested="not-supported:multiline-command"
 :class: expression
 let
   inherit ({ x = 1; y = 2; }) x y;
 in [ x y ]
 ```
 
-```{code-block}
+```{code-block} not-tested="not-supported:multiline-command"
 :class: value
 [ 1 2 ]
 ```
@@ -747,7 +750,7 @@ While this example is contrived, in more complex code you will regularly see nes
 Here we use the attribute set `{ x = 1; y = 2; }` to have something non-trivial to inherit from.
 The `let` expression inherits `x` and `y` from that attribute set using `( )`, which is equivalent to writing:
 
-```{code-block} nix
+```{code-block} nix not-tested="not-supported:multiline-command"
 let
   x = { x = 1; y = 2; }.x;
   y = { x = 1; y = 2; }.y;
@@ -767,7 +770,7 @@ The value of a Nix expression can be inserted into a character string with the d
 
 Example:
 
-```{code-block} nix
+```{code-block} nix not-tested="not-supported:multiline-command"
 :class: expression
 let
   name = "Nix";
@@ -775,7 +778,7 @@ in
 "hello ${name}"
 ```
 
-```{code-block}
+```{code-block} not-tested="not-supported:multiline-command"
 :class: value
 "hello Nix"
 ```
@@ -784,7 +787,7 @@ Only character strings or values that can be represented as a character string a
 
 Counter-example:
 
-```{code-block} nix
+```{code-block} nix not-tested="not-supported:multiline-command"
 :class: expression
 let
   x = 1;
@@ -792,7 +795,7 @@ in
 "${x} + ${x} = ${x + x}"
 ```
 
-```{code-block}
+```{code-block} not-tested="not-supported:multiline-command"
 :class: value
 error: cannot coerce an integer to a string
 
@@ -810,7 +813,7 @@ Interpolated expressions can be arbitrarily nested.
 
 Example:
 
-```{code-block} nix
+```{code-block} nix not-tested="not-supported:multiline-command"
 :class: expression
 let
   a = "no";
@@ -818,7 +821,7 @@ in
 "${a + " ${a + " ${a}"}"}"
 ```
 
-```{code-block}
+```{code-block} not-tested="not-supported:multiline-command"
 :class: value
 "no no no"
 ```
@@ -834,7 +837,7 @@ It denotes a string that contains the interpolation of concatenating the value o
 That second interpolated string is again the result of concatenating the value of `a` and yet another string that starts with a space and is followed by an interpolation of `a`.
 
 Example:
-```{code-block} nix
+```{code-block} nix not-tested="not-supported:multiline-command"
 :class: expression
 let
   a = "one";
@@ -843,7 +846,7 @@ in
 "${a + b}"
 ```
 
-```{code-block}
+```{code-block} not-tested="not-supported:multiline-command"
 :class: value
 "onetwo"
 ```
@@ -860,7 +863,7 @@ In such cases, the use of names from the surrounding Nix expression is a coincid
 
 Example:
 
-```{code-block} nix
+```{code-block} nix not-tested="not-supported:multiline-command"
 :class: expression
 let
   out = "Nix";
@@ -868,7 +871,7 @@ in
 "echo ${out} > $out"
 ```
 
-```{code-block}
+```{code-block} not-tested="not-supported:multiline-command"
 :class: value
 "echo Nix > $out"
 ```
@@ -887,7 +890,7 @@ Indented strings are denoted by *double single quotes* (`'' ''`).
 
 Example:
 
-```{code-block} nix
+```{code-block} nix not-tested="not-supported:multiline-command"
 :class: expression
 ''
 multi
@@ -896,7 +899,7 @@ string
 ''
 ```
 
-```{code-block}
+```{code-block} not-tested="not-supported:multiline-command"
 :class: value
 "multi\nline\nstring\n"
 ```
@@ -905,7 +908,7 @@ Equal amounts of prepended white space are trimmed from the result.
 
 Example:
 
-```{code-block} nix
+```{code-block} nix not-tested="not-supported:multiline-command"
 :class: expression
 ''
   one
@@ -914,7 +917,7 @@ Example:
 ''
 ```
 
-```{code-block}
+```{code-block} not-tested="not-supported:multiline-command"
 :class: value
 "one\n two\n  three\n"
 ```
@@ -933,12 +936,12 @@ Absolute paths always start with a slash (`/`).
 
 Example:
 
-```{code-block} nix
+```{code-block} nix not-tested="yet"
 :class: expression
 /absolute/path
 ```
 
-```{code-block}
+```{code-block} not-tested="yet"
 :class: value
 /absolute/path
 ```
@@ -951,24 +954,24 @@ The following examples assume the containing Nix file is in `/current/directory`
 Example:
 
 
-```{code-block} nix
+```{code-block} nix not-tested="yet"
 :class: expression
 ./relative
 ```
 
-```{code-block}
+```{code-block} not-tested="yet"
 :class: value
 /current/directory/relative
 ```
 
 Example:
 
-```{code-block} nix
+```{code-block} nix not-tested="yet"
 :class: expression
 relative/path
 ```
 
-```{code-block}
+```{code-block} not-tested="yet"
 :class: value
 /current/directory/relative/path
 ```
@@ -979,12 +982,12 @@ You will often see the following expression, which specifies a Nix file's direct
 
 Example:
 
-```{code-block} nix
+```{code-block} nix not-tested="yet"
 :class: expression
 ./.
 ```
 
-```{code-block}
+```{code-block} not-tested="yet"
 :class: value
 /current/directory
 ```
@@ -999,12 +1002,12 @@ Two dots (`..`) denote the parent directory.
 
 Example:
 
-```{code-block} nix
+```{code-block} nix not-tested="yet"
 :class: expression
 ../.
 ```
 
-```{code-block}
+```{code-block} not-tested="yet"
 :class: value
 /current
 ```
@@ -1019,12 +1022,12 @@ Also known as “angle bracket syntax”.
 
 Example:
 
-```{code-block} nix
+```{code-block} nix not-tested="yet"
 :class: expression
 <nixpkgs>
 ```
 
-```{code-block}
+```{code-block} not-tested="yet"
 :class: value
 /nix/var/nix/profiles/per-user/root/channels/nixpkgs
 ```
@@ -1035,12 +1038,12 @@ In practice, `<nixpkgs>` points to the file system path of some revision of {ter
 
 For example, `<nixpkgs/lib>` points to the subdirectory `lib` of that file system path:
 
-```{code-block} nix
+```{code-block} nix not-tested="yet"
 :class: expression
 <nixpkgs/lib>
 ```
 
-```{code-block}
+```{code-block} not-tested="yet"
 :class: value
 /nix/var/nix/profiles/per-user/root/channels/nixpkgs/lib
 ```
@@ -1118,12 +1121,12 @@ We say they are anonymous, and call such a function a *lambda*.[^lambda]
 
 Example:
 
-```{code-block} nix
+```{code-block} nix not-tested="yet"
 :class: expression
 x: x + 1
 ```
 
-```{code-block} nix
+```{code-block} nix not-tested="yet"
 :class: value
 <LAMBDA>
 ```
@@ -1134,14 +1137,14 @@ As with any other value, functions can be assigned to a name.
 
 Example:
 
-```{code-block} nix
+```{code-block} nix not-tested="not-supported:multiline-command"
 :class: expression
 let
   f = x: x + 1;
 in f
 ```
 
-```{code-block} nix
+```{code-block} nix not-tested="not-supported:multiline-command"
 :class: value
 <LAMBDA>
 ```
@@ -1155,21 +1158,21 @@ Calling a function with an argument means writing the argument after the functio
 
 Example:
 
-```{code-block} nix
+```{code-block} nix not-tested="not-supported:multiline-command"
 :class: expression
 let
   f = x: x + 1;
 in f 1
 ```
 
-```{code-block}
+```{code-block} not-tested="not-supported:multiline-command"
 :class: value
 2
 ```
 
 Example:
 
-```{code-block} nix
+```{code-block} nix not-tested="not-supported:multiline-command"
 :class: expression
 let
   f = x: x.a;
@@ -1177,7 +1180,7 @@ in
 f { a = 1; }
 ```
 
-```{code-block}
+```{code-block} not-tested="not-supported:multiline-command"
 :class: value
 1
 ```
@@ -1187,7 +1190,7 @@ One can also pass arguments by name.
 
 Example:
 
-```{code-block} nix
+```{code-block} nix not-tested="not-supported:multiline-command"
 :class: expression
 let
   f = x: x.a;
@@ -1196,7 +1199,7 @@ in
 f v
 ```
 
-```{code-block}
+```{code-block} not-tested="not-supported:multiline-command"
 :class: value
 1
 ```
@@ -1205,12 +1208,12 @@ Since function and argument are separated by white space, sometimes parentheses 
 
 Example:
 
-```{code-block} nix
+```{code-block} nix not-tested="yet"
 :class: expression
 (x: x + 1) 1
 ```
 
-```{code-block}
+```{code-block} not-tested="yet"
 :class: value
 2
 ```
@@ -1226,7 +1229,7 @@ Example:
 
 List elements are also separated by white space, therefore the following are different:
 
-```{code-block} nix
+```{code-block} nix not-tested="not-supported:multiline-command"
 :class: expression
 let
  f = x: x + 1;
@@ -1234,12 +1237,12 @@ let
 in [ (f a) ]
 ```
 
-```{code-block} nix
+```{code-block} nix not-tested="not-supported:multiline-command"
 :class: value
 [ 2 ]
 ```
 
-```{code-block} nix
+```{code-block} nix not-tested="not-supported:multiline-command"
 :class: expression
 let
  f = x: x + 1;
@@ -1247,7 +1250,7 @@ let
 in [ f a ]
 ```
 
-```{code-block}
+```{code-block} not-tested="not-supported:multiline-command"
 :class: value
 [ <LAMBDA> 1 ]
 ```
@@ -1271,24 +1274,24 @@ Such a nested function can be used like a function that takes multiple arguments
 
 Example:
 
-```{code-block} nix
+```{code-block} nix not-tested="yet"
 :class: expression
 x: y: x + y
 ```
 
-```{code-block}
+```{code-block} not-tested="yet"
 :class: value
 <LAMBDA>
 ```
 
 The above function is equivalent to
 
-```{code-block} nix
+```{code-block} nix not-tested="yet"
 :class: expression
 x: (y: x + y)
 ```
 
-```{code-block}
+```{code-block} not-tested="yet"
 :class: value
 <LAMBDA>
 ```
@@ -1297,7 +1300,7 @@ This function takes one argument and returns another function `y: x + y` with `x
 
 Example:
 
-```{code-block} nix
+```{code-block} nix not-tested="not-supported:multiline-command"
 :class: expression
 let
   f = x: y: x + y;
@@ -1305,14 +1308,14 @@ in
 f 1
 ```
 
-```{code-block}
+```{code-block} not-tested="not-supported:multiline-command"
 :class: value
 <LAMBDA>
 ```
 
 Applying the function which results from `f 1` to another argument yields the inner body `x + y` (with `x` set to `1` and `y` set to the other argument), which can now be fully evaluated.
 
-```{code-block} nix
+```{code-block} nix not-tested="not-supported:multiline-command"
 :class: expression
 let
   f = x: y: x + y;
@@ -1320,7 +1323,7 @@ in
 f 1 2
 ```
 
-```{code-block}
+```{code-block} not-tested="not-supported:multiline-command"
 :class: value
 3
 ```
@@ -1337,12 +1340,12 @@ This is denoted by listing the expected attribute names separated by commas (`,`
 
 Example:
 
-```{code-block} nix
+```{code-block} nix not-tested="yet"
 :class: expression
 {a, b}: a + b
 ```
 
-```{code-block} nix
+```{code-block} nix not-tested="yet"
 :class: value
 <LAMBDA>
 ```
@@ -1352,7 +1355,7 @@ Leaving out or passing additional attributes is an error.
 
 Example:
 
-```{code-block} nix
+```{code-block} nix not-tested="not-supported:multiline-command"
 :class: expression
 let
   f = {a, b}: a + b;
@@ -1360,14 +1363,14 @@ in
 f { a = 1; b = 2; }
 ```
 
-```{code-block} nix
+```{code-block} nix not-tested="not-supported:multiline-command"
 :class: value
 3
 ```
 
 Counter-example:
 
-```{code-block} nix
+```{code-block} nix not-tested="not-supported:multiline-command"
 :class: expression
 let
   f = {a, b}: a + b;
@@ -1375,7 +1378,7 @@ in
 f { a = 1; b = 2; c = 3; }
 ```
 
-```{code-block}
+```{code-block} not-tested="not-supported:multiline-command"
 :class: value
 error: 'f' at (string):2:7 called with unexpected argument 'c'
 
@@ -1401,7 +1404,7 @@ Attributes in the argument are not required if they have a default value.
 
 Example:
 
-```{code-block} nix
+```{code-block} nix not-tested="not-supported:multiline-command"
 :class: expression
 let
   f = {a, b ? 0}: a + b;
@@ -1409,14 +1412,14 @@ in
 f { a = 1; }
 ```
 
-```{code-block}
+```{code-block} not-tested="not-supported:multiline-command"
 :class: value
 1
 ```
 
 Example:
 
-```{code-block} nix
+```{code-block} nix not-tested="not-supported:multiline-command"
 :class: expression
 let
   f = {a ? 0, b ? 0}: a + b;
@@ -1424,7 +1427,7 @@ in
 f { } # empty attribute set
 ```
 
-```{code-block}
+```{code-block} not-tested="not-supported:multiline-command"
 :class: value
 0
 ```
@@ -1433,7 +1436,7 @@ f { } # empty attribute set
 
 Additional attributes are allowed with an ellipsis (`...`):
 
-```{code-block} nix
+```{code-block} nix not-tested="yet"
 {a, b, ...}: a + b
 ```
 
@@ -1441,7 +1444,7 @@ Unlike in the previous counter-example, passing an argument that contains additi
 
 Example:
 
-```{code-block} nix
+```{code-block} nix not-tested="not-supported:multiline-command"
 :class: expression
 let
   f = {a, b, ...}: a + b;
@@ -1449,7 +1452,7 @@ in
 f { a = 1; b = 2; c = 3; }
 ```
 
-```{code-block}
+```{code-block} not-tested="not-supported:multiline-command"
 :class: value
 3
 ```
@@ -1464,31 +1467,31 @@ This is denoted by prepending or appending the name to the attribute set argumen
 
 Example:
 
-```{code-block} nix
+```{code-block} nix not-tested="yet"
 :class: expression
 {a, b, ...}@args: a + b + args.c
 ```
 
-```{code-block}
+```{code-block} not-tested="yet"
 :class: value
 <LAMBDA>
 ```
 
 or
 
-```{code-block} nix
+```{code-block} nix not-tested="yet"
 :class: expression
 args@{a, b, ...}: a + b + args.c
 ```
 
-```{code-block}
+```{code-block} not-tested="yet"
 :class: value
 <LAMBDA>
 ```
 
 Example:
 
-```{code-block} nix
+```{code-block} nix not-tested="not-supported:multiline-command"
 :class: expression
 let
   f = {a, b, ...}@args: a + b + args.c;
@@ -1496,7 +1499,7 @@ in
 f { a = 1; b = 2; c = 3; }
 ```
 
-```{code-block} nix
+```{code-block} nix not-tested="not-supported:multiline-command"
 :class: value
 6
 ```
@@ -1529,12 +1532,12 @@ These functions are available under the `builtins` constant.
 
 Example:
 
-```{code-block} nix
+```{code-block} nix not-tested="not-supported:multiline-command"
 :class: expression
 builtins.toString
 ```
 
-```{code-block}
+```{code-block} not-tested="not-supported:multiline-command"
 :class: value
 <PRIMOP>
 ```
@@ -1553,16 +1556,16 @@ If the path points to a directory, the file `default.nix` in that directory is u
 
 Example:
 
-```shell-session
+```shell-session not-tested="yet"
 $ echo 1 + 2 > file.nix
 ```
 
-```{code-block} nix
+```{code-block} nix not-tested="yet"
 :class: expression
 import ./file.nix
 ```
 
-```{code-block}
+```{code-block} not-tested="yet"
 :class: value
 3
 ```
@@ -1578,12 +1581,12 @@ It is an error if the file system path does not exist.
 
 After reading `file.nix` the Nix expression is equivalent to the file contents:
 
-```{code-block} nix
+```{code-block} nix not-tested="yet"
 :class: expression
 1 + 2
 ```
 
-```{code-block}
+```{code-block} not-tested="yet"
 :class: value
 3
 ```
@@ -1595,16 +1598,16 @@ That is, whenever you find additional tokens after a call to `import`, the value
 
 Example:
 
-```shell-session
+```shell-session not-tested="yet"
 $ echo "x: x + 1" > file.nix
 ```
 
-```{code-block} nix
+```{code-block} nix not-tested="yet"
 :class: expression
 import ./file.nix 1
 ```
 
-```{code-block}
+```{code-block} not-tested="yet"
 :class: value
 2
 ```
@@ -1620,12 +1623,12 @@ It is an error if the file system path does not exist.
 
 After reading the file, the Nix expression `import ./file.nix` is equivalent to the file contents:
 
-```{code-block} nix
+```{code-block} nix not-tested="yet"
 :class: expression
 (x: x + 1) 1
 ```
 
-```{code-block}
+```{code-block} not-tested="yet"
 :class: value
 2
 ```
@@ -1655,7 +1658,7 @@ These functions are usually accessed through `pkgs.lib`, as the Nixpkgs attribut
 
 Example:
 
-```{code-block} nix
+```{code-block} nix not-tested="not-supported:multiline-command"
 :class: expression
 let
   pkgs = import <nixpkgs> {};
@@ -1663,7 +1666,7 @@ in
 pkgs.lib.strings.toUpper "lookup paths considered harmful"
 ```
 
-```{code-block}
+```{code-block} not-tested="not-supported:multiline-command"
 :class: value
 LOOKUP PATHS CONSIDERED HARMFUL
 ```
@@ -1686,7 +1689,7 @@ The function `toUpper` is trivial enough that we can expect it not to produce di
 Yet, more sophisticated software is likely to suffer from such problems.
 A fully reproducible example would therefore look like this:
 
-```{code-block} nix
+```{code-block} nix not-tested="yet,fetcher-cache"
 :class: expression
 let
   nixpkgs = fetchTarball "https://github.com/NixOS/nixpkgs/archive/06278c77b5d162e62df170fec307e83f1812d94b.tar.gz";
@@ -1695,7 +1698,7 @@ in
 pkgs.lib.strings.toUpper "always pin your sources"
 ```
 
-```{code-block}
+```{code-block} not-tested="yet,fetcher-cache"
 :class: value
 ALWAYS PIN YOUR SOURCES
 ```
@@ -1705,20 +1708,20 @@ See [](pinning-nixpkgs) for details.
 What you will also often see is that `pkgs` is passed as an argument to a function.
 By convention one can assume that it refers to the Nixpkgs attribute set, which has a `lib` attribute:
 
-```{code-block} nix
+```{code-block} nix not-tested="not-supported:multiline-command"
 :class: expression
 { pkgs, ... }:
 pkgs.lib.strings.removePrefix "no " "no true scotsman"
 ```
 
-```{code-block}
+```{code-block} not-tested="not-supported:multiline-command"
 :class: value
 <LAMBDA>
 ```
 
 To make this function produce a result, you can write it to a file (e.g. `file.nix`) and pass it an argument through `nix-instantiate`:
 
-```shell-session
+```shell-session not-tested="not-supported:multiline-command"
 $ nix-instantiate --eval file.nix --arg pkgs 'import <nixpkgs> {}'
 "true scotsman"
 ```
@@ -1728,7 +1731,7 @@ In that case one can assume that this `lib` is equivalent to `pkgs.lib` where on
 
 Example:
 
-```{code-block} nix
+```{code-block} nix not-tested="not-supported:multiline-command"
 :class: expression
 { lib, ... }:
 let
@@ -1737,14 +1740,14 @@ in
 lib.trivial.or to-be (! to-be)
 ```
 
-```{code-block}
+```{code-block} not-tested="not-supported:multiline-command"
 :class: value
 <LAMBDA>
 ```
 
 To make this function produce a result, you can write it to a file (e.g. `file.nix`) and pass it an argument through `nix-instantiate`:
 
-```shell-session
+```shell-session not-tested="yet"
 $ nix-instantiate --eval file.nix --arg lib '(import <nixpkgs> {}).lib'
 true
 ```
@@ -1755,7 +1758,7 @@ This is done to improve readability by avoiding repeated use of `pkgs.lib`.
 
 Example:
 
-```{code-block} nix
+```{code-block} nix not-tested="not-an-example"
 { pkgs, lib, ... }:
 # ... multiple uses of `pkgs`
 # ... multiple uses of `lib`
@@ -1803,16 +1806,16 @@ The evaluated string then contains the Nix store path assigned to that file.
 
 Example:
 
-```shell-session
+```shell-session not-tested="yet"
 $ echo 123 > data
 ```
 
-```{code-block} nix
+```{code-block} nix not-tested="yet"
 :class: expression
 "${./data}"
 ```
 
-```{code-block}
+```{code-block} not-tested="yet"
 :class: value
 "/nix/store/h1qj5h5n05b5dl5q4nldrqq8mdg7dhqk-data"
 ```
@@ -1826,7 +1829,7 @@ The above Nix expression refers to this file as `./data` and converts the file s
 Such interpolated expressions must evaluate to something that can be represented as a character string.
 A file system path is such a value, and its character string representation is the corresponding Nix store path:
 
-```{code-block}
+```{code-block} not-tested="not-an-example"
 /nix/store/<hash>-<name>
 ```
 
@@ -1853,12 +1856,12 @@ These functions evaluate to a file system path in the Nix store.
 
 Example:
 
-```{code-block} nix
+```{code-block} nix not-tested="not-supported:fetcher-cache"
 :class: expression
 builtins.fetchurl "https://github.com/NixOS/nix/archive/7c3ab5751568a0bc63430b33a5169c5e4784a0ff.tar.gz"
 ```
 
-```{code-block}
+```{code-block} not-tested="not-supported:fetcher-cache"
 :class: value
 "/nix/store/7dhgs330clj36384akg86140fqkgh8zf-7c3ab5751568a0bc63430b33a5169c5e4784a0ff.tar.gz"
 ```
@@ -1867,12 +1870,12 @@ Some of them add extra convenience, such as automatically unpacking archives.
 
 Example:
 
-```{code-block} nix
+```{code-block} nix not-tested="not-supported:fetcher-cache"
 :class: expression
 builtins.fetchTarball "https://github.com/NixOS/nix/archive/7c3ab5751568a0bc63430b33a5169c5e4784a0ff.tar.gz"
 ```
 
-```{code-block}
+```{code-block} not-tested="not-supported:fetcher-cache"
 :class: value
 "/nix/store/d59llm96vgis5fy231x6m7nrijs0ww36-source"
 ```
@@ -1911,14 +1914,14 @@ It can be used in [string interpolation](string-interpolation), and in that case
 
 Example:
 
-```{code-block} nix
+```{code-block} nix not-tested="not-supported:multiline-command"
 :class: expression
 let
   pkgs = import <nixpkgs> {};
 in "${pkgs.nix}"
 ```
 
-```{code-block}
+```{code-block} not-tested="not-supported:multiline-command"
 :class: value
 "/nix/store/sv2srrjddrp2isghmrla8s6lazbzmikd-nix-2.11.0"
 ```
@@ -1962,7 +1965,7 @@ The goal of the following exercises is not to understand what the code means or 
 
 ### Shell environment
 
-```{code-block} nix
+```{code-block} nix not-tested="not-supported:multiline-command"
 { pkgs ? import <nixpkgs> {} }:
 let
   message = "hello world";
@@ -1991,7 +1994,7 @@ Explanation:
 
 ### NixOS configuration
 
-```{code-block} nix
+```{code-block} nix not-tested="not-an-example"
 { config, pkgs, ... }: {
 
   imports = [ ./hardware-configuration.nix ];
@@ -2022,7 +2025,7 @@ Explanation:
 (mkDerivation-example)=
 ### Package
 
-```{code-block} nix
+```{code-block} nix not-tested="incomplete"
 { lib, stdenv, fetchurl }:
 
 stdenv.mkDerivation rec {
@@ -2074,7 +2077,7 @@ Explanation:
 
 If you want to take a longer break from learning Nix, you can remove unused build results from the Nix store with:
 
-```console
+```console not-tested="yet"
 $ nix-collect-garbage
 ```
 
@@ -2089,7 +2092,7 @@ Often it is not possible to determine from the code at hand
 
 Example:
 
-```{code-block} nix
+```{code-block} nix not-tested="incomplete"
 { x, y, z }: (x y) z.a
 ```
 

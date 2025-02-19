@@ -1,5 +1,17 @@
 {
   "pins": {
+    "eelco": {
+      "type": "Git",
+      "repository": {
+        "type": "GitHub",
+        "owner": "mobusoperandi",
+        "repo": "eelco"
+      },
+      "branch": "mob/thaigersprint-2025",
+      "revision": "b055eef49d8240d0baffaa6fdfb8cdb7d5a37158",
+      "url": "https://github.com/mobusoperandi/eelco/archive/b055eef49d8240d0baffaa6fdfb8cdb7d5a37158.tar.gz",
+      "hash": "1n61ci5q4ngxfi9sgjn5fsyk66zlka8plmbx3hp3h9z6ayvhlcga"
+    },
     "nixpkgs-rolling": {
       "type": "Git",
       "repository": {
@@ -27,4 +39,3 @@
   },
   "version": 3
 }
-

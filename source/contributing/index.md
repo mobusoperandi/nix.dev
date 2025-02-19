@@ -1,7 +1,7 @@
 (contributing)=
 # Contributing
 
-```{toctree}
+```{toctree} not-tested="not-an-example"
 :glob:
 :maxdepth: 2
 

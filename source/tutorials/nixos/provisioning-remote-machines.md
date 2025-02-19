@@ -52,14 +52,14 @@ Replace it with the actual hostname or IP address.
 
 Create a new project directory and enter it with your shell:
 
-```shell-session
+```shell-session not-tested="impure"
 mkdir remote
 cd remote
 ```
 
 [Specify dependencies](dependency-management-npins) on `nixpkgs`, `disko`, and `nixos-anywhere`:
 
-```shell-session
+```shell-session not-tested="impure"
 $ nix-shell -p npins
 [nix-shell:remote]$ npins init
 [nix-shell:remote]$ npins add github nix-community disko
@@ -68,7 +68,7 @@ $ nix-shell -p npins
 
 Create a new file `shell.nix` which provides all needed tooling using the pinned dependencies:
 
-```{code-block} nix
+```{code-block} nix not-tested="impure"
 let
   sources = import ./npins;
   pkgs = import sources.nixpkgs {};
@@ -88,7 +88,7 @@ pkgs.mkShell {
 
 Now exit the temporary environment and enter the newly specified one:
 
-```shell-session
+```shell-session not-tested="impure"
 [nix-shell:remote]$ exit
 $ nix-shell
 ```
@@ -109,7 +109,7 @@ It will work on both EFI and BIOS systems.
 Create a new file `single-disk-layout.nix` with the disk layout specification:
 
 {lineno-start=1}
-```nix
+```nix not-tested="impure"
 { ... }:
 
 {
@@ -153,7 +153,7 @@ Create the file `configuration.nix`, which imports the disk layout definition an
 :::{tip}
 If you don't know the target disk's device identifier, list all devices on the *target machine* with `lsblk`:
 
-```shell-session
+```shell-session not-tested="impure"
 $ ssh target-machine lsblk
 NAME   MAJ:MIN RM   SIZE RO TYPE MOUNTPOINTS
 sda      8:0    0   256G  0 disk
@@ -169,7 +169,7 @@ Note that value for later.
 :::
 
 {lineno-start=1}
-```nix
+```nix not-tested="impure"
 { modulesPath, ... }:
 
 let
@@ -212,7 +212,7 @@ Replace the `<your SSH key here>` string with the SSH public key that you want t
 The `diskDevice` variable in the `let` block defines the path of the disk block device:
 
 {lineno-start=3 emphasize-lines="2"}
-```nix
+```nix not-tested="impure"
 let
   diskDevice = "/dev/sda";
   sources = import ./npins;
@@ -223,7 +223,7 @@ It is used to set the target for the partitioning and formatting as described in
 It is also used in the boot loader configuration to make it bootable on both legacy BIOS as well as UEFI systems:
 
 {lineno-start=14 emphasize-lines="1,4"}
-```nix
+```nix not-tested="impure"
   disko.devices.disk.main.device = diskDevice;
 
   boot.loader.grub = {
@@ -236,7 +236,7 @@ It is also used in the boot loader configuration to make it bootable on both leg
 The `qemu-guest.nix` module makes this system compatible for running inside a QEMU virtual machine:
 
 {lineno-start=8 emphasize-lines="2"}
-```nix
+```nix not-tested="impure"
   imports = [
     (modulesPath + "/profiles/qemu-guest.nix")
     (sources.disko + "/module.nix")
@@ -248,7 +248,7 @@ From a disk layout specification, the `disko` library generates a partitioning s
 The first line imports the library, the second line applies the disk layout:
 
 {lineno-start=8 emphasize-lines="3,4"}
-```nix
+```nix not-tested="impure"
   imports = [
     (modulesPath + "/profiles/qemu-guest.nix")
     (sources.disko + "/module.nix")
@@ -261,7 +261,7 @@ The first line imports the library, the second line applies the disk layout:
 
 Check that the disk layout is valid:
 
-```shell-session
+```shell-session not-tested="impure"
 nix-build -E "((import <nixpkgs> {}).nixos [ ./configuration.nix ]).installTest"
 ```
 
@@ -275,7 +275,7 @@ To deploy the system, build the configuration and the corresponding disk formatt
 Replace `target-host` with the hostname or IP address of your *target machine*.
 :::
 
-```shell-session
+```shell-session not-tested="impure"
 toplevel=$(nixos-rebuild build --no-flake)
 diskoScript=$(nix-build -E "((import <nixpkgs> {}).nixos [ ./configuration.nix ]).diskoScript")
 nixos-anywhere --store-paths "$diskoScript" "$toplevel" root@target-host
@@ -293,7 +293,7 @@ Then, it reboots the system.
 
 To update the system, run `npins` and re-deploy the configuration:
 
-```shell-session
+```shell-session not-tested="impure"
 npins update nixpkgs
 nixos-rebuild switch --no-flake --target-host root@target-host
 ```

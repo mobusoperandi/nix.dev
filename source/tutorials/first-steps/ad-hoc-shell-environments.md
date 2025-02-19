@@ -14,12 +14,12 @@ Once you {ref}`install Nix <install-nix>`, you can use it to create new *shell e
 
 In this section you will run two exotic programs called `cowsay` and `lolcat` that you will probably not have installed on your machine:
 
-```shell-session
+```shell-session example=command-not-found
 $ cowsay no can do
-The program ‘cowsay’ is currently not installed.
+bash: cowsay: command not found
 
 $ echo no chance | lolcat
-The program ‘lolcat’ is currently not installed.
+bash: lolcat: command not found
 ```
 
 Use `nix-shell` with the `-p` (`--packages`) option to specify that we need the `cowsay` and `lolcat` packages:
@@ -28,7 +28,7 @@ Use `nix-shell` with the `-p` (`--packages`) option to specify that we need the 
 The first invocation of `nix-shell` for these packages may take a while to download all dependencies.
 :::
 
-```shell-session
+```shell-session not-tested="yet"
 $ nix-shell -p cowsay lolcat
 these 3 derivations will be built:
   /nix/store/zx1j8gchgwzfjn7sr4r8yxb7a0afkjdg-builder.pl.drv
@@ -40,35 +40,44 @@ these 3 derivations will be built:
 
 Within the Nix shell, you can use the programs provided by these packages:
 
-```shell-session
+```shell-session not-tested="yet"
 [nix-shell:~]$ cowsay Hello, Nix! | lolcat
 ```
 
 Type `exit` or press `CTRL-D` to exit the shell, and the programs won't be available anymore.
 
-```shell-session
+```shell-session not-tested="yet"
 [nix-shell:~]$ exit
 exit
 
 $ cowsay no more
-The program ‘cowsay’ is currently not installed.
+bash: cowsay: command not found
 
 $ echo all gone | lolcat
-The program ‘lolcat’ is currently not installed.
+bash: lolcat: command not found
 ```
 
 ## Running programs once
 
 You can go even faster, by running any program directly:
 
-```console
+```console example=run-arg
 $ nix-shell -p cowsay --run "cowsay Nix"
+ _____
+< Nix >
+ -----
+        \   ^__^
+         \  (oo)\_______
+            (__)\       )\/\
+                ||----w |
+                ||     ||
 ```
 
 If the command consists only of the program name, no quotes are needed:
 
-```console
+```console example=run-no-arg
 $ nix-shell -p hello --run hello
+Hello, world!
 ```
 
 ## Search for packages
@@ -99,7 +108,7 @@ The `-p` (`--packages`) argument can take multiple package names.
 Start a Nix shell with the packages providing `git`, `nvim`, and `npm`.
 Again, the first invocation may take a while to download all dependencies.
 
-```shell-session
+```shell-session not-tested="yet"
 $ nix-shell -p git neovim nodejs
 these 9 derivations will be built:
   /nix/store/7gz8jyn99kw4k74bgm4qp6z487l5ap06-packdir-start.drv
@@ -125,7 +134,7 @@ these 151 paths will be fetched (186.43 MiB download, 1018.20 MiB unpacked):
 
 Check that you have indeed the specific version of these programs provided by Nix, even if you had any of them already installed on your machine.
 
-```shell-session
+```shell-session not-tested="yet"
 [nix-shell:~]$ which git
 /nix/store/3cdi52xh6lk3h1fb51jkxs3p561p37wg-git-2.38.3/bin/git
 
@@ -150,7 +159,7 @@ NVIM v0.8.1
 If you need an additional program temporarily, you can run a nested Nix shell.
 The programs provided by the specified packages will be added to the current environment.
 
-```shell-session
+```shell-session not-tested="yet"
 [nix-shell:~]$ nix-shell -p python3
 this path will be fetched (11.42 MiB download, 62.64 MiB unpacked):
   /nix/store/pwy30a7siqrkki9r7xd1lksyv9fg4l1r-python3-3.10.11
@@ -175,7 +184,7 @@ The environment provided would be identical each time.
 The following example creates a fully reproducible environment.
 You can run it anywhere, anytime to obtain the exact same version of the `git`.
 
-```shell-session
+```shell-session not-tested="yet"
 $ nix-shell -p git --run "git --version" --pure -I nixpkgs=https://github.com/NixOS/nixpkgs/tarball/2a601aafdc5605a5133a2ca506a34a3a73377247
 ...
 git version 2.33.1
@@ -213,6 +222,6 @@ There are three things going on here:
 
 If you're done trying out Nix for now, you may want to free up some disk space occupied by the different versions of programs you downloaded by running the examples:
 
-```shell-session
+```shell-session not-tested="yet"
 $ nix-collect-garbage
 ```

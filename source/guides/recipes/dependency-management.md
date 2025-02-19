@@ -6,7 +6,7 @@ Nix expressions themselves can depend on remote sources, and there are multiple 
 
 For more automation around handling remote sources, set up [`npins`](https://github.com/andir/npins/) in your project:
 
-```shell-session
+```shell-session not-tested="impure"
 $ nix-shell -p npins --run "npins init --bare; npins add github nixos nixpkgs --branch nixos-23.11"
 ```
 
@@ -16,7 +16,7 @@ It will also create `npins/default.nix`, which exposes those dependencies as an 
 
 Import the generated `npins/default.nix` as the default value for the argument to the function in `default.nix` and use it to refer to the Nixpkgs source directory:
 
-```nix
+```nix not-tested="impure"
 {
   sources ? import ./npins,
   system ? builtins.currentSystem,
@@ -32,7 +32,7 @@ This pattern allows [overriding remote sources](overriding-sources-npins) progra
 
 Add `npins` to the development environment for your project to have it readily available:
 
-```diff
+```diff not-tested="impure"
  {
    sources ? import ./npins,
    system ? builtins.currentSystem,
@@ -52,7 +52,7 @@ Add `npins` to the development environment for your project to have it readily a
 
 Also add a `shell.nix` to enter that environment more conveniently:
 
-```nix
+```nix not-tested="impure"
 (import ./. {}).shell
 ```
 
@@ -65,7 +65,7 @@ As an example, we will use the previously created expression with an older versi
 
 Enter the development environment, create a new directory, and set up npins with a different version of Nixpkgs:
 
-```shell-session
+```shell-session not-tested="impure"
 $ nix-shell
 [nix-shell]$ mkdir old
 [nix-shell]$ cd old
@@ -75,13 +75,13 @@ $ nix-shell
 
 Create a file `default.nix` in the new directory, and import the original one with the `sources` just created.
 
-```nix
+```nix not-tested="impure"
 import ../default.nix { sources = import ./npins; }
 ```
 
 This will result in a different version being built:
 
-```shell-session
+```shell-session not-tested="impure"
 $ nix-build -A build
 $ ./result/bin/hello --version | head -1
 hello (GNU Hello) 2.10
@@ -89,7 +89,7 @@ hello (GNU Hello) 2.10
 
 Sources can also be overridden on the command line:
 
-```shell-session
+```shell-session not-tested="impure"
 nix-build .. -A build --arg sources 'import ./npins'
 ```
 
@@ -99,7 +99,7 @@ A previous version of this guide recommended using [`niv`](https://github.com/nm
 
 If you have a project using `niv`, you can import remote source definitions into `npins`:
 
-```shell-session
+```shell-session not-tested="impure"
 npins import-niv
 ```
 
@@ -111,7 +111,7 @@ All the imported entries will be updated, so they won't necessarily point to the
 
 - Check the built-in help for more information:
 
-  ```shell-session
+  ```shell-session not-tested="not-supported:indented-fenced-code-block"
   npins --help
   ```
 

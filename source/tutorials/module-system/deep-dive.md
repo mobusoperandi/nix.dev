@@ -31,7 +31,7 @@ To run the examples in this tutorial, you will need a [Google API key](https://d
 
 Write the following into a file called `default.nix`:
 
-```{code-block} nix
+```{code-block} nix not-tested="not-supported:diff"
 :caption: default.nix
 { ... }:
 {
@@ -43,7 +43,7 @@ Write the following into a file called `default.nix`:
 
 We will need some helper functions, which will come from the [Nixpkgs library](https://github.com/NixOS/nixpkgs/tree/master/lib), which is passed by the module system as `lib`:
 
-```{code-block} diff
+```{code-block} diff not-tested="not-supported:diff"
 :caption: default.nix
 - { ... }:
 + { lib, ... }:
@@ -54,7 +54,7 @@ We will need some helper functions, which will come from the [Nixpkgs library](h
 
 Using [`lib.mkOption`](https://nixos.org/manual/nixpkgs/stable/#function-library-lib.options.mkOption), declare the `scripts.output` option to have the type `lines`:
 
-```{code-block} diff
+```{code-block} diff not-tested="not-supported:diff"
 :caption: default.nix
  { lib, ... }: {
 
@@ -78,7 +78,7 @@ Here we use `scripts`, because we will add another script later, and call this o
 
 Write a new file `eval.nix` to call [`lib.evalModules`](https://nixos.org/manual/nixpkgs/unstable/#module-system-lib-evalModules) and evaluate the module in `default.nix`:
 
-```{code-block} nix
+```{code-block} nix not-tested="not-supported:diff"
 :caption: eval.nix
 let
   nixpkgs = fetchTarball "https://github.com/NixOS/nixpkgs/tarball/nixos-23.11";
@@ -97,7 +97,7 @@ Run the following command:
 This will result in an error.
 :::
 
-```console
+```console not-tested="not-supported:diff"
 nix-instantiate --eval eval.nix -A config.scripts.output
 ```
 
@@ -122,7 +122,7 @@ What happens if you instead try to assign an integer to the option?
 
 Add the following lines to `default.nix`:
 
-```{code-block} diff
+```{code-block} diff not-tested="not-supported:diff"
 :caption: default.nix
  { lib, ... }: {
 
@@ -140,7 +140,7 @@ Add the following lines to `default.nix`:
 
 Now try to execute the previous command, and witness your first module error:
 
-```console
+```console not-tested="not-supported:diff"
 $ nix-instantiate --eval eval.nix -A config.scripts.output
 error:
 ...
@@ -158,7 +158,7 @@ The output is passed on to display it with [`feh`](https://feh.finalrewind.org/)
 
 Update `default.nix` by changing the value of `scripts.output` to the following string:
 
-```{code-block} diff
+```{code-block} diff not-tested="not-supported:diff"
 :caption: default.nix
    config = {
 -    scripts.output = 42;
@@ -175,7 +175,7 @@ We can solve this by packaging the raw {download}`map <files/map.sh>` script wit
 
 First, make available a `pkgs` argument in your module evaluation by adding a module that sets `config._module.args`:
 
-```{code-block} diff
+```{code-block} diff not-tested="not-supported:diff"
 :caption: eval.nix
  pkgs.lib.evalModules {
    modules = [
@@ -191,7 +191,7 @@ This mechanism is currently only [documented in the module system code](https://
 
 Then change `default.nix` to have the following contents:
 
-```{code-block} nix
+```{code-block} nix not-tested="not-supported:diff"
 :caption: default.nix
 { pkgs, lib, ... }: {
 
@@ -217,14 +217,14 @@ This will access the previously added `pkgs` argument so we can use dependencies
 
 Run the script with:
 
-```console
+```console not-tested="not-supported:diff"
 nix-build eval.nix -A config.scripts.output
 ./result/bin/map
 ```
 
 To iterate more quickly, open a new terminal and set up [`entr`](https://github.com/eradman/entr) to re-run the script whenever any source file in the current directory changes:
 
-```console
+```console not-tested="not-supported:diff"
 nix-shell -p entr findutils bash --run \
   "ls *.nix | \
    entr -rs ' \
@@ -261,7 +261,7 @@ Module option types not only check for valid values, but also specify how multip
 
 Make the following additions to your `default.nix` file:
 
-```{code-block} diff
+```{code-block} diff not-tested="not-supported:diff"
 :caption: default.nix
      scripts.output = lib.mkOption {
        type = lib.types.package;
@@ -303,7 +303,7 @@ To make option values available to a module, the arguments of the function decla
 
 Update `default.nix` to add the `config` attribute:
 
-```{code-block} diff
+```{code-block} diff not-tested="not-supported:diff"
 :caption: default.nix
 -{ pkgs, lib, ... }: {
 +{ pkgs, lib, config, ... }: {
@@ -326,7 +326,7 @@ The `config` *argument* is **not** the same as the `config` *attribute*:
 
 Now make the following changes to `default.nix`:
 
-```{code-block} diff
+```{code-block} diff not-tested="not-supported:diff"
 :caption: default.nix
    config = {
      scripts.output = pkgs.writeShellApplication {
@@ -356,7 +356,7 @@ You will define a new option, `map.zoom`, to control the zoom level of the map. 
 
 Add the `map` attribute set with the `zoom` option into the top-level `options` declaration, like so:
 
-```{code-block} diff
+```{code-block} diff not-tested="not-supported:diff"
 :caption: default.nix
      requestParams = lib.mkOption {
        type = lib.types.listOf lib.types.str;
@@ -374,7 +374,7 @@ Add the `map` attribute set with the `zoom` option into the top-level `options` 
 To make use of this, use the `mkIf <condition> <definition>` function, which only adds the definition if the condition evaluates to `true`.
 Make the following additions to the `requestParams` list in the `config` block:
 
-```{code-block} diff
+```{code-block} diff not-tested="not-supported:diff"
 :caption: default.nix
      requestParams = [
        "size=640x640"
@@ -396,7 +396,7 @@ Its value will be used if the value of the option declaring it is not specified 
 
 Add the corresponding line:
 
-```{code-block} diff
+```{code-block} diff not-tested="not-supported:diff"
 :caption: default.nix
      map = {
        zoom = lib.mkOption {
@@ -413,7 +413,7 @@ You have now declared options controlling the map dimensions and zoom level, but
 
 Add the `center` option now, possibly with your own location as default value:
 
-```{code-block} diff
+```{code-block} diff not-tested="not-supported:diff"
 :caption: default.nix
          type = lib.types.nullOr lib.types.int;
          default = 10;
@@ -433,8 +433,8 @@ There are multiple ways of making a new package accessible, but as an exercise, 
 First, add a new option to accommodate the package:
 
 
-```{code-block} diff
-:caption: default.nix
+```{code-block} diff not-tested="not-supported:diff"
+:caption: default.nix not-tested="not-supported:diff"
    options = {
      scripts.output = lib.mkOption {
        type = lib.types.package;
@@ -447,7 +447,7 @@ First, add a new option to accommodate the package:
 
 Then define the value for that option where you make the raw script reproducible by wrapping a call to it in `writeShellApplication`:
 
-```{code-block} diff
+```{code-block} diff not-tested="not-supported:diff"
 :caption: default.nix
    config = {
 +    scripts.geocode = pkgs.writeShellApplication {
@@ -463,7 +463,7 @@ Then define the value for that option where you make the raw script reproducible
 
 Add another `mkIf` call to the list of `requestParams` now where you access the wrapped package through `config.scripts.geocode`, and run the executable `/bin/geocode` inside:
 
-```{code-block} diff
+```{code-block} diff not-tested="not-supported:diff"
 :caption: default.nix
        "scale=2"
        (lib.mkIf (config.map.zoom != null)
@@ -488,7 +488,7 @@ In particular, this allows you to separate option declarations from where they a
 
 Create a new module, `marker.nix`, where you can declare options for defining location pins and other markers on the map:
 
-```{code-block} diff
+```{code-block} diff not-tested="not-supported:diff"
 :caption: marker.nix
 { lib, config, ... }: {
 
@@ -497,7 +497,7 @@ Create a new module, `marker.nix`, where you can declare options for defining lo
 
 Reference this new file in `default.nix` using the `imports` attribute:
 
-```{code-block} diff
+```{code-block} diff not-tested="not-supported:diff"
 :caption: default.nix
  { pkgs, lib, config, ... }: {
 
@@ -521,7 +521,7 @@ Each assignment of markers will be type-checked during evaluation of the top-lev
 
 Make the following changes to `marker.nix`:
 
-```{code-block} diff
+```{code-block} diff not-tested="not-supported:diff"
 :caption: marker.nix
 -{ pkgs, lib, config, ... }: {
 +{ pkgs, lib, config, ... }:
@@ -551,7 +551,7 @@ In this case, you will use the `map.markers` option to produce and add new eleme
 
 To implement this behavior, add the following `config` block to `marker.nix`:
 
-```{code-block} diff
+```{code-block} diff not-tested="not-supported:diff"
 :caption: marker.nix
 +  config = {
 +
@@ -580,7 +580,7 @@ When defining multiple markers, determining an appropriate center or zoom level 
 
 To achieve this, make the following additions to `marker.nix`, above the `requestParams` declaration:
 
-```{code-block} diff
+```{code-block} diff not-tested="not-supported:diff"
 :caption: marker.nix
 +    map.center = lib.mkIf
 +      (lib.length config.map.markers >= 1)
@@ -611,7 +611,7 @@ To propagate marker definitions from `users` to the `map.markers` option, make t
 
 In the `let` block:
 
-```{code-block} diff
+```{code-block} diff not-tested="not-supported:diff"
 :caption: marker.nix
 +  userType = lib.types.submodule {
 +    options = {
@@ -629,7 +629,7 @@ This defines a submodule type for a user, with a `departure` option of type `mar
 
 In the `options` block, above `map.markers`:
 
-```{code-block} diff
+```{code-block} diff not-tested="not-supported:diff"
 :caption: marker.nix
 +    users = lib.mkOption {
 +      type = lib.types.attrsOf userType;
@@ -640,7 +640,7 @@ That allows adding a `users` attribute set to `config` in any submodule that imp
 
 In the `config` block, above `map.center`:
 
-```{code-block} diff
+```{code-block} diff not-tested="not-supported:diff"
 :caption: marker.nix
    config = {
 
@@ -679,7 +679,7 @@ You can implement this with the `strMatching "<regex>"` type, where `<regex>` is
 
 In the `let` block:
 
-```{code-block} diff
+```{code-block} diff not-tested="not-supported:diff"
 :caption: marker.nix
          type = lib.types.nullOr lib.types.str;
          default = null;
@@ -698,7 +698,7 @@ Again, `types.nullOr` allows for `null` values, and the default has been set to 
 
 In the `paramForMarker` function:
 
-```{code-block} diff
+```{code-block} diff not-tested="not-supported:diff"
 :caption: marker.nix
      requestParams = let
 +      paramForMarker = marker:
@@ -726,7 +726,7 @@ But since every `users` attribute has a name, we could use that as an automatic 
 
 This `firstUpperAlnum` function allows you to retrieve the first character of the username, with the correct type for passing to `departure.style.label`:
 
-```{code-block} diff
+```{code-block} diff not-tested="not-supported:diff"
 :caption: marker.nix
 { lib, config, ... }:
  let
@@ -745,7 +745,7 @@ By transforming the argument to `lib.types.submodule` into a function, you can a
 
 One special argument automatically available to submodules is `name`, which when used in `attrsOf`, gives you the name of the attribute the submodule is defined under:
 
-```{code-block} diff
+```{code-block} diff not-tested="not-supported:diff"
 :caption: marker.nix
 -  userType = lib.types.submodule {
 +  userType = lib.types.submodule ({ name, ... }: {
@@ -762,7 +762,7 @@ In this case, you don't easily have access to the name from the marker submodule
 
 Instead you can use the `config` section of the `user` submodule to set a default, like so:
 
-```{code-block} diff
+```{code-block} diff not-tested="not-supported:diff"
 :caption: marker.nix
 +
 +    config = {
@@ -794,7 +794,7 @@ Here you will use two new type-functions for this:
 
 In the `let` block, add the following `colorType` option, which can hold strings containing either some given color names or an RGB value add the new compound type:
 
-```{code-block} diff
+```{code-block} diff not-tested="not-supported:diff"
 :caption: marker.nix
      ...
      (builtins.match "[^A-Z0-9]*([A-Z0-9]).*"
@@ -816,7 +816,7 @@ This allows either strings that match a 24-bit hexadecimal number or are equal t
 
 At the bottom of the `let` block, add the `style.color` option and specify a default value:
 
-```{code-block} diff
+```{code-block} diff not-tested="not-supported:diff"
 :caption: marker.nix
            (lib.types.strMatching "[A-Z0-9]");
          default = null;
@@ -832,7 +832,7 @@ At the bottom of the `let` block, add the `style.color` option and specify a def
 
 Now add an entry to the `paramForMarker` list which makes use of the new option:
 
-```{code-block} diff
+```{code-block} diff not-tested="not-supported:diff"
 :caption: marker.nix
                (marker.style.label != null)
                "label:${marker.style.label}"
@@ -847,7 +847,7 @@ In case you set many different markers, it would be helpful to have the ability 
 
 Add a new `style.size` option to `marker.nix`, allowing you to choose from the set of pre-defined sizes:
 
-```{code-block} diff
+```{code-block} diff not-tested="not-supported:diff"
 :caption: marker.nix
          type = colorType;
          default = "red";
@@ -864,7 +864,7 @@ Add a new `style.size` option to `marker.nix`, allowing you to choose from the s
 
 Now add a mapping for the size parameter in `paramForMarker`, which selects an appropriate string to pass to the API:
 
-```{code-block} diff
+```{code-block} diff not-tested="not-supported:diff"
 :caption: marker.nix
      requestParams = let
        paramForMarker = marker:
@@ -880,7 +880,7 @@ Now add a mapping for the size parameter in `paramForMarker`, which selects an a
 
 Finally, add another `lib.optional` call to the `attributes` string, making use of the selected size:
 
-```{code-block} diff
+```{code-block} diff not-tested="not-supported:diff"
 :caption: marker.nix
            attributes =
              lib.optional
@@ -904,7 +904,7 @@ The new option defined in the next section will allow you to set an *arrival* ma
 
 To start, create a new `path.nix` file with the following contents:
 
-```{code-block} nix
+```{code-block} nix not-tested="not-supported:diff"
 :caption: path.nix
 { lib, config, ... }:
 let
@@ -946,7 +946,7 @@ In the `config` attribute we augment the API call by setting the `requestParams`
 
 Now import this new `path.nix` module from your `marker.nix` module:
 
-```{code-block} diff
+```{code-block} diff not-tested="not-supported:diff"
 :caption: marker.nix
  in {
 
@@ -961,7 +961,7 @@ Now import this new `path.nix` module from your `marker.nix` module:
 
 Copy the `departure` option declaration to a new `arrival` option in `marker.nix`, to complete the initial path implementation:
 
-```{code-block} diff
+```{code-block} diff not-tested="not-supported:diff"
 :caption: marker.nix
          type = markerType;
          default = {};
@@ -976,7 +976,7 @@ Copy the `departure` option declaration to a new `arrival` option in `marker.nix
 
 Next, add an `arrival.style.label` attribute to the `config` block, mirroring the `departure.style.label`:
 
-```{code-block} diff
+```{code-block} diff not-tested="not-supported:diff"
 :caption: marker.nix
      config = {
        departure.style.label = lib.mkDefault
@@ -989,7 +989,7 @@ Next, add an `arrival.style.label` attribute to the `config` block, mirroring th
 
 Finally, update the return list in the function passed to `concatMap` in `map.markers` to also include the `arrival` marker for each user:
 
-```{code-block} diff
+```{code-block} diff not-tested="not-supported:diff"
 :caption: marker.nix
      map.markers = lib.filter
        (marker: marker.location != null)
@@ -1005,7 +1005,7 @@ Now you have the basis to define paths on the map, connecting pairs of departure
 
 In the path module, define a path connecting every user's departure and arrival locations:
 
-```{code-block} diff
+```{code-block} diff not-tested="not-supported:diff"
 :caption: path.nix
    config = {
 +
@@ -1037,7 +1037,7 @@ As before, you'll now declare a new submodule for the path style.
 While you could also directly declare the `style.weight` option, in this case you should use the submodule to be able reuse the path style type later.
 
 Add the `pathStyleType` submodule option to the `let` block in `path.nix`:
-```{code-block} diff
+```{code-block} diff not-tested="not-supported:diff"
 :caption: path.nix
  { lib, config, ... }:
  let
@@ -1062,7 +1062,7 @@ The path weight will default to 5, but can be set to any integer value in the 1 
 
 Now add a `style` option to the `options` set further down the file:
 
-```{code-block} diff
+```{code-block} diff not-tested="not-supported:diff"
 :caption: path.nix
      options = {
        locations = lib.mkOption {
@@ -1080,7 +1080,7 @@ Now add a `style` option to the `options` set further down the file:
 
 Finally, update the `attributes` list in `paramForPath`:
 
-```{code-block} diff
+```{code-block} diff not-tested="not-supported:diff"
 :caption: path.nix
        paramForPath = path:
          let
@@ -1102,7 +1102,7 @@ The module system allows you to declare values for an option multiple times, and
 
 This makes it possible to have a definition for the `users` option in the `marker.nix` module, as well as a `users` definition in `path.nix`:
 
-```{code-block} diff
+```{code-block} diff not-tested="not-supported:diff"
 :caption: path.nix
  in {
    options = {
@@ -1123,7 +1123,7 @@ This makes it possible to have a definition for the `users` option in the `marke
 
 Then add a line using the `user.pathStyle` option in `map.paths` where each user's paths are processed:
 
-```{code-block} diff
+```{code-block} diff not-tested="not-supported:diff"
 :caption: path.nix
          user.departure.location
          user.arrival.location
@@ -1142,7 +1142,7 @@ You can accomplish this using types you've already encountered by now.
 
 Add a new `colorType` block to `path.nix`, specifying the allowed color names and RGB/RGBA hexadecimal values:
 
-```{code-block} diff
+```{code-block} diff not-tested="not-supported:diff"
 :caption: path.nix
  { lib, config, ... }:
  let
@@ -1160,7 +1160,7 @@ Add a new `colorType` block to `path.nix`, specifying the allowed color names an
 
 Under the `weight` option, add a new `color` option to use the new `colorType` value:
 
-```{code-block} diff
+```{code-block} diff not-tested="not-supported:diff"
 :caption: path.nix
          type = lib.types.ints.between 1 20;
          default = 5;
@@ -1176,7 +1176,7 @@ Under the `weight` option, add a new `color` option to use the new `colorType` v
 
 Finally, add a line using the `color` option to the `attributes` list:
 
-```{code-block} diff
+```{code-block} diff not-tested="not-supported:diff"
 :caption: path.nix
            attributes =
              [
@@ -1195,7 +1195,7 @@ Since this feature can be turned on or off, you can do this using the `bool` typ
 
 Make the following changes to `path.nix` now:
 
-```{code-block} diff
+```{code-block} diff not-tested="not-supported:diff"
 :caption: path.nix
          type = colorType;
          default = "blue";
@@ -1211,7 +1211,7 @@ Make the following changes to `path.nix` now:
 
 Make sure to also add a line to use that value in `attributes` list, so the option value is included in the API call:
 
-```{code-block} diff
+```{code-block} diff not-tested="not-supported:diff"
 :caption: path.nix
              [
                "weight:${toString path.style.weight}"

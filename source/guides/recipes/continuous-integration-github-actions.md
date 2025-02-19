@@ -45,7 +45,7 @@ On your GitHub repository or organization (for use across all repositories):
 
 Create `.github/workflows/test.yml` with:
 
-```yaml
+```yaml not-tested="impure"
 name: "Test"
 on:
   pull_request:
@@ -83,7 +83,7 @@ For more details, check out [the readme][magic-nix-cache] and the [limits of Git
 
 Create `.github/workflows/test.yml` with:
 
-```yaml
+```yaml not-tested="impure"
 name: "Test"
 on:
   pull_request:

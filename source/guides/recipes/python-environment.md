@@ -6,7 +6,7 @@ To make best use of it you should be familiar with [defining declarative shell e
 
 Create a new file called `myapp.py` and add the following code:
 
-```{code-block} python myapp.py
+```{code-block} python myapp.py not-tested="yet"
 #!/usr/bin/env python
 
 from flask import Flask
@@ -30,7 +30,7 @@ This is a simple Flask application which serves a JSON document with the message
 
 Create a new file `shell.nix` to declare the development environment:
 
-```{code-block} nix shell.nix
+```{code-block} nix shell.nix not-tested="yet"
 { pkgs ? import (fetchTarball "https://github.com/NixOS/nixpkgs/tarball/nixos-23.11") {} }:
 
 pkgs.mkShellNoCC {
@@ -53,7 +53,7 @@ If you went with Python's [virtualenv](https://virtualenv.pypa.io/en/latest/), i
 
 Run `nix-shell` to enter the environment you just declared:
 
-```shell-session
+```shell-session not-tested="yet"
 $ nix-shell
 these 2 derivations will be built:
   /nix/store/5yvz7zf8yzck6r9z4f1br9sh71vqkimk-builder.pl.drv
@@ -68,7 +68,7 @@ these 93 paths will be fetched (109.50 MiB download, 468.52 MiB unpacked):
 
 Start the web application within this shell environment:
 
-```shell-session
+```shell-session not-tested="yet"
 [nix-shell:~]$ python ./myapp.py
  * Serving Flask app 'myapp'
  * Debug mode: off
@@ -84,7 +84,7 @@ Try it out!
 
 Open a new terminal to start another session of the shell environment and follow the commands below:
 
-```shell-session
+```shell-session not-tested="yet"
 $ nix-shell
 
 [nix-shell:~]$ curl 127.0.0.1:5000

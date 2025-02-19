@@ -1,7 +1,7 @@
 (recipes)=
 # Recipes
 
-```{toctree}
+```{toctree} not-tested="not-an-example"
 :maxdepth: 1
 
 add-binary-cache.md

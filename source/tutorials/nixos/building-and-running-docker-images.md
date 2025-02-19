@@ -23,7 +23,7 @@ However, you can also use the native Docker installation of your OS, if you are 
 
 [Nixpkgs](https://github.com/NixOS/nixpkgs) provides `dockerTools` to create Docker images:
 
-```nix
+```nix not-tested="yet"
 { pkgs ? import <nixpkgs> { }
 , pkgsLinux ? import <nixpkgs> { system = "x86_64-linux"; }
 }:
@@ -52,7 +52,7 @@ We call the `dockerTools.buildImage` and pass in some parameters:
 
 Save this in `hello-docker.nix` and build it:
 
-```shell-session
+```shell-session not-tested="yet"
 $ nix-build hello-docker.nix
 these derivations will be built:
   /nix/store/qpgdp0qpd8ddi1ld72w02zkmm7n87b92-docker-layer-hello-docker.drv
@@ -81,14 +81,14 @@ The store path in the last line of the output references the Docker image.
 
 To work with the container, load this image into Docker's image registry from the default `result` symlink created by `nix-build`:
 
-```shell-session
+```shell-session not-tested="not-supported:vm-test"
 $ docker load < result
 Loaded image: hello-docker:y74sb4nrhxr975xs7h83izgm8z75x5fc
 ```
 
 You can also use the store path to load the image in order to avoid depending on the presence of `result`:
 
-```shell-session
+```shell-session not-tested="not-supported:vm-test"
 $ docker load < /nix/store/y74sb4nrhxr975xs7h83izgm8z75x5fc-docker-image-hello-docker.tar.gz
 Loaded image: hello-docker:y74sb4nrhxr975xs7h83izgm8z75x5fc
 ```
@@ -96,14 +96,14 @@ Loaded image: hello-docker:y74sb4nrhxr975xs7h83izgm8z75x5fc
 Even more conveniently, you can do everything in one command.
 The advantage of this approach is that `nix-build` will rebuild the image if there are any changes and pass the new store path to `docker load`:
 
-```shell-session
+```shell-session not-tested="not-supported:vm-test"
 $ docker load < $(nix-build hello-docker.nix)
 Loaded image: hello-docker:y74sb4nrhxr975xs7h83izgm8z75x5fc
 ```
 
 Now that you have loaded the image into Docker, you can run it:
 
-```shell-session
+```shell-session not-tested="not-supported:vm-test"
 $ docker run -t hello-docker:y74sb4nrhxr975xs7h83izgm8z75x5fc
 Hello, world!
 ```

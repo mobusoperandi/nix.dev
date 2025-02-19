@@ -82,16 +82,19 @@ It is explicitly encouraged to update or restructure the manuals where appropria
 
 ### Code samples
 
+<<<TODO: explain usage of eelco testing library here, and include in examples>>>
+
 Always motivate code before showing it, describing in words what it is for or what it will do.
 
 ::::{admonition} Counter-example
 :class: error
 
-````markdown
+````markdown not-tested="not-an-example"
 Run this command:
 
-```bash
-:(){ :|:& };:
+```bash example="hello-world"
+$ echo "hello, world"
+hello, world
 ```
 ````
 ::::
@@ -102,11 +105,18 @@ Use a collapsed content box for explanation that would distract from the reading
 ::::{admonition} Example
 :class: tip
 
-````markdown
-Set off a [fork bomb](https://en.wikipedia.org/wiki/Fork_bomb):
+````markdown not-tested="not-an-example"
+Create a ["Hello, World"](https://en.wikipedia.org/wiki/%22Hello,_World!%22_program) program in Bash:
 
-```bash
-:(){ :|:& };:
+`hello.sh`:
+
+```bash example="hello-world"
+echo "Hello, World!"
+```
+
+```bash example="hello-world"
+$ bash ./hello.sh
+Hello, World!
 ```
 
 :::{dropdown} Detailed explanation
@@ -129,10 +139,14 @@ Code samples that are _intended_ to work should work.
 If you are going to present an example that does not work (e.g. you're illustrating a common mistake) explain so beforehand.
 Many readers will get stuck trying to make example code work without reading ahead to find out that the code isn't intended to work.
 
+>>> TODO: explain eelco's syntax for defining a file <<<
+
 Code samples should all include a programming language when applicable for syntax highlighting when rendered e.g.
 
-````
-```python
+````markdown not-tested="not-an-example"
+`hello.py`:
+
+```python example=a
 print("Hello, World!")
 ```
 ````
@@ -159,7 +173,7 @@ Put definitions close to their first use.
 :::{admonition} Example
 :class: tip
 
-```markdown
+```markdown not-tested="not-an-example"
 We follow the [Diátaxis](https://diataxis.fr/) approach to structure documentation.
 This framework distinguishes between [tutorials], [guides], [reference], and [explanation].
 

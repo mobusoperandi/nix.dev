@@ -26,7 +26,7 @@ In this tutorial series you'll learn
 This is a very long tutorial.
 Prepare for at least 3 hours of work.
 
-```{toctree}
+```{toctree} not-tested="not-an-example"
 :maxdepth: 1
 :caption: Lessons
 :numbered:

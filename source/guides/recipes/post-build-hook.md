@@ -22,7 +22,7 @@ This tutorial assumes you have [configured an S3-compatible binary cache](https:
 Use [`nix-store --generate-binary-cache-key`](https://nix.dev/manual/nix/2.22/command-ref/nix-store/generate-binary-cache-key) to create a pair of cryptographic keys.
 You will sign paths with the private key, and distribute the public key for verifying the authenticity of the paths.
 
-```console
+```console not-tested="not-worth-it"
 $ nix-store --generate-binary-cache-key example-nix-cache-1 /etc/nix/key.private /etc/nix/key.public
 $ cat /etc/nix/key.public
 example-nix-cache-1:1/cKDz3QCCOmwcztD2eV6Coggp6rqc9DGjWv7C0G+rM=
@@ -31,7 +31,7 @@ example-nix-cache-1:1/cKDz3QCCOmwcztD2eV6Coggp6rqc9DGjWv7C0G+rM=
 [](custom-binary-cache) on any machine that will access the bucket.
 For example, add the cache URL to [`substituters`](https://nix.dev/manual/nix/2.22/command-ref/conf-file#conf-substituters) and the public key to [`trusted-public-keys`](https://nix.dev/manual/nix/2.22/command-ref/conf-file#conf-trusted-public-keys) in `nix.conf`:
 
-```
+```text not-tested="not-worth-it"
 substituters = https://cache.nixos.org/ s3://example-nix-cache
 trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= example-nix-cache-1:1/cKDz3QCCOmwcztD2eV6Coggp6rqc9DGjWv7C0G+rM=
 ```
@@ -39,7 +39,7 @@ trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDS
 Machines that build for the cache must sign derivations using the private key.
 The path to the file containing the private key you just generated must be added to the [`secret-key-files`](https://nix.dev/manual/nix/2.22/command-ref/conf-file#conf-secret-key-files) setting for those machines:
 
-```
+```text not-tested="not-worth-it"
 secret-key-files = /etc/nix/key.private
 ```
 
@@ -47,7 +47,7 @@ secret-key-files = /etc/nix/key.private
 
 Write the following script to `/etc/nix/upload-to-cache.sh`:
 
-```bash
+```bash not-tested="not-supported:vm-test"
 #!/bin/sh
 set -eu
 set -f # disable globbing
@@ -63,7 +63,7 @@ The `set -f` disables globbing in the shell.
 
 Make sure the hook program is executable by the `root` user:
 
-```console
+```console not-tested="not-supported:vm-test"
 # chmod +x /etc/nix/upload-to-cache.sh
 ```
 
@@ -71,13 +71,13 @@ Make sure the hook program is executable by the `root` user:
 
 Set the [`post-build-hook`](https://nix.dev/manual/nix/2.22/command-ref/conf-file#conf-post-build-hook) configuration option on the local machine to run the hook:
 
-```
+```text not-tested="not-supported:vm-test"
 post-build-hook = /etc/nix/upload-to-cache.sh
 ```
 
 Then restart the `nix-daemon` an all involved machines, e.g. with
 
-```
+```console not-tested="not-supported:vm-test"
 pkill nix-daemon
 ```
 
@@ -85,7 +85,7 @@ pkill nix-daemon
 
 Build any derivation, for example:
 
-```console
+```console not-tested="not-supported:vm-test"
 $ nix-build -E '(import <nixpkgs> {}).writeText "example" (builtins.toString builtins.currentTime)'
 this derivation will be built:
   /nix/store/s4pnfbkalzy5qz57qs6yybna8wylkig6-example.drv
@@ -98,7 +98,7 @@ post-build-hook: Uploading paths /nix/store/ibcyipq5gf91838ldx40mjsp0b8w9n18-exa
 
 To check that the hook took effect, delete the path from the store, and try substituting it from the binary cache:
 
-```console
+```console not-tested="not-supported:vm-test"
 $ rm ./result
 $ nix-store --delete /nix/store/ibcyipq5gf91838ldx40mjsp0b8w9n18-example
 $ nix-store --realise /nix/store/ibcyipq5gf91838ldx40mjsp0b8w9n18-example

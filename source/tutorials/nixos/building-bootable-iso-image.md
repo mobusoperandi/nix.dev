@@ -9,7 +9,7 @@ You may find that an official installation image lacks some hardware support.
 
 The solution is to create `myimage.nix` to point to the latest kernel using the minimal installation ISO:
 
-```nix
+```nix not-tested="yet"
 { pkgs, modulesPath, lib, ... }: {
   imports = [
     "${modulesPath}/installer/cd-dvd/installation-cd-minimal.nix"
@@ -25,13 +25,13 @@ The solution is to create `myimage.nix` to point to the latest kernel using the 
 
 Generate an ISO with the above configuration:
 
-```shell-session
+```shell-session not-tested="yet"
 $ NIX_PATH=nixpkgs=https://github.com/NixOS/nixpkgs/archive/74e2faf5965a12e8fa5cff799b1b19c6cd26b0e3.tar.gz nix-shell -p nixos-generators --run "nixos-generate --format iso --configuration ./myimage.nix -o result"
 ```
 
 Copy the new image to your USB stick by replacing `sdX` with the name of your device:
 
-```shell-session
+```shell-session not-tested="not-worth-it"
 $ dd if=result/iso/*.iso of=/dev/sdX status=progress
 $ sync
 ```

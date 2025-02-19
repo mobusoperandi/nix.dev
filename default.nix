@@ -123,6 +123,20 @@ in
   # build with `nix-build -A build`
   build = nix-dev;
 
+  test =
+    let
+      pkgs = pkgs-unstable;
+    in
+      (import inputs.main.eelco).lib.eelco {
+        inherit pkgs;
+        src = ./source;
+        env.NIX_PATH = "nixpkgs=${inputs.main.nixpkgs-rolling}";
+        runtimeInputs = [pkgs-unstable.nixVersions.latest];
+        requiredSystemFeatures = ["recursive-nix"];
+        timeout = 2; #<<<
+        prompts = ["nix-repl> "];
+      };
+
   shell = pkgs.mkShell {
     inputsFrom = [ nix-dev ];
     packages = [

@@ -3,7 +3,7 @@
 
 These sections contains guides to getting things done.
 
-```{toctree}
+```{toctree} not-tested="not-an-example"
 :glob:
 :maxdepth: 2
 

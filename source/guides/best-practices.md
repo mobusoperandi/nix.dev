@@ -18,7 +18,7 @@ Always quote URLs.
 
 Example:
 
-```{code-block} nix
+```{code-block} nix not-tested="not-supported:expression"
 :class: expression
 rec {
   a = 1;
@@ -26,7 +26,7 @@ rec {
 }
 ```
 
-```{code-block}
+```{code-block} not-tested="not-supported:expression"
 :class: value
 { a = 1; b = 3; }
 ```
@@ -34,7 +34,7 @@ rec {
 A common pitfall is to introduce a hard to debug error `infinite recursion` when shadowing a name.
 The simplest example for this is:
 
-```{code-block} nix
+```{code-block} nix not-tested="not-supported:expression"
 let a = 1; in rec { a = a; }
 ```
 
@@ -43,7 +43,7 @@ Avoid `rec`. Use `let ... in`.
 
 Example:
 
-```{code-block} nix
+```{code-block} nix not-tested="not-supported:expression"
 :class: expression
 let
   a = 1;
@@ -57,7 +57,7 @@ in {
 :::{tip}
 Self-reference can be achieved by explicitly naming the attribute set:
 
-```{code-block} nix
+```{code-block} nix not-tested="not-supported:expression"
 :class: expression
 let
   argset = {
@@ -73,7 +73,7 @@ in
 
 It's still common to see the following expression in the wild:
 
-```{code-block} nix
+```{code-block} nix not-tested="not-supported:expression"
 :class: expression
 with (import <nixpkgs> {});
 
@@ -94,7 +94,7 @@ Explicitly assign names in a `let` expression.
 
 Example:
 
-```{code-block} nix
+```{code-block} nix not-tested="not-supported:expression"
 :class: expression
 let
   pkgs = import <nixpkgs> {};
@@ -110,14 +110,14 @@ Smaller scopes are usually less problematic, but can still lead to surprises due
 :::{tip}
 If you want to avoid `with` altogether, try replacing expressions of this form
 
-```{code-block} nix
+```{code-block} nix not-tested="not-supported:expression"
 :class: expression
 buildInputs = with pkgs; [ curl jq ];
 ```
 
 with the following:
 
-```{code-block} nix
+```{code-block} nix not-tested="not-supported:expression"
 :class: expression
 buildInputs = builtins.attrValues {
   inherit (pkgs) curl jq;
@@ -172,7 +172,7 @@ On NixOS, `$NIX_PATH` can be set permanently with the [`nix.nixPath`](https://se
 
 To quickly obtain packages for demonstration, we use the following concise pattern:
 
-```nix
+```nix not-tested="not-supported:expression"
 import <nixpkgs> {}
 ```
 
@@ -188,7 +188,7 @@ It is a well-known problem that can't be resolved without breaking existing setu
 Explicitly set [`config`](https://nixos.org/manual/nixpkgs/stable/#chap-packageconfig) and [`overlays`](https://nixos.org/manual/nixpkgs/stable/#chap-overlays) when importing Nixpkgs:
 
 
-```nix
+```nix not-tested="not-supported:expression"
 import <nixpkgs> { config = {}; overlays = []; }
 ```
 :::
@@ -202,12 +202,12 @@ The [attribute set update operator](https://nix.dev/manual/nix/stable/language/o
 
 Example:
 
-```{code-block} nix
+```{code-block} nix not-tested="not-supported:expression"
 :class: expression
 { a = 1; b = 2; } // { b = 3; c = 4; }
 ```
 
-```{code-block} nix
+```{code-block} nix not-tested="not-supported:expression"
 :class: value
 { a = 1; b = 3; c = 4; }
 ```
@@ -216,12 +216,12 @@ However, names on the right take precedence, and updates are shallow.
 
 Example:
 
-```{code-block} nix
+```{code-block} nix not-tested="not-supported:expression"
 :class: expression
 { a = { b = 1; }; } // { a = { c = 3; }; }
 ```
 
-```{code-block} nix
+```{code-block} nix not-tested="not-supported:expression"
 :class: value
 { a = { c = 3; }; }
 ```
@@ -231,13 +231,13 @@ Here, key `b` was completely removed, because the whole `a` value was replaced.
 :::{tip}
 Use the [`pkgs.lib.recursiveUpdate`](https://nixos.org/manual/nixpkgs/stable/#function-library-lib.attrsets.recursiveUpdate) Nixpkgs function:
 
-```{code-block} nix
+```{code-block} nix not-tested="not-supported:expression"
 :class: expression
 let pkgs = import <nixpkgs> {}; in
 pkgs.lib.recursiveUpdate { a = { b = 1; }; } { a = { c = 3;}; }
 ```
 
-```{code-block} nix
+```{code-block} nix not-tested="not-supported:expression"
 :class: value
 { a = { b = 1; c = 3; }; }
 ```
@@ -245,7 +245,7 @@ pkgs.lib.recursiveUpdate { a = { b = 1; }; } { a = { c = 3;}; }
 
 ## Reproducible source paths
 
-```{code-block} nix
+```{code-block} nix not-tested="yet"
 :class: expression
 let pkgs = import <nixpkgs> {}; in
 
@@ -268,7 +268,7 @@ Use [`builtins.path`](https://nix.dev/manual/nix/stable/language/builtins.html#b
 
 This will derive the symbolic name of the store path from `name` instead of the working directory:
 
-```{code-block} nix
+```{code-block} nix not-tested="yet"
 :class: expression
 let pkgs = import <nixpkgs> {}; in
 

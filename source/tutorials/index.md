@@ -3,7 +3,7 @@
 
 These sections contains series of lessons to get started.
 
-```{toctree}
+```{toctree} not-tested="not-an-example"
 :glob:
 :maxdepth: 2
 

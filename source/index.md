@@ -90,7 +90,7 @@ You probably won't want to go back to a world without Nix if you're a:
 - Open source software enthusiast
 
 
-```{toctree}
+```{toctree} not-tested="not-an-example"
 :hidden:
 
 install-nix.md
