@@ -48,9 +48,9 @@ The build platform is determined automatically by Nix during the configure phase
 
 The host platform is best determined by running this command on the host platform:
 
-```shell-session not-tested="yet"
-$ $(nix-build '<nixpkgs>' -I nixpkgs=channel:nixos-23.11 -A gnu-config)/config.guess
-aarch64-unknown-linux-gnu
+```shell-session not-tested="fails-to-parse-new-lines"
+$ $(nix-build '<nixpkgs>' -A gnu-config)/config.guess
+x86_64-pc-linux-gnu
 ```
 
 In case this is not possible (for example, when the host platform is not easily accessible for development), the platform config has to be constructed manually via the following template:
