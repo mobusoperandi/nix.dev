@@ -126,11 +126,11 @@ Problem: the expression in `hello.nix` is a *function*, which only produces its 
 
 The recommended way to do this is to create a `default.nix` file in the same directory as `hello.nix`, with the following contents:
 
-```nix not-tested="not-supported:assert-build-failed"
-# default.nix
+`default.nix`:
+
+```nix example="finding-file-hash"
 let
-  nixpkgs = fetchTarball "https://github.com/NixOS/nixpkgs/tarball/nixos-24.05";
-  pkgs = import nixpkgs { config = {}; overlays = []; };
+  pkgs = import <nixpkgs> { config = {}; overlays = []; };
 in
 {
   hello = pkgs.callPackage ./hello.nix { };
@@ -171,40 +171,33 @@ error:
 As expected, the incorrect file hash caused an error, and Nix helpfully provided the correct one.
 In `hello.nix`, replace the empty string with the correct hash:
 
-```nix not-tested="yet"
-# hello.nix
+`hello.nix`:
+
+```nix example="finding-file-hash"
 {
-  stdenv,
-  fetchzip,
+  pkgs
 }:
+{
+    hello = pkgs.stdenv.mkDerivation {
+      pname = "hello";
+      version = "2.12.1";
 
-stdenv.mkDerivation {
-  pname = "hello";
-  version = "2.12.1";
-
-  src = fetchzip {
-    url = "https://ftp.gnu.org/gnu/hello/hello-2.12.1.tar.gz";
-    sha256 = "0xw6cr5jgi1ir13q6apvrivwmmpr5j8vbymp0x6ll0kcv6366hnn";
-  };
+      src = pkgs.fetchzip {
+        url = "https://ftp.gnu.org/gnu/hello/hello-2.12.1.tar.gz";
+        sha256 = "0xw6cr5jgi1ir13q6apvrivwmmpr5j8vbymp0x6ll0kcv6366hnn";
+      };
+    };
 }
+
 ```
 
 Now run the previous command again:
 
-```console not-tested="yet"
+```shell-session example="finding-file-hash"
 $ nix-build -A hello
-this derivation will be built:
-  /nix/store/rbq37s3r76rr77c7d8x8px7z04kw2mk7-hello.drv
-building '/nix/store/rbq37s3r76rr77c7d8x8px7z04kw2mk7-hello.drv'...
-...
-configuring
-...
-configure: creating ./config.status
-config.status: creating Makefile
-...
-building
-... <many more lines omitted>
+/nix/store/...-hello-2.12.1
 ```
+
 Great news: the derivation built successfully!
 
 The console output shows that `configure` was called, which produced a `Makefile` that was then used to build the project.

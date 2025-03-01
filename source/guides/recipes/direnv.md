@@ -8,16 +8,17 @@ Instead of manually activating the environment for each project, you can reload 
 
 For example, write a `shell.nix` with the following contents:
 
-`shell.nix`:
+`myproject/shell.nix`:
 
-```nix not-tested="yet"
+```nix example="automatic-environment-direnv"
 let
-  nixpkgs = fetchTarball "https://github.com/NixOS/nixpkgs/tarball/nixos-23.11";
-  pkgs = import nixpkgs { config = {}; overlays = []; };
+  pkgs = import <nixpkgs> { config = {}; overlays = []; };
 in
 
 pkgs.mkShellNoCC {
   packages = with pkgs; [
+    direnv
+    which
     hello
   ];
 }
@@ -25,26 +26,52 @@ pkgs.mkShellNoCC {
 
 From the top-level directory of your project run:
 
-```shell-session not-tested="yet"
-$ echo "use nix" > .envrc && direnv allow
+```shell-session example="automatic-environment-direnv"
+$ cd myproject
+$ echo "use nix" > .envrc
+$ nix-shell
+...
+$ direnv allow
+...
+$ which hello
+/nix/store/...-hello-...
 ```
 
 The next time you launch your terminal and enter the top-level directory of your project, `direnv` will automatically launch the shell defined in `shell.nix`
 
-```shell-session not-tested="yet"
-$ cd myproject
+```shell-session not-tested="nix-shell-is-not-persisted"
 $ which hello
-/nix/store/1gxz5nfzfnhyxjdyzi04r86sh61y4i00-hello-2.12.1/bin/hello
+/nix/store/...-hello-...
 ```
 
 `direnv` will also check for changes to the `shell.nix` file.
 
-Make the following addition:
+Changing the file as below:
+
+`shell.nix`:
+
+```nix example="automatic-environment-shell-hook"
+let
+  pkgs = import <nixpkgs> { config = {}; overlays = []; };
+in
+
+pkgs.mkShellNoCC {
+  packages = with pkgs; [
+    hello
+  ];
+
+  # Add shellHook below
+  shellHook = ''
+    hello
+  '';
+}
+```
+
+The diff would be as follows:
 
 ```diff not-tested="yet"
  let
-   nixpkgs = fetchTarball "https://github.com/NixOS/nixpkgs/tarball/nixos-23.11";
-   pkgs = import nixpkgs { config = {}; overlays = []; };
+   pkgs = import <nixpkgs> { config = {}; overlays = []; };
  in
 
  pkgs.mkShellNoCC {
@@ -60,6 +87,8 @@ Make the following addition:
 
 The running environment should reload itself after the first interaction (run any command or press `Enter`).
 
-```shell-session not-tested="yet"
+```shell-session example="automatic-environment-shell-hook"
+$ nix-shell
 Hello, world!
+...
 ```

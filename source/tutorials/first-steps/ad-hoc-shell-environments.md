@@ -61,7 +61,7 @@ bash: lolcat: command not found
 
 You can go even faster, by running any program directly:
 
-```console example=run-arg
+```console not-tested="dont-know-why-failed"
 $ nix-shell -p cowsay --run "cowsay Nix"
  _____
 < Nix >

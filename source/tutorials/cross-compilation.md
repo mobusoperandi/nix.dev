@@ -48,9 +48,9 @@ The build platform is determined automatically by Nix during the configure phase
 
 The host platform is best determined by running this command on the host platform:
 
-```shell-session not-tested="yet"
-$ $(nix-build '<nixpkgs>' -I nixpkgs=channel:nixos-23.11 -A gnu-config)/config.guess
-aarch64-unknown-linux-gnu
+```shell-session not-tested="fails-to-parse-new-lines"
+$ $(nix-build '<nixpkgs>' -A gnu-config)/config.guess
+x86_64-pc-linux-gnu
 ```
 
 In case this is not possible (for example, when the host platform is not easily accessible for development), the platform config has to be constructed manually via the following template:
@@ -134,7 +134,12 @@ They usually do not match the corresponding platform config string.
 
 You can retrieve the platform string from `pkgsCross.<platform>.stdenv.hostPlatform.config`:
 
-```shell-session not-tested="yet"
+```shell-session example="platform-string"
+$ nix repl
+...
+nix-repl> :l <nixpkgs>
+Added ... variables.
+
 nix-repl> pkgsCross.aarch64-multiplatform.stdenv.hostPlatform.config
 "aarch64-unknown-linux-gnu"
 ```
@@ -189,11 +194,10 @@ There are multiple equivalent ways to access packages targeted to the host platf
 
 To cross compile a package like [hello](https://www.gnu.org/software/hello/), pick the platform attribute — `aarch64-multiplatform` in our case — and run:
 
-```shell-session not-tested="yet"
-$ nix-build '<nixpkgs>' -I nixpkgs=channel:nixos-23.11 \
-  -A pkgsCross.aarch64-multiplatform.hello
+```shell-session example="cross-compile-package"
+$ nix-build '<nixpkgs>' -A pkgsCross.aarch64-multiplatform.hello
 ...
-/nix/store/1dx87l5rav8679lqigf9xxkb7wvh2m4k-hello-aarch64-unknown-linux-gnu-2.12.1
+/nix/store/...-hello-aarch64-unknown-linux-gnu-...
 ```
 
 :::{note}
@@ -206,12 +210,13 @@ The hash of the package in the store path changes with the updates to the channe
 
 To show off the power of cross compilation in Nix, let's build our own Hello World program by cross compiling it as static executables to `armv6l-unknown-linux-gnueabihf` and `x86_64-w64-mingw32` (Windows) platforms and run the resulting executable with [an emulator](https://en.wikipedia.org/wiki/Emulator).
 
-Given we have a `cross-compile.nix`:
+Given we have the following file:
 
-```nix not-tested="yet"
+`cross-compile.nix`:
+
+```nix not-tested="fix-darwin-issue"
 let
-  nixpkgs = fetchTarball "https://github.com/NixOS/nixpkgs/tarball/release-23.11";
-  pkgs = import nixpkgs {};
+  pkgs = import <nixpkgs> {};
 
   # Create a C program that prints Hello World
   helloWorld = pkgs.writeText "hello.c" ''
@@ -250,7 +255,7 @@ in {
 
 If we build this example and print both resulting derivations, we should see "Hello, world!" for each:
 
-```shell-session not-tested="yet"
+```shell-session not-tested="fix-darwin-issue"
 $ cat $(nix-build cross-compile.nix)
 Hello, world!
 Hello, world!
@@ -262,12 +267,13 @@ In the {ref}`tutorial for declarative reproducible environments <declarative-rep
 
 It's also possible to provide an environment with a compiler configured for **cross-compilation to static binaries using musl**.
 
-Given we have a `shell.nix`:
+Given we have the following file:
 
-```nix not-tested="yet"
+`shell.nix`:
+
+```nix example="developer-environment-with-cross-compiler"
 let
-  nixpkgs = fetchTarball "https://github.com/NixOS/nixpkgs/tarball/release-23.11";
-  pkgs = (import nixpkgs {}).pkgsCross.aarch64-multiplatform;
+  pkgs = (import <nixpkgs> {}).pkgsCross.aarch64-multiplatform;
 in
 
 # callPackage is needed due to https://github.com/NixOS/nixpkgs/pull/126844
@@ -279,9 +285,11 @@ pkgs.pkgsStatic.callPackage ({ mkShell, zlib, pkg-config, file }: mkShell {
 }) {}
 ```
 
-And `hello.c`:
+And the following `C` file:
 
-```{code-block} c hello.c not-tested="yet"
+`hello.c`:
+
+```c example="developer-environment-with-cross-compiler"
 #include <stdio.h>
 
 int main (void)
@@ -293,15 +301,15 @@ int main (void)
 
 We can cross compile it:
 
-```shell-session not-tested="yet"
+```shell-session example="developer-environment-with-cross-compiler"
 $ nix-shell --run '$CC hello.c -o hello' shell.nix
 ```
 
 And confirm it's aarch64:
 
-```shell-session not-tested="yet"
+```shell-session example="developer-environment-with-cross-compiler"
 $ nix-shell --run 'file hello' shell.nix
-hello: ELF 64-bit LSB executable, ARM aarch64, version 1 (SYSV), statically linked, with debug_info, not stripped
+hello: ELF 64-bit LSB executable, ARM aarch64, version 1 (SYSV), statically linked, not stripped
 ```
 
 ## Next steps

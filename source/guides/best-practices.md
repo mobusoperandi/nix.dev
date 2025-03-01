@@ -245,8 +245,9 @@ pkgs.lib.recursiveUpdate { a = { b = 1; }; } { a = { c = 3;}; }
 
 ## Reproducible source paths
 
-```{code-block} nix not-tested="yet"
-:class: expression
+`default.nix`:
+
+```nix example="reproducible-source-paths"
 let pkgs = import <nixpkgs> {}; in
 
 pkgs.stdenv.mkDerivation {
@@ -256,6 +257,13 @@ pkgs.stdenv.mkDerivation {
 ```
 
 If the Nix file containing this expression is in `/home/myuser/myproject`, then the store path of `src` will be `/nix/store/<hash>-myproject`.
+
+```shell-session example="reproducible-source-paths"
+$ echo -e "install:\n\t@echo \"Hello, world\"" > Makefile
+$ nix-build
+...
+/nix/store/...-foo
+```
 
 The problem is that now your build is no longer reproducible, as it depends on the parent directory name.
 That cannot be declared in the source code, and results in an impurity.
@@ -268,8 +276,9 @@ Use [`builtins.path`](https://nix.dev/manual/nix/stable/language/builtins.html#b
 
 This will derive the symbolic name of the store path from `name` instead of the working directory:
 
-```{code-block} nix not-tested="yet"
-:class: expression
+`default.nix`:
+
+```nix example="builtins-path"
 let pkgs = import <nixpkgs> {}; in
 
 pkgs.stdenv.mkDerivation {
@@ -277,4 +286,12 @@ pkgs.stdenv.mkDerivation {
   src = builtins.path { path = ./.; name = "myproject"; };
 }
 ```
+
+```shell-session example="builtins-path"
+$ echo -e "install:\n\t@echo \"Hello, world\"" > Makefile
+$ nix-build
+...
+/nix/store/...-foo
+```
+
 :::
