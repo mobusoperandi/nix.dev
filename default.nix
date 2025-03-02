@@ -1,12 +1,12 @@
-{
-  inputs ? import ./nix/inputs.nix,
-  system ? builtins.currentSystem,
-  pkgs ? import inputs.nixpkgs."23.05" {
+{ inputs ? import ./nix/inputs.nix
+, system ? builtins.currentSystem
+, pkgs ? import inputs.nixpkgs."23.05" {
     config = { };
     overlays = [ (import ./nix/overlay.nix) ];
     inherit system;
-  },
-  withManuals ? false, # building the manuals is expensive
+  }
+, withManuals ? false
+, # building the manuals is expensive
 }:
 let
   lib = pkgs.lib;
@@ -127,15 +127,15 @@ in
     let
       pkgs = pkgs-unstable;
     in
-      (import inputs.main.eelco).lib.eelco {
-        inherit pkgs;
-        src = ./source;
-        env.NIX_PATH = "nixpkgs=${inputs.main.nixpkgs-rolling}";
-        runtimeInputs = [pkgs-unstable.nixVersions.latest];
-        requiredSystemFeatures = ["recursive-nix"];
-        timeout = 2; #<<<
-        prompts = ["nix-repl> "];
-      };
+    (import inputs.main.eelco).lib.eelco {
+      inherit pkgs;
+      src = ./source;
+      env.NIX_PATH = "nixpkgs=${inputs.main.nixpkgs-rolling}";
+      runtimeInputs = [ pkgs-unstable.nixVersions.latest ];
+      requiredSystemFeatures = [ "recursive-nix" ];
+      timeout = 5; #<<<
+      prompts = [ "nix-repl> " ];
+    };
 
   shell = pkgs.mkShell {
     inputsFrom = [ nix-dev ];
