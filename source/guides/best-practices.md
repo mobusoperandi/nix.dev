@@ -256,10 +256,16 @@ pkgs.stdenv.mkDerivation {
 }
 ```
 
+`Makefile`:
+
+```nix example="reproducible-source-paths"
+install:
+    @echo "Hello, world"
+```
+
 If the Nix file containing this expression is in `/home/myuser/myproject`, then the store path of `src` will be `/nix/store/<hash>-myproject`.
 
 ```shell-session example="reproducible-source-paths"
-$ echo "\t@echo Hello, world!" > Makefile
 $ nix-build
 ...
 /nix/store/...-foo.drv
