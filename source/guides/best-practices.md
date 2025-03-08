@@ -259,7 +259,7 @@ pkgs.stdenv.mkDerivation {
 If the Nix file containing this expression is in `/home/myuser/myproject`, then the store path of `src` will be `/nix/store/<hash>-myproject`.
 
 ```shell-session example="reproducible-source-paths"
-$ echo "Hello, world!" > hello.cpp
+$ echo "\t@echo Hello, world!" > Makefile
 $ nix-build
 ...
 /nix/store/...-foo.drv
