@@ -245,8 +245,9 @@ pkgs.lib.recursiveUpdate { a = { b = 1; }; } { a = { c = 3;}; }
 
 ## Reproducible source paths
 
-```{code-block} nix not-tested="yet"
-:class: expression
+`paths.nix`:
+
+```nix example="reproducible-source-paths"
 let pkgs = import <nixpkgs> {}; in
 
 pkgs.stdenv.mkDerivation {
@@ -256,6 +257,10 @@ pkgs.stdenv.mkDerivation {
 ```
 
 If the Nix file containing this expression is in `/home/myuser/myproject`, then the store path of `src` will be `/nix/store/<hash>-myproject`.
+
+```shell-session example="reproducible-source-paths"
+$ nix-build
+```
 
 The problem is that now your build is no longer reproducible, as it depends on the parent directory name.
 That cannot be declared in the source code, and results in an impurity.
