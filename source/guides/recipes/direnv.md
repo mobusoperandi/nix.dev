@@ -10,7 +10,7 @@ For example, write a `shell.nix` with the following contents:
 
 `shell.nix`:
 
-```nix not-tested="yet"
+```nix example="automatic-environment-direnv"
 let
   nixpkgs = fetchTarball "https://github.com/NixOS/nixpkgs/tarball/nixos-23.11";
   pkgs = import nixpkgs { config = {}; overlays = []; };
@@ -25,8 +25,9 @@ pkgs.mkShellNoCC {
 
 From the top-level directory of your project run:
 
-```shell-session not-tested="yet"
-$ echo "use nix" > .envrc && direnv allow
+```shell-session example="automatic-environment-direnv"
+$ echo "use nix" > .envrc && nix-shell -p direnv --run "direnv allow"
+
 ```
 
 The next time you launch your terminal and enter the top-level directory of your project, `direnv` will automatically launch the shell defined in `shell.nix`

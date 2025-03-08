@@ -291,6 +291,7 @@ pkgs.stdenv.mkDerivation {
 $ echo -e "install:\n\t@echo \"Hello, world\"" > Makefile
 $ nix-build
 ...
-/nix/store/...-myproject
+/nix/store/...-foo
 ```
+
 :::
