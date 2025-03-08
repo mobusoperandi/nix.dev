@@ -245,7 +245,7 @@ pkgs.lib.recursiveUpdate { a = { b = 1; }; } { a = { c = 3;}; }
 
 ## Reproducible source paths
 
-`paths.nix`:
+`default.nix`:
 
 ```nix example="reproducible-source-paths"
 let pkgs = import <nixpkgs> {}; in
@@ -259,7 +259,11 @@ pkgs.stdenv.mkDerivation {
 If the Nix file containing this expression is in `/home/myuser/myproject`, then the store path of `src` will be `/nix/store/<hash>-myproject`.
 
 ```shell-session example="reproducible-source-paths"
+$ echo "Hello, world!" > hello.cpp
 $ nix-build
+...
+/nix/store/...-foo.drv
+error: builder for '/nix/store/...-foo.drv' failed to produce output path for output 'out' at '/nix/store/...-foo.drv.chroot/root/nix/store/...-foo'
 ```
 
 The problem is that now your build is no longer reproducible, as it depends on the parent directory name.
