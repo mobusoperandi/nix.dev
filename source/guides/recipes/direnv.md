@@ -19,6 +19,7 @@ in
 pkgs.mkShellNoCC {
   packages = with pkgs; [
     hello
+    which
   ];
 }
 ```
@@ -26,10 +27,7 @@ pkgs.mkShellNoCC {
 From the top-level directory of your project run:
 
 ```shell-session example="automatic-environment-direnv"
-$ nix-shell -p direnv which --run "echo \"use nix\" > .envrc; direnv allow; which hello"
-
-    /nix/store/...-direnv-2.35.0
-    /nix/store/...-which-2.21
+$ nix-shell -p direnv which --command "echo \"use nix\" > .envrc; return" --command "direnv allow; return" --command "which hello; return"
 ```
 
 The next time you launch your terminal and enter the top-level directory of your project, `direnv` will automatically launch the shell defined in `shell.nix`
