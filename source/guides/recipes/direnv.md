@@ -26,6 +26,8 @@ pkgs.mkShellNoCC {
 From the top-level directory of your project run:
 
 ```shell-session example="automatic-environment-direnv"
+$ nix-build shell.nix
+
 $ nix-shell -p direnv which --run "echo \"use nix\" > .envrc && direnv allow && which hello"
 ```
 
