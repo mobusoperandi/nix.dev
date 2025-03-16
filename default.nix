@@ -131,7 +131,7 @@ in
       inherit pkgs;
       src = ./source;
       env.NIX_PATH = "nixpkgs=${inputs.main.nixpkgs-rolling}";
-      runtimeInputs = [ pkgs-unstable.nixVersions.latest ];
+      runtimeInputs = [ pkgs-unstable.nixVersions.latest pkgs.direnv pkgs.which];
       requiredSystemFeatures = [ "recursive-nix" ];
       timeout = 20; #<<<
       prompts = [ "nix-repl> " ];
