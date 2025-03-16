@@ -27,9 +27,7 @@ From the top-level directory of your project run:
 ```shell-session example="automatic-environment-direnv"
 $ echo "use nix" > .envrc
 ...
-$ direnv allow .
-...
-$ which hello
+$ nix-shell --run "which hello"
 /nix/store/...-hello-2.12.1/bin/hello
 ```
 
