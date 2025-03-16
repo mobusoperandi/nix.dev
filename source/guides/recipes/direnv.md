@@ -12,14 +12,12 @@ For example, write a `shell.nix` with the following contents:
 
 ```nix example="automatic-environment-direnv"
 let
-  nixpkgs = fetchTarball "https://github.com/NixOS/nixpkgs/tarball/nixos-23.11";
-  pkgs = import nixpkgs { config = {}; overlays = []; };
+  pkgs = import <nixpkgs> { config = {}; overlays = []; };
 in
 
 pkgs.mkShellNoCC {
   packages = with pkgs; [
     hello
-    which
   ];
 }
 ```
@@ -27,7 +25,9 @@ pkgs.mkShellNoCC {
 From the top-level directory of your project run:
 
 ```shell-session example="automatic-environment-direnv"
-$ nix-shell -p direnv which --command "echo \"use nix\" > .envrc; return" --command "direnv allow; return" --command "which hello; return"
+$ echo "use nix" > .envrc
+...
+$ nix-shell -p which direnv --run "direnv allow; which hello"
 ```
 
 The next time you launch your terminal and enter the top-level directory of your project, `direnv` will automatically launch the shell defined in `shell.nix`
