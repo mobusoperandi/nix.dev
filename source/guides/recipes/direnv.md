@@ -9,7 +9,7 @@ Instead of manually activating the environment for each project, you can reload 
 For example, write a `shell.nix` with the following contents:
 
 
-`shell.nix`:
+`myproject/shell.nix`:
 
 ```nix example="automatic-environment-direnv"
 let
@@ -27,20 +27,16 @@ pkgs.mkShellNoCC {
 From the top-level directory of your project run:
 
 ```shell-session example="automatic-environment-direnv"
-$ mkdir -p myproject && cd myproject
-$ echo "use nix" > .envrc
-$ direnv allow
-...
-$ nix-shell --run "which hello"
-/nix/store/...-hello-2.12.1/bin/hello
+$ echo "use nix" > myproject/.envrc
+$ direnv allow myproject
 ```
 
 The next time you launch your terminal and enter the top-level directory of your project, `direnv` will automatically launch the shell defined in `shell.nix`
 
-```shell-session not-tested="yet"
+```shell-session example="automatic-environment-direnv"
 $ cd myproject
 $ which hello
-/nix/store/1gxz5nfzfnhyxjdyzi04r86sh61y4i00-hello-2.12.1/bin/hello
+/nix/store/...-hello-2.12.1/bin/hello
 ```
 
 `direnv` will also check for changes to the `shell.nix` file.
