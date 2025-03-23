@@ -27,13 +27,16 @@ From the top-level directory of your project run:
 ```shell-session example="automatic-environment-direnv"
 $ echo "use nix" > .envrc
 ...
-$ nix-shell --run "which hello"
-/nix/store/...-hello-2.12.1/bin/hello
+Scenario 1
+$ nix-shell -p direnv which --run "direnv allow; which hello"
+
+Scenario 2
+$ nix-shell -p direnv which
 ```
 
 The next time you launch your terminal and enter the top-level directory of your project, `direnv` will automatically launch the shell defined in `shell.nix`
 
-```shell-session not-tested="yet"
+```shell-session not-tested="automatic-environment-direnv"
 $ cd myproject
 $ which hello
 /nix/store/...-hello-2.12.1/bin/hello

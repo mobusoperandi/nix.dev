@@ -1,7 +1,25 @@
-The program `which` doesn't exist by default for any examples. We were able to install it for a specific shell session, but when we went to a subsequent shell session in the example, it was no longer available.
+The programs `which` and `direnv` don't exist by default for any examples. We were able to install it for a specific shell session, but when we went to a subsequent shell session in the example, it was no longer available.
 
-To work around this, we installed `which` in the project's default.nix, which didn't seem like the right thing to do, but nothing else we tried worked.
+To work around this, we installed `which` and `direnv` in the project's default.nix, which didn't seem like the right thing to do, but nothing else we tried worked.
 
-We'd like to install it in a session and have it persist in subsesquent sessions where we then use it.
+Ideally we would like to do a shell session to setup any necessary packages and files that allows the flow of the documentation.
 
-Initially, we were executing `nix-shell -p which direnv`, followed by `direnv allow`, but when we executed `direnv allow`, it was no longer available, so we moved `direnv` into default.nix.
+This would look somewhat like this.
+
+>From the top-level directory of your project run:
+
+>```shell-session example="automatic-environment-direnv"
+>$ echo "use nix" > .envrc
+>$ nix-shell -p direnv which
+>...
+>$ direnv allow
+>...
+>```
+
+Allowing us to leverage specific packages and persist in subsesquent sessions, such as running the
+`which` program to find the `hello` program that was instantiated with the nix-shell in the previous session.
+
+>```shell-session not-tested="automatic-environment-direnv"
+>$ which hello
+>/nix/store/...-hello-2.12.1/bin/hello
+>```
