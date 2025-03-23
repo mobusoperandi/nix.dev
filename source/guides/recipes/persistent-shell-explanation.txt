@@ -1,0 +1,7 @@
+The program `which` doesn't exist by default for any examples. We were able to install it for a specific shell session, but when we went to a subsequent shell session in the example, it was no longer available.
+
+To work around this, we installed `which` in the project's default.nix, which didn't seem like the right thing to do, but nothing else we tried worked.
+
+We'd like to install it in a session and have it persist in subsesquent sessions where we then use it.
+
+Initially, we were executing `nix-shell -p which direnv`, followed by `direnv allow`, but when we executed `direnv allow`, it was no longer available, so we moved `direnv` into default.nix.
