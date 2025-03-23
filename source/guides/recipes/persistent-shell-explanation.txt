@@ -1,10 +1,8 @@
-The programs `which` and `direnv` don't exist by default for any examples. We were able to install it for a specific shell session, but when we went to a subsequent shell session in the example, it was no longer available.
+The programs `which` and `direnv` don't exist by default for any examples. We were able to install them for a specific shell session, but when we went to a subsequent shell session in the example, they were no longer available.
 
 To work around this, we installed `which` and `direnv` in the project's default.nix, which didn't seem like the right thing to do, but nothing else we tried worked.
 
-Ideally we would like to do a shell session to setup any necessary packages and files that allows the flow of the documentation.
-
-This would look somewhat like this.
+Ideally, we would like to do a shell session to setup any necessary packages and files that allows the flow of the documentation, like this:
 
 >From the top-level directory of your project run:
 
@@ -16,10 +14,11 @@ This would look somewhat like this.
 >...
 >```
 
-Allowing us to leverage specific packages and persist in subsesquent sessions, such as running the
-`which` program to find the `hello` program that was instantiated with the nix-shell in the previous session.
+This would allow us to leverage specific packages and persist in subsesquent sessions, such as running the `which` program to find the `hello` program that was instantiated with the nix-shell in the previous session.
 
 >```shell-session not-tested="automatic-environment-direnv"
 >$ which hello
 >/nix/store/...-hello-2.12.1/bin/hello
 >```
+
+We tried two other approaches, but this one seems like the cleanest. If you know a way to execute all of this in a cleaner way (but that supports the goal of the documentation), please let us know.

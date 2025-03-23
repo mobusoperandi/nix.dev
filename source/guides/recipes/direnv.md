@@ -26,17 +26,15 @@ From the top-level directory of your project run:
 
 ```shell-session example="automatic-environment-direnv"
 $ echo "use nix" > .envrc
+$ direnv allow
 ...
-Scenario 1
-$ nix-shell -p direnv which --run "direnv allow; which hello"
-
-Scenario 2
-$ nix-shell -p direnv which
+$ nix-shell --run "which hello"
+/nix/store/...-hello-2.12.1/bin/hello
 ```
 
 The next time you launch your terminal and enter the top-level directory of your project, `direnv` will automatically launch the shell defined in `shell.nix`
 
-```shell-session not-tested="automatic-environment-direnv"
+```shell-session not-tested="yet"
 $ cd myproject
 $ which hello
 /nix/store/...-hello-2.12.1/bin/hello
@@ -44,9 +42,33 @@ $ which hello
 
 `direnv` will also check for changes to the `shell.nix` file.
 
-Make the following addition:
+Make the following changes to your `shell.nix`:
 
-```diff not-tested="yet"
+```
+  shellHook = ''
+    hello
+  '';
+```
+
+`shell.nix`:
+
+```nix example="automatic-environment-shell-hook"
+let
+  pkgs = import nixpkgs { config = {}; overlays = []; };
+in
+
+pkgs.mkShellNoCC {
+  packages = with pkgs; [
+    hello
+  ];
+
+  shellHook = ''
+    hello
+  '';
+}
+```
+
+```diff shell.nix not-tested="yet"
  let
    nixpkgs = fetchTarball "https://github.com/NixOS/nixpkgs/tarball/nixos-23.11";
    pkgs = import nixpkgs { config = {}; overlays = []; };
@@ -65,6 +87,7 @@ Make the following addition:
 
 The running environment should reload itself after the first interaction (run any command or press `Enter`).
 
-```shell-session not-tested="yet"
+```shell-session example="automatic-environment-shell-hook"
+$ nix-shell
 Hello, world!
 ```
