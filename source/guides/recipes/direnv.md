@@ -17,6 +17,8 @@ in
 
 pkgs.mkShellNoCC {
   packages = with pkgs; [
+    direnv
+    which
     hello
   ];
 }
@@ -26,35 +28,30 @@ From the top-level directory of your project run:
 
 ```shell-session example="automatic-environment-direnv"
 $ echo "use nix" > .envrc
+$ nix-shell
+...
 $ direnv allow
 ...
-$ nix-shell --run "which hello"
-/nix/store/...-hello-2.12.1/bin/hello
+$ which hello
+/nix/store/...-hello-...
 ```
 
 The next time you launch your terminal and enter the top-level directory of your project, `direnv` will automatically launch the shell defined in `shell.nix`
 
-```shell-session not-tested="yet"
-$ cd myproject
+```shell-session not-tested="nix-shell-is-not-persisted"
 $ which hello
-/nix/store/...-hello-2.12.1/bin/hello
+/nix/store/...-hello-...
 ```
 
 `direnv` will also check for changes to the `shell.nix` file.
 
-Make the following changes to your `shell.nix`:
-
-```
-  shellHook = ''
-    hello
-  '';
-```
+Changing the file as below:
 
 `shell.nix`:
 
 ```nix example="automatic-environment-shell-hook"
 let
-  pkgs = import nixpkgs { config = {}; overlays = []; };
+  pkgs = import <nixpkgs> { config = {}; overlays = []; };
 in
 
 pkgs.mkShellNoCC {
@@ -62,16 +59,18 @@ pkgs.mkShellNoCC {
     hello
   ];
 
+  # Add shellHook below
   shellHook = ''
     hello
   '';
 }
 ```
 
-```diff shell.nix not-tested="yet"
+The diff would be as follows:
+
+```diff not-tested="yet"
  let
-   nixpkgs = fetchTarball "https://github.com/NixOS/nixpkgs/tarball/nixos-23.11";
-   pkgs = import nixpkgs { config = {}; overlays = []; };
+   pkgs = import <nixpkgs> { config = {}; overlays = []; };
  in
 
  pkgs.mkShellNoCC {
@@ -90,4 +89,5 @@ The running environment should reload itself after the first interaction (run an
 ```shell-session example="automatic-environment-shell-hook"
 $ nix-shell
 Hello, world!
+...
 ```

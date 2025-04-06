@@ -6,9 +6,12 @@ To make best use of it you should be familiar with [defining declarative shell e
 
 Create a new file called `myapp.py` and add the following code:
 
-```{code-block} python myapp.py not-tested="yet"
-#!/usr/bin/env python
+`myapp.py`:
 
+```python example="python-environment"
+#!/usr/bin/env python
+from multiprocessing import Process
+import time
 from flask import Flask
 
 app = Flask(__name__)
@@ -20,18 +23,26 @@ def hello():
     }
 
 def run():
-    app.run(host="0.0.0.0", port=5000)
+    server = Process(target=app.run)
+    return server
+
 
 if __name__ == "__main__":
-    run()
+    server = run()
+    server.start()
+    time.sleep(1)
+    server.terminate()
+    server.join()
 ```
 
 This is a simple Flask application which serves a JSON document with the message `"Hello, Nix!"`.
 
 Create a new file `shell.nix` to declare the development environment:
 
-```{code-block} nix shell.nix not-tested="yet"
-{ pkgs ? import (fetchTarball "https://github.com/NixOS/nixpkgs/tarball/nixos-23.11") {} }:
+`shell.nix`:
+
+```nix example="python-environment"
+{ pkgs ? import <nixpkgs> {} }:
 
 pkgs.mkShellNoCC {
   packages = with pkgs; [
@@ -53,22 +64,15 @@ If you went with Python's [virtualenv](https://virtualenv.pypa.io/en/latest/), i
 
 Run `nix-shell` to enter the environment you just declared:
 
-```shell-session not-tested="yet"
-$ nix-shell
-these 2 derivations will be built:
-  /nix/store/5yvz7zf8yzck6r9z4f1br9sh71vqkimk-builder.pl.drv
-  /nix/store/aihgjkf856dbpjjqalgrdmxyyd8a5j2m-python3-3.9.13-env.drv
-these 93 paths will be fetched (109.50 MiB download, 468.52 MiB unpacked):
-  /nix/store/0xxjx37fcy2nl3yz6igmv4mag2a7giq6-glibc-2.33-123
-  /nix/store/138azk9hs5a2yp3zzx6iy1vdwi9q26wv-hook
+```shell-session example="python-environment"
+$ NIX_SHELL_PRESERVE_PROMPT=1 nix-shell
 ...
-
-[nix-shell:~]$
+$ python ./myapp.py
 ```
 
 Start the web application within this shell environment:
 
-```shell-session not-tested="yet"
+```shell-session not-tested="hangs-due-to-no-user-interaction"
 [nix-shell:~]$ python ./myapp.py
  * Serving Flask app 'myapp'
  * Debug mode: off
@@ -84,7 +88,7 @@ Try it out!
 
 Open a new terminal to start another session of the shell environment and follow the commands below:
 
-```shell-session not-tested="yet"
+```shell-session not-tested="nix-shell-is-not-persisted"
 $ nix-shell
 
 [nix-shell:~]$ curl 127.0.0.1:5000
