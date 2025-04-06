@@ -8,7 +8,7 @@ Instead of manually activating the environment for each project, you can reload 
 
 For example, write a `shell.nix` with the following contents:
 
-`shell.nix`:
+`myproject/shell.nix`:
 
 ```nix example="automatic-environment-direnv"
 let
@@ -27,6 +27,7 @@ pkgs.mkShellNoCC {
 From the top-level directory of your project run:
 
 ```shell-session example="automatic-environment-direnv"
+$ cd myproject
 $ echo "use nix" > .envrc
 $ nix-shell
 ...

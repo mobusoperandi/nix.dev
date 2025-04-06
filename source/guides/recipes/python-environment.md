@@ -68,6 +68,7 @@ Run `nix-shell` to enter the environment you just declared:
 $ NIX_SHELL_PRESERVE_PROMPT=1 nix-shell
 ...
 $ python ./myapp.py
+...
 ```
 
 Start the web application within this shell environment:
