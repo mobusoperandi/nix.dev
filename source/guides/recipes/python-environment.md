@@ -23,16 +23,11 @@ def hello():
     }
 
 def run():
-    server = Process(target=app.run)
-    return server
+    app.run()
 
 
 if __name__ == "__main__":
-    server = run()
-    server.start()
-    time.sleep(1)
-    server.terminate()
-    server.join()
+    run()
 ```
 
 This is a simple Flask application which serves a JSON document with the message `"Hello, Nix!"`.
@@ -62,18 +57,22 @@ It also contains [`curl`], a utility to perform web requests, and [`jq`], a tool
 Both of them are not Python packages.
 If you went with Python's [virtualenv](https://virtualenv.pypa.io/en/latest/), it would not be possible to add these utilities to the development environment without additional manual steps.
 
-Run `nix-shell` to enter the environment you just declared:
+Run `nix-shell` to enter the environment you just declared. You will find that the programs needed to run the app already have been installed:
 
 ```shell-session example="python-environment"
 $ NIX_SHELL_PRESERVE_PROMPT=1 nix-shell
 ...
-$ python ./myapp.py
-...
+$ python --version
+Python ...
+$ curl --version
+curl ...
+$ jq --version
+jq-...
 ```
 
 Start the web application within this shell environment:
 
-```shell-session not-tested="hangs-due-to-no-user-interaction"
+```bash not-tested="not-an-example"
 [nix-shell:~]$ python ./myapp.py
  * Serving Flask app 'myapp'
  * Debug mode: off
@@ -89,7 +88,7 @@ Try it out!
 
 Open a new terminal to start another session of the shell environment and follow the commands below:
 
-```shell-session not-tested="nix-shell-is-not-persisted"
+```bash not-tested="not-an-example"
 $ nix-shell
 
 [nix-shell:~]$ curl 127.0.0.1:5000
