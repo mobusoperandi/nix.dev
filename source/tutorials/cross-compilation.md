@@ -194,11 +194,10 @@ There are multiple equivalent ways to access packages targeted to the host platf
 
 To cross compile a package like [hello](https://www.gnu.org/software/hello/), pick the platform attribute — `aarch64-multiplatform` in our case — and run:
 
-```shell-session not-tested="yet"
-$ nix-build '<nixpkgs>' -I nixpkgs=channel:nixos-23.11 \
-  -A pkgsCross.aarch64-multiplatform.hello
+```shell-session example="cross-compile-package"
+$ nix-build '<nixpkgs>' -I nixpkgs=channel:nixos-24.11 -A pkgsCross.aarch64-multiplatform.hello
 ...
-/nix/store/1dx87l5rav8679lqigf9xxkb7wvh2m4k-hello-aarch64-unknown-linux-gnu-2.12.1
+/nix/store/...-hello-aarch64-unknown-linux-gnu-2.12.1
 ```
 
 :::{note}
