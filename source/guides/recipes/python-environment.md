@@ -72,7 +72,7 @@ jq-...
 
 Start the web application within this shell environment:
 
-```bash not-tested="not-an-example"
+```bash not-tested="not-supported:subprocess"
 [nix-shell:~]$ python ./myapp.py
  * Serving Flask app 'myapp'
  * Debug mode: off
