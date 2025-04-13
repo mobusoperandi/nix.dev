@@ -185,7 +185,13 @@ If `--eval` is omitted, `nix-instantiate` expects the expression in the given fi
 :::{note}
 `nix-instantiate --eval` will try to read from `default.nix` if no file name is specified.
 
-```shell-session not-tested="yet"
+`default.nix`:
+
+```nix example="nix-instantiate-with-default"
+
+```
+
+```shell-session example="nix-instantiate-with-default"
 $ echo 1 + 2 > default.nix
 $ nix-instantiate --eval
 3
@@ -195,19 +201,23 @@ $ nix-instantiate --eval
 :::{note}
 The Nix language uses lazy evaluation, and `nix-instantiate` by default only computes values when needed.
 
-Some examples show a fully evaluated data structure for clarity.
-If your output does not match the example, try adding the `--strict` option to `nix-instantiate`.
+Some examples show a fully evaluated data structure for clarity. If your output does not match the example, try adding the `--strict` option to `nix-instantiate`.
 
 Example:
 
-```shell-session not-tested="yet"
+`file.nix`:
+
+```nix example="nix-instantiate-lazy-eval"
+
+```
+
+```shell-session example="nix-instantiate-lazy-eval"
 $ echo "{ a.b.c = 1; }" > file.nix
 $ nix-instantiate --eval file.nix
 { a = <CODE>; }
 ```
 
-```shell-session not-tested="yet"
-$ echo "{ a.b.c = 1; }" > file.nix
+```shell-session example="nix-instantiate-lazy-strict-eval"
 $ nix-instantiate --eval --strict file.nix
 { a = { b = { c = 1; }; }; }
 ```
@@ -590,13 +600,17 @@ The dot (`.`) notation can also be used for assigning attributes.
 
 Example:
 
-```{code-block} nix not-tested="yet"
-:class: expression
+```shell-session example="dot-notation"
+$ nix repl
+...
+nix-repl> { a.b.c = 1; }
 { a.b.c = 1; }
 ```
 
-```{code-block} not-tested="yet"
-:class: value
+```shell-session example="dot-notation"
+$ nix repl
+...
+nix-repl> { a = { b = { c = 1; }; }; }
 { a = { b = { c = 1; }; }; }
 ```
 
