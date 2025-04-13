@@ -700,19 +700,20 @@ in
 }
 ```
 
-```{code-block} not-tested="yet"
+```{code-block} nix not-tested="code-fragment"
 :class: value
 { x = 1; y = 2; }
 ```
 
 The fragment
 
-```{code-block} nix not-tested="yet"
+```{code-block} nix not-tested="code-fragment"
 inherit x y;
 ```
+
 is equivalent to
 
-```{code-block} nix not-tested="yet"
+```{code-block} nix not-tested="code-fragment"
 x = x; y = y;
 ```
 
@@ -730,20 +731,20 @@ in
 }
 ```
 
-```{code-block} not-tested="not-supported:multiline-command"
+```{code-block} not-tested="code-fragment"
 :class: value
 { x = 1; y = 2; }
 ```
 
 The fragment
 
-```{code-block} nix not-tested="yet"
+```{code-block} nix not-tested="code-fragment"
 inherit (a) x y;
 ```
 
 is equivalent to
 
-```{code-block} nix not-tested="yet"
+```{code-block} nix not-tested="code-fragment"
 x = a.x; y = a.y;
 ```
 
@@ -758,7 +759,7 @@ let
 in [ x y ]
 ```
 
-```{code-block} not-tested="not-supported:multiline-command"
+```{code-block} not-tested="code-fragment"
 :class: value
 [ 1 2 ]
 ```
@@ -770,7 +771,7 @@ While this example is contrived, in more complex code you will regularly see nes
 Here we use the attribute set `{ x = 1; y = 2; }` to have something non-trivial to inherit from.
 The `let` expression inherits `x` and `y` from that attribute set using `( )`, which is equivalent to writing:
 
-```{code-block} nix not-tested="not-supported:multiline-command"
+```{code-block} nix not-tested="code-fragment"
 let
   x = { x = 1; y = 2; }.x;
   y = { x = 1; y = 2; }.y;
@@ -798,7 +799,7 @@ in
 "hello ${name}"
 ```
 
-```{code-block} not-tested="not-supported:multiline-command"
+```{code-block} not-tested="code-fragment"
 :class: value
 "hello Nix"
 ```
@@ -841,7 +842,7 @@ in
 "${a + " ${a + " ${a}"}"}"
 ```
 
-```{code-block} not-tested="not-supported:multiline-command"
+```{code-block} not-tested="code-fragment"
 :class: value
 "no no no"
 ```
@@ -866,7 +867,7 @@ in
 "${a + b}"
 ```
 
-```{code-block} not-tested="not-supported:multiline-command"
+```{code-block} not-tested="code-fragment"
 :class: value
 "onetwo"
 ```
@@ -891,7 +892,7 @@ in
 "echo ${out} > $out"
 ```
 
-```{code-block} not-tested="not-supported:multiline-command"
+```{code-block} not-tested="code-fragment"
 :class: value
 "echo Nix > $out"
 ```
@@ -919,7 +920,7 @@ string
 ''
 ```
 
-```{code-block} not-tested="not-supported:multiline-command"
+```{code-block} not-tested="code-fragment"
 :class: value
 "multi\nline\nstring\n"
 ```
@@ -937,7 +938,7 @@ Example:
 ''
 ```
 
-```{code-block} not-tested="not-supported:multiline-command"
+```{code-block} not-tested="code-fragment"
 :class: value
 "one\n two\n  three\n"
 ```
@@ -956,12 +957,12 @@ Absolute paths always start with a slash (`/`).
 
 Example:
 
-```{code-block} nix not-tested="yet"
+```{code-block} nix not-tested="code-fragment"
 :class: expression
 /absolute/path
 ```
 
-```{code-block} not-tested="yet"
+```{code-block} not-tested="code-fragment"
 :class: value
 /absolute/path
 ```
@@ -974,24 +975,24 @@ The following examples assume the containing Nix file is in `/current/directory`
 Example:
 
 
-```{code-block} nix not-tested="yet"
+```{code-block} nix not-tested="code-fragment"
 :class: expression
 ./relative
 ```
 
-```{code-block} not-tested="yet"
+```{code-block} not-tested="code-fragment"
 :class: value
 /current/directory/relative
 ```
 
 Example:
 
-```{code-block} nix not-tested="yet"
+```{code-block} nix not-tested="code-fragment"
 :class: expression
 relative/path
 ```
 
-```{code-block} not-tested="yet"
+```{code-block} not-tested="code-fragment"
 :class: value
 /current/directory/relative/path
 ```
@@ -1002,12 +1003,12 @@ You will often see the following expression, which specifies a Nix file's direct
 
 Example:
 
-```{code-block} nix not-tested="yet"
+```{code-block} nix not-tested="code-fragment"
 :class: expression
 ./.
 ```
 
-```{code-block} not-tested="yet"
+```{code-block} not-tested="code-fragment"
 :class: value
 /current/directory
 ```
@@ -1022,12 +1023,12 @@ Two dots (`..`) denote the parent directory.
 
 Example:
 
-```{code-block} nix not-tested="yet"
+```{code-block} nix not-tested="code-fragment"
 :class: expression
 ../.
 ```
 
-```{code-block} not-tested="yet"
+```{code-block} not-tested="code-fragment"
 :class: value
 /current
 ```
@@ -1042,12 +1043,12 @@ Also known as “angle bracket syntax”.
 
 Example:
 
-```{code-block} nix not-tested="yet"
+```{code-block} nix not-tested="code-fragment"
 :class: expression
 <nixpkgs>
 ```
 
-```{code-block} not-tested="yet"
+```{code-block} not-tested="code-fragment"
 :class: value
 /nix/var/nix/profiles/per-user/root/channels/nixpkgs
 ```
