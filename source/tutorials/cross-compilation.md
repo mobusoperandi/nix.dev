@@ -210,12 +210,13 @@ The hash of the package in the store path changes with the updates to the channe
 
 To show off the power of cross compilation in Nix, let's build our own Hello World program by cross compiling it as static executables to `armv6l-unknown-linux-gnueabihf` and `x86_64-w64-mingw32` (Windows) platforms and run the resulting executable with [an emulator](https://en.wikipedia.org/wiki/Emulator).
 
-Given we have a `cross-compile.nix`:
+Given we have the following file:
 
-```nix not-tested="yet"
+`cross-compile.nix`:
+
+```nix example="real-world-cross-compiling"
 let
-  nixpkgs = fetchTarball "https://github.com/NixOS/nixpkgs/tarball/release-23.11";
-  pkgs = import nixpkgs {};
+  pkgs = import <nixpkgs> {};
 
   # Create a C program that prints Hello World
   helloWorld = pkgs.writeText "hello.c" ''
@@ -254,7 +255,7 @@ in {
 
 If we build this example and print both resulting derivations, we should see "Hello, world!" for each:
 
-```shell-session not-tested="yet"
+```shell-session example="real-world-cross-compiling"
 $ cat $(nix-build cross-compile.nix)
 Hello, world!
 Hello, world!
