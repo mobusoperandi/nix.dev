@@ -155,7 +155,7 @@ Use [`nix-instantiate --eval`][nix-instantiate] to evaluate the expression in a 
 `file.nix`:
 
 ```nix example="evaluate-nix-file"
-
+0 + 
 ```
 
 ```shell-session example="evaluate-nix-file"
@@ -188,7 +188,7 @@ If `--eval` is omitted, `nix-instantiate` expects the expression in the given fi
 `default.nix`:
 
 ```nix example="nix-instantiate-with-default"
-
+0 + 
 ```
 
 ```shell-session example="nix-instantiate-with-default"
@@ -205,17 +205,10 @@ Some examples show a fully evaluated data structure for clarity. If your output 
 
 Example:
 
-`file.nix`:
-
-```nix example="nix-instantiate-lazy-eval"
-
-```
-
-```shell-session example="nix-instantiate-lazy-eval"
+```shell-session example="nix-instantiate-lazy-strict-eval"
 $ echo "{ a.b.c = 1; }" > file.nix
 $ nix-instantiate --eval file.nix
-{ a = <CODE>; }
-```
+``` 
 
 ```shell-session example="nix-instantiate-lazy-strict-eval"
 $ nix-instantiate --eval --strict file.nix
@@ -604,7 +597,9 @@ Example:
 $ nix repl
 ...
 nix-repl> { a.b.c = 1; }
-{ a.b.c = 1; }
+{ 
+  a = { ... };
+}
 ```
 
 ```shell-session example="dot-notation"
