@@ -267,12 +267,13 @@ In the {ref}`tutorial for declarative reproducible environments <declarative-rep
 
 It's also possible to provide an environment with a compiler configured for **cross-compilation to static binaries using musl**.
 
-Given we have a `shell.nix`:
+Given we have the following file:
 
-```nix not-tested="yet"
+`shell.nix`:
+
+```nix example="developer-environment-with-cross-compiler"
 let
-  nixpkgs = fetchTarball "https://github.com/NixOS/nixpkgs/tarball/release-23.11";
-  pkgs = (import nixpkgs {}).pkgsCross.aarch64-multiplatform;
+  pkgs = (import <nixpkgs> {}).pkgsCross.aarch64-multiplatform;
 in
 
 # callPackage is needed due to https://github.com/NixOS/nixpkgs/pull/126844
@@ -284,9 +285,11 @@ pkgs.pkgsStatic.callPackage ({ mkShell, zlib, pkg-config, file }: mkShell {
 }) {}
 ```
 
-And `hello.c`:
+And the following `C` file:
 
-```{code-block} c hello.c not-tested="yet"
+`hello.c`:
+
+```c example="developer-environment-with-cross-compiler"
 #include <stdio.h>
 
 int main (void)
@@ -298,13 +301,13 @@ int main (void)
 
 We can cross compile it:
 
-```shell-session not-tested="yet"
+```shell-session example="developer-environment-with-cross-compiler"
 $ nix-shell --run '$CC hello.c -o hello' shell.nix
 ```
 
 And confirm it's aarch64:
 
-```shell-session not-tested="yet"
+```shell-session example="developer-environment-with-cross-compiler"
 $ nix-shell --run 'file hello' shell.nix
 hello: ELF 64-bit LSB executable, ARM aarch64, version 1 (SYSV), statically linked, with debug_info, not stripped
 ```

@@ -152,7 +152,13 @@ Type `:q` to exit [`nix repl`].
 
 Use [`nix-instantiate --eval`][nix-instantiate] to evaluate the expression in a Nix file.
 
-```shell-session not-tested="yet"
+`file.nix`:
+
+```nix example="evaluate-nix-file"
+
+```
+
+```shell-session example="evaluate-nix-file"
 $ echo 1 + 2 > file.nix
 $ nix-instantiate --eval file.nix
 3
@@ -163,7 +169,7 @@ $ nix-instantiate --eval file.nix
 The first command writes `1 + 2` to a file `file.nix` in the current directory.
 The contents of `file.nix` are now `1 + 2`, which you can check with
 
-```shell-session not-tested="yet"
+```shell-session example="evaluate-nix-file"
 $ cat file.nix
 1 + 2
 ```
