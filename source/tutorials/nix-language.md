@@ -208,7 +208,8 @@ Example:
 ```shell-session example="nix-instantiate-lazy-strict-eval"
 $ echo "{ a.b.c = 1; }" > file.nix
 $ nix-instantiate --eval file.nix
-``` 
+{ a = <CODE>; }
+```
 
 ```shell-session example="nix-instantiate-lazy-strict-eval"
 $ nix-instantiate --eval --strict file.nix
@@ -606,7 +607,9 @@ nix-repl> { a.b.c = 1; }
 $ nix repl
 ...
 nix-repl> { a = { b = { c = 1; }; }; }
-{ a = { b = { c = 1; }; }; }
+{ 
+  a = { ... };
+}
 ```
 
 (with)=
