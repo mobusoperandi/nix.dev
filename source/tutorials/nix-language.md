@@ -1221,13 +1221,10 @@ Since function and argument are separated by white space, sometimes parentheses 
 
 Example:
 
-```{code-block} nix not-tested="yet"
-:class: expression
-(x: x + 1) 1
-```
-
-```{code-block} not-tested="yet"
-:class: value
+```shell-session example="function-parentheses"
+$ nix repl
+...
+nix-repl> (x: x + 1) 1
 2
 ```
 
