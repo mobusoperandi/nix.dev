@@ -1057,14 +1057,11 @@ In practice, `<nixpkgs>` points to the file system path of some revision of {ter
 
 For example, `<nixpkgs/lib>` points to the subdirectory `lib` of that file system path:
 
-```{code-block} nix not-tested="yet"
-:class: expression
-<nixpkgs/lib>
-```
-
-```{code-block} not-tested="yet"
-:class: value
-/nix/var/nix/profiles/per-user/root/channels/nixpkgs/lib
+```shell-session example="lookup-paths"
+$ nix repl
+...
+nix-repl> <nixpkgs/lib>
+/nix/store/...-source/lib
 ```
 
 While you will encounter many such examples, we recommend to [avoid lookup paths](search-path) in production code, as they are [impurities](impurities) which are not reproducible.
