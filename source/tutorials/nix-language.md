@@ -1284,26 +1284,20 @@ Such a nested function can be used like a function that takes multiple arguments
 
 Example:
 
-```{code-block} nix not-tested="yet"
-:class: expression
-x: y: x + y
-```
-
-```{code-block} not-tested="yet"
-:class: value
-<LAMBDA>
+```shell-session example="multiple-function-arguments"
+$ nix repl
+...
+nix-repl> x: y: x + y
+«lambda ...»
 ```
 
 The above function is equivalent to
 
-```{code-block} nix not-tested="yet"
-:class: expression
-x: (y: x + y)
-```
-
-```{code-block} not-tested="yet"
-:class: value
-<LAMBDA>
+```shell-session example="multiple-function-arguments"
+$ nix repl
+...
+nix-repl> x: (y: x + y)
+«lambda ...»
 ```
 
 This function takes one argument and returns another function `y: x + y` with `x` set to the value of that argument.

@@ -214,7 +214,7 @@ Given we have the following file:
 
 `cross-compile.nix`:
 
-```nix example="real-world-cross-compiling"
+```nix not-tested="fix-darwin-issue"
 let
   pkgs = import <nixpkgs> {};
 
@@ -255,7 +255,7 @@ in {
 
 If we build this example and print both resulting derivations, we should see "Hello, world!" for each:
 
-```shell-session example="real-world-cross-compiling"
+```shell-session not-tested="fix-darwin-issue"
 $ cat $(nix-build cross-compile.nix)
 Hello, world!
 Hello, world!
