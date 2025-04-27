@@ -309,7 +309,7 @@ And confirm it's aarch64:
 
 ```shell-session example="developer-environment-with-cross-compiler"
 $ nix-shell --run 'file hello' shell.nix
-hello: ELF 64-bit LSB executable, ARM aarch64, version 1 (SYSV), statically linked, with debug_info, not stripped
+hello: ELF 64-bit LSB executable, ARM aarch64, version 1 (SYSV), statically linked, not stripped
 ```
 
 ## Next steps

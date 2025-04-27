@@ -155,7 +155,7 @@ Use [`nix-instantiate --eval`][nix-instantiate] to evaluate the expression in a 
 `file.nix`:
 
 ```nix example="evaluate-nix-file"
-0 + 
+0 +
 ```
 
 ```shell-session example="evaluate-nix-file"
@@ -188,7 +188,7 @@ If `--eval` is omitted, `nix-instantiate` expects the expression in the given fi
 `default.nix`:
 
 ```nix example="nix-instantiate-with-default"
-0 + 
+0 +
 ```
 
 ```shell-session example="nix-instantiate-with-default"
@@ -598,7 +598,7 @@ Example:
 $ nix repl
 ...
 nix-repl> { a.b.c = 1; }
-{ 
+{
   a = { ... };
 }
 ```
@@ -607,7 +607,7 @@ nix-repl> { a.b.c = 1; }
 $ nix repl
 ...
 nix-repl> { a = { b = { c = 1; }; }; }
-{ 
+{
   a = { ... };
 }
 ```
@@ -1137,14 +1137,11 @@ We say they are anonymous, and call such a function a *lambda*.[^lambda]
 
 Example:
 
-```{code-block} nix not-tested="yet"
-:class: expression
-x: x + 1
-```
-
-```{code-block} nix not-tested="yet"
-:class: value
-<LAMBDA>
+```shell-session example="lambda-function"
+$ nix repl
+...
+nix-repl> x: x + 1
+«lambda ...»
 ```
 
 The `<LAMBDA>` indicates the resulting value is an anonymous function.
