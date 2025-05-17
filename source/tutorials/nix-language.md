@@ -1438,22 +1438,16 @@ or
 ```shell-session example="named-attribute-set-prefixed"
 $ nix repl
 ...
-args@{a, b, ...}: a + b + args.c
+nix-repl> args@{a, b, ...}: a + b + args.c
 «lambda ...»
 ```
 
 Example:
 
-```{code-block} nix not-tested="not-supported:multiline-command"
-:class: expression
-let
-  f = {a, b, ...}@args: a + b + args.c;
-in
-f { a = 1; b = 2; c = 3; }
-```
-
-```{code-block} nix not-tested="not-supported:multiline-command"
-:class: value
+```shell-session example="named-attribute-set-function-application"
+$ nix repl
+...
+nix-repl> let f = {a, b, ...}@args: a + b + args.c; in f { a = 1; b = 2; c = 3; }
 6
 ```
 
@@ -1485,14 +1479,11 @@ These functions are available under the `builtins` constant.
 
 Example:
 
-```{code-block} nix not-tested="not-supported:multiline-command"
-:class: expression
-builtins.toString
-```
-
-```{code-block} not-tested="not-supported:multiline-command"
-:class: value
-<PRIMOP>
+```shell-session example="builtins"
+$ nix repl
+...
+nix-repl> builtins.toString
+«primop toString»
 ```
 
 [nix-operators]: https://nix.dev/manual/nix/stable/language/operators.html
@@ -1509,17 +1500,20 @@ If the path points to a directory, the file `default.nix` in that directory is u
 
 Example:
 
-```shell-session not-tested="yet"
-$ echo 1 + 2 > file.nix
+`file.nix`:
+
+```nix example="file-import"
+    1 + 2
 ```
 
-```{code-block} nix not-tested="yet"
-:class: expression
+`default.nix`:
+
+```nix example="file-import"
 import ./file.nix
 ```
 
-```{code-block} not-tested="yet"
-:class: value
+```shell-session example="file-import"
+$ nix-instantiate --eval
 3
 ```
 
