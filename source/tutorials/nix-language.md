@@ -1353,24 +1353,15 @@ nix-repl> let f = {a, b}: a + b; in f { a = 1; b = 2; }
 
 Counter-example:
 
-```{code-block} nix not-tested="not-supported:multiline-command"
-:class: expression
-let
-  f = {a, b}: a + b;
-in
-f { a = 1; b = 2; c = 3; }
-```
-
-```{code-block} not-tested="not-supported:multiline-command"
-:class: value
-error: 'f' at (string):2:7 called with unexpected argument 'c'
-
-       at «string»:4:1:
-
-            3| in
-            4| f { a = 1; b = 2; c = 3; }
-             | ^
-            5|
+```shell-session example="extra-attribute-set-function-parameters"
+$ nix repl
+...
+nix-repl> let f = {a, b}: a + b; in f { a = 1; b = 2; c = 3; }
+...error: function 'f' called with unexpected argument 'c'
+       at «string»:1:9:
+            1| let f = {a, b}: a + b; in f { a = 1; b = 2; c = 3; }
+             |         ^
+       Did you mean one of a or b?
 ```
 
 <!-- TODO: not the same as x: x.a + x.b (!!!!) -->
