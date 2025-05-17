@@ -1313,16 +1313,10 @@ nix-repl> let f = x: y: x + y; in f 1
 
 Applying the function which results from `f 1` to another argument yields the inner body `x + y` (with `x` set to `1` and `y` set to the other argument), which can now be fully evaluated.
 
-```{code-block} nix not-tested="not-supported:multiline-command"
-:class: expression
-let
-  f = x: y: x + y;
-in
-f 1 2
-```
-
-```{code-block} not-tested="not-supported:multiline-command"
-:class: value
+```shell-session example="function-application"
+$ nix repl
+...
+nix-repl> let f = x: y: x + y; in f 1 2
 3
 ```
 
@@ -1338,14 +1332,11 @@ This is denoted by listing the expected attribute names separated by commas (`,`
 
 Example:
 
-```{code-block} nix not-tested="yet"
-:class: expression
-{a, b}: a + b
-```
-
-```{code-block} nix not-tested="yet"
-:class: value
-<LAMBDA>
+```shell-session example="attribute-set-argument"
+$ nix repl
+...
+nix-repl> {a, b}: a + b
+«lambda ...»
 ```
 
 The argument defines the exact attributes that have to be in that set.
@@ -1353,16 +1344,10 @@ Leaving out or passing additional attributes is an error.
 
 Example:
 
-```{code-block} nix not-tested="not-supported:multiline-command"
-:class: expression
-let
-  f = {a, b}: a + b;
-in
-f { a = 1; b = 2; }
-```
-
-```{code-block} nix not-tested="not-supported:multiline-command"
-:class: value
+```shell-session example="attribute-set-function-application"
+$ nix repl
+...
+nix-repl> let f = {a, b}: a + b; in f { a = 1; b = 2; }
 3
 ```
 
