@@ -1304,17 +1304,11 @@ This function takes one argument and returns another function `y: x + y` with `x
 
 Example:
 
-```{code-block} nix not-tested="not-supported:multiline-command"
-:class: expression
-let
-  f = x: y: x + y;
-in
-f 1
-```
-
-```{code-block} not-tested="not-supported:multiline-command"
-:class: value
-<LAMBDA>
+```shell-session example="partial-application"
+$ nix repl
+...
+nix-repl> let f = x: y: x + y; in f 1
+«lambda ...»
 ```
 
 Applying the function which results from `f 1` to another argument yields the inner body `x + y` (with `x` set to `1` and `y` set to the other argument), which can now be fully evaluated.
