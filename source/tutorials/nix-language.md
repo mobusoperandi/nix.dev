@@ -1378,31 +1378,19 @@ Attributes in the argument are not required if they have a default value.
 
 Example:
 
-```{code-block} nix not-tested="not-supported:multiline-command"
-:class: expression
-let
-  f = {a, b ? 0}: a + b;
-in
-f { a = 1; }
-```
-
-```{code-block} not-tested="not-supported:multiline-command"
-:class: value
+```shell-session example="default-parameter-values"
+$ nix repl
+...
+nix-repl> let f = {a, b ? 0}: a + b; in f { a = 1; }
 1
 ```
 
 Example:
 
-```{code-block} nix not-tested="not-supported:multiline-command"
-:class: expression
-let
-  f = {a ? 0, b ? 0}: a + b;
-in
-f { } # empty attribute set
-```
-
-```{code-block} not-tested="not-supported:multiline-command"
-:class: value
+```shell-session example="all-default-parameter-values"
+$ nix repl
+...
+nix-repl> let f = {a ? 0, b ? 0}: a + b; in f { } # empty attribute set
 0
 ```
 
@@ -1410,24 +1398,21 @@ f { } # empty attribute set
 
 Additional attributes are allowed with an ellipsis (`...`):
 
-```{code-block} nix not-tested="yet"
-{a, b, ...}: a + b
+```shell-session example="attribute-set-additional-attributes"
+$ nix repl
+...
+nix-repl> {a, b, ...}: a + b
+«lambda ...»
 ```
 
 Unlike in the previous counter-example, passing an argument that contains additional attributes is not an error.
 
 Example:
 
-```{code-block} nix not-tested="not-supported:multiline-command"
-:class: expression
-let
-  f = {a, b, ...}: a + b;
-in
-f { a = 1; b = 2; c = 3; }
-```
-
-```{code-block} not-tested="not-supported:multiline-command"
-:class: value
+```shell-session example="extra-attribute-parameter-no-effect"
+$ nix repl
+...
+nix-repl> let f = {a, b, ...}: a + b; in f { a = 1; b = 2; c = 3; }
 3
 ```
 
@@ -1441,26 +1426,20 @@ This is denoted by prepending or appending the name to the attribute set argumen
 
 Example:
 
-```{code-block} nix not-tested="yet"
-:class: expression
-{a, b, ...}@args: a + b + args.c
-```
-
-```{code-block} not-tested="yet"
-:class: value
-<LAMBDA>
+```shell-session example="named-attribute-set-suffixed"
+$ nix repl
+...
+nix-repl> {a, b, ...}@args: a + b + args.c
+«lambda ...»
 ```
 
 or
 
-```{code-block} nix not-tested="yet"
-:class: expression
+```shell-session example="named-attribute-set-prefixed"
+$ nix repl
+...
 args@{a, b, ...}: a + b + args.c
-```
-
-```{code-block} not-tested="yet"
-:class: value
-<LAMBDA>
+«lambda ...»
 ```
 
 Example:
