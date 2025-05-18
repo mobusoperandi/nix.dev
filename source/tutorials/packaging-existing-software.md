@@ -171,8 +171,9 @@ error:
 As expected, the incorrect file hash caused an error, and Nix helpfully provided the correct one.
 In `hello.nix`, replace the empty string with the correct hash:
 
-```nix not-tested="yet"
-# hello.nix
+`hello.nix`:
+
+```nix not-tested="finding-file-hash"
 {
   stdenv,
   fetchzip,

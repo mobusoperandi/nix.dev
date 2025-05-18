@@ -1762,13 +1762,10 @@ Example:
 ```
 
 ```shell-session example="path-string-interpolation"
-:class: expression
-"${./data}"
-```
-
-```{code-block} not-tested="yet"
-:class: value
-"/nix/store/h1qj5h5n05b5dl5q4nldrqq8mdg7dhqk-data"
+$ nix repl
+...
+nix-repl> "${./data}"
+"/nix/store/...-data"
 ```
 
 :::{dropdown} Detailed explanation
@@ -1865,16 +1862,11 @@ It can be used in [string interpolation](string-interpolation), and in that case
 
 Example:
 
-```{code-block} nix not-tested="not-supported:multiline-command"
-:class: expression
-let
-  pkgs = import <nixpkgs> {};
-in "${pkgs.nix}"
-```
-
-```{code-block} not-tested="not-supported:multiline-command"
-:class: value
-"/nix/store/sv2srrjddrp2isghmrla8s6lazbzmikd-nix-2.11.0"
+```shell-session example="mkDerivation"
+$ nix repl
+...
+nix-repl> let pkgs = import <nixpkgs> {}; in "${pkgs.nix}"
+"/nix/store/...-nix-2..."
 ```
 
 :::{note}
@@ -1916,7 +1908,7 @@ The goal of the following exercises is not to understand what the code means or 
 
 ### Shell environment
 
-```{code-block} nix not-tested="not-supported:multiline-command"
+```{code-block} nix not-tested="documentation"
 { pkgs ? import <nixpkgs> {} }:
 let
   message = "hello world";
@@ -2025,10 +2017,9 @@ Explanation:
 - [](declarative-reproducible-envs) – create reproducible shell environments from a Nix file
 - [](./packaging-existing-software.md) – make more software available through Nix
 
-
 If you want to take a longer break from learning Nix, you can remove unused build results from the Nix store with:
 
-```console not-tested="yet"
+```console not-tested="documentation"
 $ nix-collect-garbage
 ```
 
