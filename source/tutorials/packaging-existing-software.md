@@ -193,11 +193,11 @@ stdenv.mkDerivation {
 Now run the previous command again:
 
 ```shell-session example="finding-file-hash"
-$ nix-build -A hello
-...
+$ nix build --file hello.nix
+
 ```
 
-Great news: the derivation built successfully!
+    Great news: the derivation built successfully!
 
 The console output shows that `configure` was called, which produced a `Makefile` that was then used to build the project.
 It wasn't necessary to write any build instructions in this case because the `stdenv` build system is based on [GNU Autoconf](https://www.gnu.org/software/autoconf/), which automatically detected the structure of the project directory.
