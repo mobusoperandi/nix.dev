@@ -1503,7 +1503,7 @@ Example:
 `file.nix`:
 
 ```nix example="file-import"
-    1 + 2
+1 + 2
 ```
 
 `default.nix`:
@@ -1528,12 +1528,12 @@ It is an error if the file system path does not exist.
 
 After reading `file.nix` the Nix expression is equivalent to the file contents:
 
-```{code-block} nix not-tested="yet"
+```{code-block} nix not-tested="documentation"
 :class: expression
 1 + 2
 ```
 
-```{code-block} not-tested="yet"
+```{code-block} not-tested="documentation"
 :class: value
 3
 ```
@@ -1545,17 +1545,20 @@ That is, whenever you find additional tokens after a call to `import`, the value
 
 Example:
 
-```shell-session not-tested="yet"
-$ echo "x: x + 1" > file.nix
+`file.nix`:
+
+```nix example="function-application-with-import"
+x: x + 1
 ```
 
-```{code-block} nix not-tested="yet"
-:class: expression
+`default.nix`:
+
+```nix example="function-application-with-import"
 import ./file.nix 1
 ```
 
-```{code-block} not-tested="yet"
-:class: value
+```shell-session example="function-application-with-import"
+$ nix-instantiate --eval
 2
 ```
 
@@ -1570,12 +1573,12 @@ It is an error if the file system path does not exist.
 
 After reading the file, the Nix expression `import ./file.nix` is equivalent to the file contents:
 
-```{code-block} nix not-tested="yet"
+```{code-block} nix not-tested="documentation"
 :class: expression
 (x: x + 1) 1
 ```
 
-```{code-block} not-tested="yet"
+```{code-block} not-tested="documentation"
 :class: value
 2
 ```
