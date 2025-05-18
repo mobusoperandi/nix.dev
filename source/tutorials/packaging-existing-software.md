@@ -173,7 +173,7 @@ In `hello.nix`, replace the empty string with the correct hash:
 
 `hello.nix`:
 
-```nix not-tested="finding-file-hash"
+```nix example="finding-file-hash"
 {
   stdenv,
   fetchzip,
@@ -192,20 +192,11 @@ stdenv.mkDerivation {
 
 Now run the previous command again:
 
-```console not-tested="yet"
+```shell-session example="finding-file-hash"
 $ nix-build -A hello
-this derivation will be built:
-  /nix/store/rbq37s3r76rr77c7d8x8px7z04kw2mk7-hello.drv
-building '/nix/store/rbq37s3r76rr77c7d8x8px7z04kw2mk7-hello.drv'...
 ...
-configuring
-...
-configure: creating ./config.status
-config.status: creating Makefile
-...
-building
-... <many more lines omitted>
 ```
+
 Great news: the derivation built successfully!
 
 The console output shows that `configure` was called, which produced a `Makefile` that was then used to build the project.
