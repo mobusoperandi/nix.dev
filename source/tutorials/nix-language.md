@@ -1608,17 +1608,11 @@ These functions are usually accessed through `pkgs.lib`, as the Nixpkgs attribut
 
 Example:
 
-```{code-block} nix not-tested="not-supported:multiline-command"
-:class: expression
-let
-  pkgs = import <nixpkgs> {};
-in
-pkgs.lib.strings.toUpper "lookup paths considered harmful"
-```
-
-```{code-block} not-tested="not-supported:multiline-command"
-:class: value
-LOOKUP PATHS CONSIDERED HARMFUL
+```shell-session example="call-library-function"
+$ nix repl
+...
+nix-repl> let pkgs = import <nixpkgs> {}; in pkgs.lib.strings.toUpper "lookup paths considered harmful"
+"LOOKUP PATHS CONSIDERED HARMFUL"
 ```
 
 :::{dropdown} Detailed explanation
@@ -1658,7 +1652,7 @@ See [](pinning-nixpkgs) for details.
 What you will also often see is that `pkgs` is passed as an argument to a function.
 By convention one can assume that it refers to the Nixpkgs attribute set, which has a `lib` attribute:
 
-```{code-block} nix not-tested="not-supported:multiline-command"
+```shell-session example="passing-pkgs-argument"
 :class: expression
 { pkgs, ... }:
 pkgs.lib.strings.removePrefix "no " "no true scotsman"
