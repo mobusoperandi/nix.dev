@@ -1653,19 +1653,22 @@ What you will also often see is that `pkgs` is passed as an argument to a functi
 By convention one can assume that it refers to the Nixpkgs attribute set, which has a `lib` attribute:
 
 ```shell-session example="passing-pkgs-argument"
-:class: expression
-{ pkgs, ... }:
-pkgs.lib.strings.removePrefix "no " "no true scotsman"
-```
-
-```{code-block} not-tested="not-supported:multiline-command"
-:class: value
-<LAMBDA>
+$ nix repl
+...
+nix-repl> { pkgs, ... }: pkgs.lib.strings.removePrefix "no " "no true scotsman"
+«lambda ...»
 ```
 
 To make this function produce a result, you can write it to a file (e.g. `file.nix`) and pass it an argument through `nix-instantiate`:
 
-```shell-session not-tested="not-supported:multiline-command"
+`file.nix`:
+
+```nix example="passing-pkgs-argument-with-file"
+{ pkgs, ... }:
+  pkgs.lib.strings.removePrefix "no " "no true scotsman"
+```
+
+```shell-session example="passing-pkgs-argument-with-file"
 $ nix-instantiate --eval file.nix --arg pkgs 'import <nixpkgs> {}'
 "true scotsman"
 ```
@@ -1675,23 +1678,25 @@ In that case one can assume that this `lib` is equivalent to `pkgs.lib` where on
 
 Example:
 
-```{code-block} nix not-tested="not-supported:multiline-command"
-:class: expression
-{ lib, ... }:
-let
-  to-be = true;
-in
-lib.trivial.or to-be (! to-be)
-```
-
-```{code-block} not-tested="not-supported:multiline-command"
-:class: value
-<LAMBDA>
+```shell-session example="passing-lib-argument"
+$ nix repl
+...
+nix-repl> { lib, ... }: let to-be = true; in lib.trivial.or to-be (! to-be)
+«lambda ...»
 ```
 
 To make this function produce a result, you can write it to a file (e.g. `file.nix`) and pass it an argument through `nix-instantiate`:
 
-```shell-session not-tested="yet"
+`file.nix`:
+
+```nix example="passing-lib-argument-with-file"
+{ lib, ... }:
+  let
+    to-be = true;
+  in lib.trivial.or to-be (! to-be)
+```
+
+```shell-session example="passing-lib-argument-with-file"
 $ nix-instantiate --eval file.nix --arg lib '(import <nixpkgs> {}).lib'
 true
 ```
@@ -1750,11 +1755,13 @@ The evaluated string then contains the Nix store path assigned to that file.
 
 Example:
 
-```shell-session not-tested="yet"
-$ echo 123 > data
+`data`:
+
+```nix example="path-string-interpolation"
+123
 ```
 
-```{code-block} nix not-tested="yet"
+```shell-session example="path-string-interpolation"
 :class: expression
 "${./data}"
 ```
