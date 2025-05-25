@@ -126,11 +126,11 @@ Problem: the expression in `hello.nix` is a *function*, which only produces its 
 
 The recommended way to do this is to create a `default.nix` file in the same directory as `hello.nix`, with the following contents:
 
-```nix not-tested="not-supported:assert-build-failed"
-# default.nix
+`default.nix`:
+
+```nix example="finding-file-hash"
 let
-  nixpkgs = fetchTarball "https://github.com/NixOS/nixpkgs/tarball/nixos-24.05";
-  pkgs = import nixpkgs { config = {}; overlays = []; };
+  pkgs = import <nixpkgs> { config = {}; overlays = []; };
 in
 {
   hello = pkgs.callPackage ./hello.nix { };
@@ -171,43 +171,31 @@ error:
 As expected, the incorrect file hash caused an error, and Nix helpfully provided the correct one.
 In `hello.nix`, replace the empty string with the correct hash:
 
-`default.nix`:
+`hello.nix`:
 
 ```nix example="finding-file-hash"
 {
   pkgs
 }:
+{
+    hello = pkgs.stdenv.mkDerivation {
+      pname = "hello";
+      version = "2.12.1";
 
-pkgs.stdenv.mkDerivation {
-  pname = "hello";
-  version = "2.12.1";
-
-  src = pkgs.fetchzip {
-    url = "https://ftp.gnu.org/gnu/hello/hello-2.12.1.tar.gz";
-    sha256 = "0xw6cr5jgi1ir13q6apvrivwmmpr5j8vbymp0x6ll0kcv6366hnn";
-  };
+      src = pkgs.fetchzip {
+        url = "https://ftp.gnu.org/gnu/hello/hello-2.12.1.tar.gz";
+        sha256 = "0xw6cr5jgi1ir13q6apvrivwmmpr5j8vbymp0x6ll0kcv6366hnn";
+      };
+    };
 }
+
 ```
 
 Now run the previous command again:
 
-# TODO: Research why this command cannot find the hello derivation
-#       Does it need to be a flake?
-# $nix-build -A hello
 ```shell-session example="finding-file-hash"
-$ nix-build --arg pkgs 'import <nixpkgs> {}'
-...
-this derivation will be built:
-  /nix/store/...-hello.drv
-building '/nix/store/...-hello.drv'...
-...
-configuring
-...
-configure: creating ./config.status
-config.status: creating Makefile
-...
-building
-... <many more lines omitted>
+$ nix-build -A hello
+/nix/store/...-hello-2.12.1
 ```
 
 Great news: the derivation built successfully!
