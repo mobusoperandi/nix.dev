@@ -191,6 +191,9 @@ pkgs.stdenv.mkDerivation {
 
 Now run the previous command again:
 
+# TODO: Research why this command cannot find the hello derivation
+#       Does it need to be a flake?
+# $nix-build -A hello
 ```shell-session example="finding-file-hash"
 $ nix-build --arg pkgs 'import <nixpkgs> {}'
 ...
