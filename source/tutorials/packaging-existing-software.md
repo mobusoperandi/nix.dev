@@ -171,19 +171,18 @@ error:
 As expected, the incorrect file hash caused an error, and Nix helpfully provided the correct one.
 In `hello.nix`, replace the empty string with the correct hash:
 
-`hello.nix`:
+`default.nix`:
 
 ```nix example="finding-file-hash"
 {
-  stdenv,
-  fetchzip,
+  pkgs
 }:
 
-stdenv.mkDerivation {
+pkgs.stdenv.mkDerivation {
   pname = "hello";
   version = "2.12.1";
 
-  src = fetchzip {
+  src = pkgs.fetchzip {
     url = "https://ftp.gnu.org/gnu/hello/hello-2.12.1.tar.gz";
     sha256 = "0xw6cr5jgi1ir13q6apvrivwmmpr5j8vbymp0x6ll0kcv6366hnn";
   };
@@ -193,11 +192,22 @@ stdenv.mkDerivation {
 Now run the previous command again:
 
 ```shell-session example="finding-file-hash"
-$ nix build --file hello.nix
-
+$ nix-build -A hello --arg pkgs 'import <nixpkgs> {}'
+...
+this derivation will be built:
+  /nix/store/...-hello.drv
+building '/nix/store/...-hello.drv'...
+...
+configuring
+...
+configure: creating ./config.status
+config.status: creating Makefile
+...
+building
+... <many more lines omitted>
 ```
 
-    Great news: the derivation built successfully!
+Great news: the derivation built successfully!
 
 The console output shows that `configure` was called, which produced a `Makefile` that was then used to build the project.
 It wasn't necessary to write any build instructions in this case because the `stdenv` build system is based on [GNU Autoconf](https://www.gnu.org/software/autoconf/), which automatically detected the structure of the project directory.
