@@ -192,7 +192,7 @@ pkgs.stdenv.mkDerivation {
 Now run the previous command again:
 
 ```shell-session example="finding-file-hash"
-$ nix-build -A hello --arg pkgs 'import <nixpkgs> {}'
+$ nix-build --arg pkgs 'import <nixpkgs> {}'
 ...
 this derivation will be built:
   /nix/store/...-hello.drv
