@@ -9,7 +9,7 @@ What is a module?
 
 The simplest possible module is a function that takes any attributes and returns an empty attribute set:
 
-```{code-block} nix not-tested="yet"
+```{code-block} nix not-tested="not-an-example"
 :caption: options.nix
 { ... }:
 {
@@ -23,9 +23,15 @@ This is done by declaring *options* that specify which attributes can be set and
 
 Options are declared under the top-level `options` attribute with [`lib.mkOption`](https://nixos.org/manual/nixpkgs/stable/#function-library-lib.options.mkOption).
 
-```{literalinclude} options.nix not-tested="yet"
-:language: nix
-:caption: options.nix
+`options.nix`:
+
+```nix example="a-basic-module"
+{ lib, ... }:
+{
+  options = {
+    name = lib.mkOption { type = lib.types.str; };
+  };
+}
 ```
 
 :::{note}
@@ -48,9 +54,15 @@ Now that we have declared an option, we would naturally want to give it a value.
 
 Options are set or *defined* under the top-level `config` attribute:
 
-```{literalinclude} config.nix not-tested="yet"
-:language: nix
-:caption: config.nix
+`config.nix`:
+
+```nix example="a-basic-module"
+{ ... }:
+{
+  config = {
+    name = "Boaty McBoatface";
+  };
+}
 ```
 
 In our option declaration, we created an option `name` with a string type.
@@ -66,25 +78,29 @@ It takes an attribute set as an argument, where the `modules` attribute is a lis
 
 The output of `evalModules` contains information about all evaluated modules, and the final values appear in the attribute `config`.
 
-```{literalinclude} default.nix not-tested="yet"
-:language: nix
-:caption: default.nix
+`default.nix`:
+
+```nix example="a-basic-module"
+let
+  pkgs = import <nixpkgs> {};
+  result = pkgs.lib.evalModules {
+    modules = [
+      ./options.nix
+      ./config.nix
+    ];
+  };
+in
+result.config
 ```
 
 Here's a helper script to parse and evaluate our `default.nix` file with [`nix-instantiate --eval`](https://nix.dev/manual/nix/stable/command-ref/nix-instantiate) and print the output as JSON:
 
-```{literalinclude} eval.bash not-tested="yet"
-:language: bash
-:caption: eval.bash
-```
-
-As long as every definition has a corresponding declaration, evaluation will be successful.
-If there is an option definition that has not been declared, or the defined value has the wrong type, the module system will throw an error.
-
-Running the script (`./eval.bash`) should show an output that matches what we have configured:
-
-```{code-block} not-tested="yet"
+```shell-session example="a-basic-module"
+$ nix-shell -p jq --run "nix-instantiate --eval --json --strict | jq"
 {
   "name": "Boaty McBoatface"
 }
 ```
+
+As long as every definition has a corresponding declaration, evaluation will be successful.
+If there is an option definition that has not been declared, or the defined value has the wrong type, the module system will throw an error.

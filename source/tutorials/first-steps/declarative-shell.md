@@ -140,7 +140,7 @@ Any attribute name passed to `mkShellNoCC` that is not reserved otherwise and ha
 Try it out!
 Exit the shell by typing `exit` or pressing `Ctrl`+`D`, then start it again with `nix-shell`.
 
-```console not-tested="yet"
+```shell-session not-tested="output-format-issue"
 [nix-shell]$ echo $GREETING
 ```
 
@@ -159,9 +159,11 @@ These commands can be placed in the `shellHook` attribute provided to `mkShellNo
 
 Set `shellHook` to output a colorful greeting:
 
-```diff not-tested="not-supported:diff"
+`shell.nix`:
+
+```nix example="shellHook"
  let
-   nixpkgs = fetchTarball "https://github.com/NixOS/nixpkgs/tarball/nixos-24.05";
+   nixpkgs = <nixpkgs>;
    pkgs = import nixpkgs { config = {}; overlays = []; };
  in
 
@@ -172,15 +174,20 @@ Set `shellHook` to output a colorful greeting:
    ];
 
    GREETING = "Hello, Nix!";
-+
-+  shellHook = ''
-+    echo $GREETING | cowsay | lolcat
-+  '';
+
+   shellHook = ''
+     echo $GREETING | cowsay | lolcat
+   '';
  }
 ```
 
 Try it again!
 Exit the shell by typing `exit` or pressing `Ctrl`+`D`, then start it again with `nix-shell` to observe the effect.
+
+```shell-session example="shellHook"
+$ nix-shell
+...
+```
 
 ## References
 
