@@ -440,7 +440,7 @@ For example, these are the search results for [`"x11 = "`](https://github.com/se
 Or fetch a clone of the [Nixpkgs repository](https://github.com/nixos/nixpkgs) and search the code locally.
 
 Start a shell that makes the required tools available – `git` for version control, and `rg` for code search (provided by the [`ripgrep` package](https://search.nixos.org/packages?show=ripgrep)):
-```console not-tested="yet"
+```console not-tested="not-an-example"
 $ nix-shell -p git ripgrep
 [nix-shell:~]$
 ```
@@ -573,7 +573,7 @@ In Nix, the output directory is stored in the `$out` variable.
 That variable is accessible in the derivation's [`builder` execution environment](https://nix.dev/manual/nix/2.19/language/derivations#builder-execution).
 Create a `bin` directory within the `$out` directory and copy the `icat` binary there:
 
-```nix not-tested="yet"
+```nix not-tested="not-an-example"
 # icat.nix
 {
   stdenv,
@@ -644,7 +644,7 @@ Adjust your `installPhase` to call the appropriate hooks:
 Running the `nix-build` command once more will finally do what you want, repeatably.
 Call `ls` in the local directory to find a `result` symlink to a location in the Nix store:
 
-```console not-tested="yet"
+```console not-tested="not-an-example"
 $ ls
 default.nix hello.nix icat.nix result
 ```

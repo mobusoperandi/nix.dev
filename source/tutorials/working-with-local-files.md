@@ -26,7 +26,7 @@ File sets can be created, composed, and manipulated with the various functions o
 
 You can explore and learn about the library with [`nix repl`](https://nix.dev/manual/nix/stable/command-ref/new-cli/nix3-repl):
 
-```shell-session not-tested="yet"
+```shell-session example="working-with-file-sets"
 $ nix repl -f channel:nixos-23.11
 ...
 nix-repl> fs = lib.fileset
