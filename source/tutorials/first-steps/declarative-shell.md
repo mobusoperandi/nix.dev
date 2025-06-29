@@ -38,7 +38,7 @@ This file can be shared with anyone to recreate the same environment on a differ
 Suppose we want an environment where `cowsay` and `lolcat` are available.
 The simplest possible way to accomplish this is via the `nix-shell -p` command:
 
-```console not-tested="yet"
+```console not-tested="not-an-example"
 $ nix-shell -p cowsay lolcat
 ```
 
@@ -53,9 +53,11 @@ A better solution is to create our shell environment from a `shell.nix` file.
 Create a file called `shell.nix` with these contents:
 
 {lineno-start=1}
-```nix not-tested="yet"
+`shell.nix`:
+
+```nix example="basic-nix-shell"
 let
-  nixpkgs = fetchTarball "https://github.com/NixOS/nixpkgs/tarball/nixos-24.05";
+  nixpkgs = <nixpkgs>;
   pkgs = import nixpkgs { config = {}; overlays = []; };
 in
 
@@ -102,9 +104,11 @@ Enter the environment by running `nix-shell` in the same directory as `shell.nix
 The first invocation of `nix-shell` on this file may take a while to download all dependencies.
 :::
 
-```console not-tested="yet"
+```shell-session example="basic-nix-shell"
 $ nix-shell
-[nix-shell]$ cowsay hello | lolcat
+
+[nix-shell:~]
+$ cowsay hello | lolcat
 ```
 
 `nix-shell` by default looks for a file called `shell.nix` in the current directory and builds a shell environment from the Nix expression in this file.

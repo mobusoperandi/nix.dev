@@ -26,15 +26,15 @@ File sets can be created, composed, and manipulated with the various functions o
 
 You can explore and learn about the library with [`nix repl`](https://nix.dev/manual/nix/stable/command-ref/new-cli/nix3-repl):
 
-```shell-session example="working-with-file-sets"
-$ nix repl -f channel:nixos-23.11
+```shell-session not-tested="not-supported:subprocess"
+$ nix repl -f `channel:nixos-23.11`
 ...
 nix-repl> fs = lib.fileset
 ```
 
 The [`trace`](https://nixos.org/manual/nixpkgs/stable/#function-library-lib.fileset.trace) function pretty-prints the files included in a given file set:
 
-```shell-session not-tested="yet"
+```shell-session not-tested="not-supported:subprocess"
 nix-repl> fs.trace ./. null
 trace: /home/user (all files in directory)
 null
@@ -48,7 +48,7 @@ In the previous trace this is indicated by `(all files in directory)`.
 The `trace` function pretty-prints its first argument and returns its second argument.
 But since you often just need the pretty-printing in `nix repl`, you can omit the second argument:
 
-```shell-session not-tested="yet"
+```shell-session not-tested="not-supported:subprocess"
 nix-repl> fs.trace ./.
 trace: /home/user (all files in directory)
 «lambda @ /nix/store/1czr278x24s3bl6qdnifpvm5z03wfi2p-nixpkgs-src/lib/fileset/default.nix:555:8»
@@ -69,11 +69,11 @@ a local directory within a Flake is always copied into the Nix store *completely
 
 This implicit coercion also works for files:
 
-```shell-session not-tested="yet"
+```shell-session not-tested="not-supported:subprocess"
 $ touch some-file
 ```
 
-```shell-session not-tested="yet"
+```shell-session not-tested="not-supported:subprocess"
 nix-repl> fs.trace ./some-file
 trace: /home/user
 trace: - some-file (regular)
@@ -95,7 +95,7 @@ $ nix-shell -p npins --run "npins init --bare; npins add github nixos nixpkgs --
 
 Then create a `default.nix` file with the following contents:
 
-```{code-block} nix not-tested="yet"
+```{code-block} nix not-tested="not-supported:depends-on-previous-step"
 :caption: default.nix
 {
   system ? builtins.currentSystem,
@@ -113,7 +113,7 @@ pkgs.callPackage ./build.nix { }
 
 Add two source files to work with:
 
-```shell-session not-tested="yet"
+```shell-session not-tested="not-supported:depends-on-previous-step"
 $ echo hello > hello.txt
 $ echo world > world.txt
 ```
@@ -126,7 +126,7 @@ Only the files in the `fileset` attribute are included in the result.
 
 Define `build.nix` as follows:
 
-```{code-block} nix not-tested="yet"
+```{code-block} nix not-tested="not-supported:depends-on-previous-step"
 :caption: build.nix
 { stdenv, lib }:
 let
@@ -157,7 +157,7 @@ Try building it:
 It will take a while to fetch Nixpkgs the first time around.
 :::
 
-```shell-session not-tested="yet"
+```shell-session not-tested="not-supported:depends-on-previous-step"
 $ nix-build
 trace: /home/user/fileset
 trace: - hello.txt (regular)
