@@ -197,7 +197,7 @@ Now run the previous command again:
 $ nix-build -A hello
 /nix/store/...-hello-2.12.1
 ```
-
+console
 Great news: the derivation built successfully!
 
 The console output shows that `configure` was called, which produced a `Makefile` that was then used to build the project.
@@ -206,14 +206,14 @@ It wasn't necessary to write any build instructions in this case because the `st
 ### Build result
 Check your working directory for the result:
 
-```console not-tested="yet"
+```shell-session not-tested="formatting-issue-generating-tab"
 $ ls
-default.nix hello.nix  result
+default.nix  hello.nix result
 ```
 
 This `result` is a [symbolic link](https://en.wikipedia.org/wiki/Symbolic_link) to a Nix store location containing the built binary; you can call `./result/bin/hello` to execute this program:
 
-```console not-tested="yet"
+```shell-session example="finding-file-hash"
 $ ./result/bin/hello
 Hello, world!
 ```
