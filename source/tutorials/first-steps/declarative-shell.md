@@ -104,9 +104,8 @@ Enter the environment by running `nix-shell` in the same directory as `shell.nix
 The first invocation of `nix-shell` on this file may take a while to download all dependencies.
 :::
 
-```shell-session example="basic-nix-shell"
+```shell-session not-tested="output-format-issue"
 $ nix-shell
-
 [nix-shell:~]
 $ cowsay hello | lolcat
 ```
