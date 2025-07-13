@@ -61,7 +61,8 @@ $ nix-build hello-docker.nix
 ```
 
 > Note: Your first time running `nix-build hello-docker.nix` will output details similar to the following:
-```bash
+
+```diff not-tested="not-an-example"
     these derivations will be built:
       /nix/store/qpgdp0qpd8ddi1ld72w02zkmm7n87b92-docker-layer-hello-docker.drv
       /nix/store/m4xyfyviwbi38sfplq3xx54j6k7mccfb-runtime-deps.drv

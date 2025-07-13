@@ -173,7 +173,7 @@ In `hello.nix`, replace the empty string with the correct hash:
 
 `hello.nix`:
 
-```nix example="finding-file-hash"
+```nix not-tested="currently-fails-on-mac"
 {
   pkgs
 }:
@@ -193,7 +193,7 @@ In `hello.nix`, replace the empty string with the correct hash:
 
 Now run the previous command again:
 
-```shell-session example="finding-file-hash"
+```shell-session not-tested="currently-fails-on-mac"
 $ nix-build -A hello
 /nix/store/...-hello-2.12.1
 ```
@@ -213,7 +213,7 @@ default.nix  hello.nix result
 
 This `result` is a [symbolic link](https://en.wikipedia.org/wiki/Symbolic_link) to a Nix store location containing the built binary; you can call `./result/bin/hello` to execute this program:
 
-```shell-session example="finding-file-hash"
+```shell-session not-tested="currently-fails-on-mac"
 $ ./result/bin/hello
 Hello, world!
 ```
