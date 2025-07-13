@@ -184,8 +184,8 @@ The environment provided would be identical each time.
 The following example creates a fully reproducible environment.
 You can run it anywhere, anytime to obtain the exact same version of the `git`.
 
-```shell-session example="reproducible-environment"
-$ nix-shell -p git --run "git --version" --pure -I nixpkgs=<nixpkgs>
+```shell-session not-tested="nixpkgs-download-failed"
+$ nix-shell -p git --run "git --version" --pure -I nixpkgs=https://github.com/NixOS/nixpkgs/tarball/2a601aafdc5605a5133a2ca506a34a3a73377247
 ...
 ...
 git version 2.33.1
