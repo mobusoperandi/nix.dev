@@ -60,8 +60,27 @@ $ nix-build hello-docker.nix
 /nix/store/...-docker-image-hello-docker.tar.gz
 ```
 
-The image tag (`y74sb4nrhxr975xs7h83izgm8z75x5fc`) refers to the Nix build hash and makes sure that the Docker image corresponds to our Nix build.
-The store path in the last line of the output references the Docker image.
+> Note: Your first time running `nix-build hello-docker.nix` will output details similar to the following:
+```bash
+    these derivations will be built:
+      /nix/store/qpgdp0qpd8ddi1ld72w02zkmm7n87b92-docker-layer-hello-docker.drv
+      /nix/store/m4xyfyviwbi38sfplq3xx54j6k7mccfb-runtime-deps.drv
+      /nix/store/v0bvy9qxa79izc7s03fhpq5nqs2h4sr5-docker-image-hello-docker.tar.gz.drv
+    warning: unknown setting 'experimental-features'
+    building '/nix/store/qpgdp0qpd8ddi1ld72w02zkmm7n87b92-docker-layer-hello-docker.drv'...
+    No contents to add to layer.
+    Packing layer...
+    Computing layer checksum...
+    Finished building layer 'hello-docker'
+    building '/nix/store/m4xyfyviwbi38sfplq3xx54j6k7mccfb-runtime-deps.drv'...
+    building '/nix/store/v0bvy9qxa79izc7s03fhpq5nqs2h4sr5-docker-image-hello-docker.tar.gz.drv'...
+    Adding layer...
+    tar: Removing leading `/' from member names
+    Adding meta...
+    Cooking the image...
+    Finished.
+    /nix/store/y74sb4nrhxr975xs7h83izgm8z75x5fc-docker-image-hello-docker.tar.gz
+```
 
 ## Run the container
 
@@ -71,6 +90,11 @@ To work with the container, load this image into Docker's image registry from th
 $ docker load < result
 Loaded image: hello-docker:y74sb4nrhxr975xs7h83izgm8z75x5fc
 ```
+
+:::{dropdown} Image tag explanation
+The image tag (`y74sb4nrhxr975xs7h83izgm8z75x5fc`) refers to the Nix build hash and makes sure that the Docker image corresponds to our Nix build.
+The store path in the last line of the output references the Docker image.
+:::
 
 You can also use the store path to load the image in order to avoid depending on the presence of `result`:
 
