@@ -130,10 +130,11 @@ We will build the example up from scratch.
 
 The complete `minimal-test.nix` file content looks like the following:
 
-```nix not-tested="yet"
+`minimal-test.nix`:
+
+```nix example="vm-integration-testing"
 let
-  nixpkgs = fetchTarball "https://github.com/NixOS/nixpkgs/tarball/nixos-23.11";
-  pkgs = import nixpkgs { config = {}; overlays = []; };
+  pkgs = import <nixpkgs> { config = {}; overlays = []; };
 in
 
 pkgs.testers.runNixOSTest {
@@ -165,7 +166,7 @@ pkgs.testers.runNixOSTest {
 
 To set up all machines and run the test script:
 
-```shell-session not-tested="yet"
+```shell-session example="vm-integration-testing"
 $ nix-build minimal-test.nix
 ```
 
