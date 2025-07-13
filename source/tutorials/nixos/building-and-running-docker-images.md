@@ -23,7 +23,9 @@ However, you can also use the native Docker installation of your OS, if you are 
 
 [Nixpkgs](https://github.com/NixOS/nixpkgs) provides `dockerTools` to create Docker images:
 
-```nix not-tested="yet"
+`hello-docker.nix`:
+
+```nix example="build-container"
 { pkgs ? import <nixpkgs> { }
 , pkgsLinux ? import <nixpkgs> { system = "x86_64-linux"; }
 }:
@@ -52,26 +54,10 @@ We call the `dockerTools.buildImage` and pass in some parameters:
 
 Save this in `hello-docker.nix` and build it:
 
-```shell-session not-tested="yet"
+```shell-session example="build-container"
 $ nix-build hello-docker.nix
-these derivations will be built:
-  /nix/store/qpgdp0qpd8ddi1ld72w02zkmm7n87b92-docker-layer-hello-docker.drv
-  /nix/store/m4xyfyviwbi38sfplq3xx54j6k7mccfb-runtime-deps.drv
-  /nix/store/v0bvy9qxa79izc7s03fhpq5nqs2h4sr5-docker-image-hello-docker.tar.gz.drv
-warning: unknown setting 'experimental-features'
-building '/nix/store/qpgdp0qpd8ddi1ld72w02zkmm7n87b92-docker-layer-hello-docker.drv'...
-No contents to add to layer.
-Packing layer...
-Computing layer checksum...
-Finished building layer 'hello-docker'
-building '/nix/store/m4xyfyviwbi38sfplq3xx54j6k7mccfb-runtime-deps.drv'...
-building '/nix/store/v0bvy9qxa79izc7s03fhpq5nqs2h4sr5-docker-image-hello-docker.tar.gz.drv'...
-Adding layer...
-tar: Removing leading `/' from member names
-Adding meta...
-Cooking the image...
-Finished.
-/nix/store/y74sb4nrhxr975xs7h83izgm8z75x5fc-docker-image-hello-docker.tar.gz
+...
+/nix/store/...-docker-image-hello-docker.tar.gz
 ```
 
 The image tag (`y74sb4nrhxr975xs7h83izgm8z75x5fc`) refers to the Nix build hash and makes sure that the Docker image corresponds to our Nix build.
