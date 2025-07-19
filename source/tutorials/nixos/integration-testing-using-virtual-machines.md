@@ -168,14 +168,8 @@ To set up all machines and run the test script:
 
 ```shell-session example="vm-integration-testing"
 $ nix-build minimal-test.nix
+/nix/store/...-vm-test-run-minimal-test
 ```
-
-    ...
-    test script finished in 10.96s
-    cleaning up
-    killing machine (pid 10)
-    (0.00 seconds)
-    /nix/store/bx7z3imvxxpwkkza10vb23czhw7873w2-vm-test-run-minimal-test
 
 ## Interactive Python shell in the virtual machine
 
