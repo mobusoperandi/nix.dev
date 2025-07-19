@@ -177,7 +177,7 @@ When developing tests or when something breaks, it’s useful to interactively t
 
 To start an interactive Python session with the testing framework:
 
-```shell-session not-tested="yet"
+```shell-session not-tested="not-supported:user-interactivity"
 $ $(nix-build -A driverInteractive minimal-test.nix)/bin/nixos-test-driver
 ```
 
@@ -188,27 +188,27 @@ If a virtual machine is not yet started, the test environment takes care of it o
 
 But you can also manually trigger the start of the virtual machine with:
 
-```shell-session not-tested="yet"
+```shell-session not-tested="not-supported:user-interactivity"
 >>> machine.start()
 ```
 for a specific node,
 
 or
 
-```shell-session not-tested="yet"
+```shell-session not-tested="not-supported:user-interactivity"
 >>> start_all()
 ```
 for all nodes.
 
 You can enter a interactive shell on the virtual machine using:
 
-```shell-session not-tested="yet"
+```shell-session not-tested="not-supported:user-interactivity"
 >>> machine.shell_interact()
 ```
 
 and run shell commands like:
 
-```shell-session not-tested="yet"
+```shell-session not-tested="not-supported:user-interactivity"
 uname -a
 ```
 
@@ -225,13 +225,10 @@ Therefore, to run a test again, one needs to remove the result.
 
 If you would try to delete the result using the symbolic link, you will get the following error:
 
-```shell-session not-tested="yet"
-nix-store --delete ./result
+```shell-session example="vm-integration-testing"
+$ nix-store --delete ./result
+0 store paths deleted, 0.00 MiB freed
 ```
-
-    finding garbage collector roots...
-    0 store paths deleted, 0.00 MiB freed
-    error: Cannot delete path '/nix/store/4klj06bsilkqkn6h2sia8dcsi72wbcfl-vm-test-run-unnamed' since it is still alive. To find out why, use: nix-store --query --roots
 
 Instead, remove the symbolic link and only then remove the cached result:
 
