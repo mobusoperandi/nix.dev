@@ -223,18 +223,23 @@ Because test results are kept in the Nix store, a successful test is cached.
 This means that Nix will not run the test a second time as long as the test setup (node configuration and test script) stays semantically the same.
 Therefore, to run a test again, one needs to remove the result.
 
-If you would try to delete the result using the symbolic link, you will get the following error:
+If you would try to delete the result using the symbolic link it will say that no store paths are deleted, but the symlink will still be there:
 
 ```shell-session example="vm-integration-testing"
 $ nix-store --delete ./result
 0 store paths deleted, 0.00 MiB freed
+$ ls
+minimal-test.nix  result
 ```
 
 Instead, remove the symbolic link and only then remove the cached result:
 
-```shell-session not-tested="yet"
-rm ./result
-nix-store --delete /nix/store/4klj06bsilkqkn6h2sia8dcsi72wbcfl-vm-test-run-unnamed
+```shell-session example="vm-integration-testing"
+$ rm ./result
+$ nix-store --delete /nix/store/rr262c2mnhcvrp95nmwiya8wf59al0ws-vm-test-run-minimal-test
+0 store paths deleted, 0.00 MiB freed
+$ ls
+minimal-test.nix
 ```
 
 This can be also done with one command:
