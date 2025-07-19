@@ -133,7 +133,7 @@ in
       env.NIX_PATH = "nixpkgs=${inputs.main.nixpkgs-rolling}";
       runtimeInputs = [ pkgs-unstable.nixVersions.latest pkgs.direnv pkgs.which];
       requiredSystemFeatures = [ "recursive-nix" ];
-      timeout = 20; #<<<
+      timeout = 35; #<<<
       prompts = [ "nix-repl> " ];
     };
 

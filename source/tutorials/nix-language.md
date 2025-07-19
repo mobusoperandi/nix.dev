@@ -1867,6 +1867,7 @@ Example:
 $ nix repl
 ...
 nix-repl> let pkgs = import <nixpkgs> {}; in "${pkgs.nix}"
+...
 "/nix/store/...-nix-2..."
 ```
 

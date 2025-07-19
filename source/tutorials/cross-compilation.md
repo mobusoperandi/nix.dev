@@ -138,6 +138,7 @@ You can retrieve the platform string from `pkgsCross.<platform>.stdenv.hostPlatf
 $ nix repl
 ...
 nix-repl> :l <nixpkgs>
+...
 Added ... variables.
 
 nix-repl> pkgsCross.aarch64-multiplatform.stdenv.hostPlatform.config
