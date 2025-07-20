@@ -244,7 +244,7 @@ minimal-test.nix
 
 This can be also done with one command:
 
-```shell-session not-tested="yet"
+```shell-session not-tested="cache-deleted-in-previous-example"
 result=$(readlink -f ./result) rm ./result && nix-store --delete $result
 ```
 ::::
@@ -260,10 +260,11 @@ The following example setup includes:
 
 The complete `client-server-test.nix` file content looks like the following:
 
-```{code-block} not-tested="yet"
+`client-server-test.nix`:
+
+```nix example="multiple-vm-test"
 let
-  nixpkgs = fetchTarball "https://github.com/NixOS/nixpkgs/tarball/nixos-23.11";
-  pkgs = import nixpkgs { config = {}; overlays = []; };
+  pkgs = import <nixpkgs> { config = {}; overlays = []; };
 in
 
 pkgs.testers.runNixOSTest {
@@ -303,8 +304,9 @@ The test script performs the following steps:
 
 Run the test:
 
-```shell-session not-tested="yet"
+```shell-session example="multiple-vm-test"
 $ nix-build client-server-test.nix
+/nix/store/...-vm-test-run-client-server-test
 ```
 
 ## Additional information regarding NixOS tests
