@@ -158,8 +158,8 @@ The complete `configuration.nix` file looks like this:
 
 A NixOS virtual machine is created with the `nix-build` command:
 
-```shell-session example="testing-nixos-config-on-vm"
-$ nix-build '<nixpkgs/nixos>' -A vm --system aarch64-linux -I nixpkgs=channel:nixos-24.05 -I nixos-config=./configuration.nix
+```shell-session not-tested="cross-compilation-issue"
+$ nix-build '<nixpkgs/nixos>' -A vm -I nixpkgs=channel:nixos-24.05 -I nixos-config=./configuration.nix
 /nix/store/...-nixos-vm
 ```
 
@@ -299,7 +299,7 @@ The complete `configuration.nix` file looks like this:
 
 To get graphical output, run the virtual machine without special options:
 
-```shell-session example="graphical-vm"
+```shell-session not-tested="cross-compilation-issue"
 $ nix-build '<nixpkgs/nixos>' -A vm -I nixos-config=./configuration.nix
 ```
 
@@ -319,13 +319,13 @@ You need to choose from the available drivers one that is compatible with Sway.
 See [QEMU User Documentation](https://www.qemu.org/docs/master/system/qemu-manpage.html) for options.
 One possibility is the `virtio-vga` driver:
 
-```shell-session not-tested="yet"
+```shell-session not-tested="no-previous-example"
 $ ./result/bin/run-nixos-vm -device virtio-vga
 ```
 
 Arguments to QEMU can also be added to the configuration file:
 
-```nix not-tested="yet"
+```nix not-tested="documentation"
 { config, pkgs, ... }:
 {
   boot.loader.systemd-boot.enable = true;

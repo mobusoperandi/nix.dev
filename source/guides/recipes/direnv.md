@@ -69,7 +69,7 @@ pkgs.mkShellNoCC {
 
 The diff would be as follows:
 
-```diff not-tested="yet"
+```diff not-tested="documentation"
  let
    pkgs = import <nixpkgs> { config = {}; overlays = []; };
  in
