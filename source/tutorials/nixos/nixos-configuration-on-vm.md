@@ -32,8 +32,8 @@ You can also skip this section and copy the [sample configuration](sample-nixos-
 Use the `nixos-generate-config` command to create a configuration file that contains some useful defaults and configuration suggestions.
 The configuration produced from the following setup also is used for the [NixOS minimal ISO image](https://nixos.org/download#nixos-iso):
 
-```shell-session not-tested="yet"
-nix-shell -I nixpkgs=channel:nixos-24.05 -p "$(cat <<EOF
+```shell-session not-tested="download-file-too-large"
+$ nix-shell -I nixpkgs=channel:nixos-24.05 -p "$(cat <<EOF
   let
     pkgs = import <nixpkgs> { config = {}; overlays = []; };
     iso-config = pkgs.path + /nixos/modules/installer/cd-dvd/installation-cd-minimal.nix;
