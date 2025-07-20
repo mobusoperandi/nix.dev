@@ -159,7 +159,7 @@ The complete `configuration.nix` file looks like this:
 A NixOS virtual machine is created with the `nix-build` command:
 
 ```shell-session example="testing-nixos-config-on-vm"
-$ nix-build '<nixpkgs/nixos>' -A vm -I nixos-config=./configuration.nix
+$ nix-build '<nixpkgs/nixos>' -A vm --system aarch64-linux -I nixpkgs=channel:nixos-24.05 -I nixos-config=./configuration.nix
 /nix/store/...-nixos-vm
 ```
 
