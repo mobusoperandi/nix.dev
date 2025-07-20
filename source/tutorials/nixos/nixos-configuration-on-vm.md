@@ -56,7 +56,7 @@ That Nix expression:
 
 Create a NixOS configuration in your working directory:
 
-```shell-session not-tested="yet"
+```shell-session not-tested="no-previous-example"
 [nix-shell:~]$ nixos-generate-config --dir ./
 ```
 
@@ -74,7 +74,7 @@ In the working directory you will then find two files:
 
 The default NixOS configuration without comments is:
 
-```nix not-tested="yet"
+```nix not-tested="documentation"
 { config, pkgs, ... }:
 {
   imports =  [ ./hardware-configuration.nix ];
@@ -131,7 +131,9 @@ Therefore you will remove the reference to `hardware-configuration.nix`:
 
 The complete `configuration.nix` file looks like this:
 
-```nix not-tested="yet"
+`configuration.nix`:
+
+```nix example="testing-nixos-config-on-vm"
 { config, pkgs, ... }:
 {
   boot.loader.systemd-boot.enable = true;
@@ -156,8 +158,9 @@ The complete `configuration.nix` file looks like this:
 
 A NixOS virtual machine is created with the `nix-build` command:
 
-```shell-session not-tested="yet"
-$ nix-build '<nixpkgs/nixos>' -A vm -I nixpkgs=channel:nixos-24.05 -I nixos-config=./configuration.nix
+```shell-session example="testing-nixos-config-on-vm"
+$ nix-build '<nixpkgs/nixos>' -A vm -I nixos-config=./configuration.nix
+/nix/store/...-nixos-vm
 ```
 
 This command builds the attribute `vm` from the `nixos-24.05` release of NixOS, using the NixOS configuration as specified in the relative path.
@@ -184,18 +187,18 @@ This command builds the attribute `vm` from the `nixos-24.05` release of NixOS, 
 The previous command created a link with the name `result` in the working directory.
 It links to the directory that contains the virtual machine.
 
-```shell-session not-tested="yet"
+```shell-session not-tested="formatting-issue-generating-newline"
 $ ls -R ./result
-result:
+./result:
 bin  system
 
-result/bin:
+./result/bin:
 run-nixos-vm
 ```
 
 Run the virtual machine:
 
-```shell-session not-tested="yet"
+```shell-session not-tested="needs-interactive-user-input"
 $ QEMU_KERNEL_PARAMS=console=ttyS0 ./result/bin/run-nixos-vm -nographic; reset
 ```
 
@@ -205,13 +208,13 @@ This command will run QEMU in the current terminal due to `-nographic`.
 Log in as `alice` with the password `test`.
 Check that the programs are indeed available as specified:
 
-```shell-session not-tested="yet"
+```shell-session not-tested="needs-interactive-user-input"
 $ cowsay hello | lolcat
 ```
 
 Exit the virtual machine by shutting it down:
 
-```shell-session not-tested="yet"
+```shell-session not-tested="needs-interactive-user-input"
 $ sudo poweroff
 ```
 
@@ -229,7 +232,7 @@ It can interfere with debugging as it keeps the state of previous runs, for exam
 
 Delete this file when you change the configuration:
 
-```shell-session not-tested="yet"
+```shell-session not-tested="no-previous-example"
 $ rm nixos.qcow2
 ```
 
@@ -271,7 +274,9 @@ $ nixos-generate-config --dir ./
 
 The complete `configuration.nix` file looks like this:
 
-```nix not-tested="yet"
+`configuration.nix`:
+
+```nix example="graphical-vm"
 { config, pkgs, ... }:
 {
   boot.loader.systemd-boot.enable = true;
@@ -294,9 +299,8 @@ The complete `configuration.nix` file looks like this:
 
 To get graphical output, run the virtual machine without special options:
 
-```shell-session not-tested="yet"
-$ nix-build '<nixpkgs/nixos>' -A vm -I nixpkgs=channel:nixos-24.05 -I nixos-config=./configuration.nix
-$ ./result/bin/run-nixos-vm
+```shell-session example="graphical-vm"
+$ nix-build '<nixpkgs/nixos>' -A vm -I nixos-config=./configuration.nix
 ```
 
 ## Running Sway as Wayland compositor on a VM
